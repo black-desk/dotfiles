@@ -63,7 +63,6 @@ alias gf="git commit --amend"
 alias gp="git pull"
 alias gP="git push"
 alias gst="git status"
-alias cf="cf-tool"
 alias wman="w3mman"
 alias ls="ls --color"
 alias la="ls -la"
@@ -71,6 +70,7 @@ alias xopen="xdg-open"
 alias ra="ranger"
 alias refresh-apt="$my_dotfile_dir/apt/.init"
 alias cfg="chezmoi"
+alias autoremove="sudo pacman -Rcns $(pacman -Qdtq)"
 
 setopt autopushd pushdsilent pushdtohome
 setopt pushdignoredups # Remove duplicate entries

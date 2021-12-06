@@ -1,0 +1,26 @@
+{
+  "template": [
+    {
+      "alias": "cpp17",
+      "lang": "54",
+      "path": "{{ .workspace }}/projects/codeforces/templates/GNU_G++17_7.3.0.cpp",
+      "suffix": [
+        "cpp"
+      ],
+      "before_script": "g++ $%full%$ -o $%file%$ -std=c++17",
+      "script": "./$%file%$",
+      "after_script": "rm $%file%$"
+    }
+  ],
+  "default": 0,
+  "gen_after_parse": true,
+  "host": "https://codeforces.com",
+  "proxy": "",
+  "folder_name": {
+    "acmsguru": "acmsguru",
+    "contest": "contest",
+    "group": "group",
+    "gym": "gym",
+    "root": "codeforces"
+  }
+}
