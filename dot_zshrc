@@ -1,0 +1,117 @@
+#!/usr/bin/env zsh
+
+[[ $(tty) == \/dev\/tty[0-6]* ]] && fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt && echo && exit
+
+# start tmux as a tab manager
+if [[ -z $TMUX ]] && [[ -z $MY_NO_TMUX ]]; then
+    tmux start-server
+    session=`tmux ls | grep -m 1 -v attached | awk -F: '{print $1}'`
+    if [[ -z $session ]]; then
+        exec tmux
+    else
+        exec tmux attach -t $session
+    fi
+fi
+
+# fix a coc-translator issue in 1.6.2 when cache file not found
+if [[ ! -f $HOME/.config/coc/extensions/coc-translator-data/translation.json ]]; then
+    mkdir -p $HOME/.config/coc/extensions/coc-translator-data/
+    echo "[]" > $HOME/.config/coc/extensions/coc-translator-data/translation.json # create a empty json array
+fi
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit wait lucid light-mode for \
+atinit"zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+atload"_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+blockf atpull'zinit creinstall -q .' \
+    zsh-users/zsh-completions \
+atload"[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh" \
+    agkozak/zsh-z \
+    esc/conda-zsh-completion \
+
+zinit ice depth=1 atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh"
+zinit light romkatv/powerlevel10k
+
+bindkey -v #使用vim快捷键
+
+bindkey -s '^g' "lazygit^M"
+bindkey -s '^h' "^[[D"
+bindkey -s '^j' "^[[B"
+bindkey -s '^k' "^[[A"
+bindkey -s '^l' "^[[C"
+bindkey -s '^o' "open-url^M"
+
+alias mcr="( alacritty --command /usr/local/bin/mosh --ssh=\"ssh -p 60010\" black_desk@he.0g.pub &>/dev/null &)"
+alias gaa="git add --all"
+alias gc="git commit"
+alias gaac="git add --all && git commit"
+alias gf="git commit --amend"
+alias gp="git pull"
+alias gP="git push"
+alias gst="git status"
+alias cf="cf-tool"
+alias wman="w3mman"
+alias ls="ls --color"
+alias la="ls -la"
+alias xopen="xdg-open"
+alias ra="ranger"
+alias refresh-apt="$my_dotfile_dir/apt/.init"
+alias cfg="chezmoi"
+
+setopt autopushd pushdsilent pushdtohome
+setopt pushdignoredups # Remove duplicate entries
+setopt pushdminus # This reverts the +/- operators.
+
+alias bk=popd
+
+alias R='cd "$(realpath "`pwd`")"'
+alias s="dirs -v"
+alias dowork="curl -sL https://raw.githubusercontent.com/huan/docker-wxwork/master/dowork.sh | bash"
+
+alias bk="popd"
+
+if [[ -f $my_dotfile_dir/.dircolors ]] ; then
+    eval $(dircolors -b $my_dotfile_dir/.dircolors)
+fi
+
+if [[ $_OS_NAME_ = "uos-20-pro" ]] ; then
+    function open_dde_file_manager(){
+        (dde-file-manager $1 &> /dev/null &)
+    }
+    alias expl="open_dde_file_manager"
+    alias dfeet="(d-feet &> /dev/null &)"
+fi
+
+if [[ -n $_WSL_ ]] ; then
+    alias expl="explorer.exe"
+    alias typora="/mnt/c/Program\ Files/Typora/Typora.exe" # typora
+    alias psh="powershell.exe"
+fi
+
+__conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+
+if [[ $? -eq 0 ]] ; then
+    eval "$__conda_setup"
+else if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ] ; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
+else
+    export PATH="$HOME/miniconda3/bin:$PATH"
+fi
+fi
+
+unset __conda_setup
+R
