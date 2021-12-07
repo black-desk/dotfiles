@@ -1,0 +1,9 @@
+" https://github.com/ZSaberLv0/ZFVimIM
+
+let g:ZFVimIM_keymap = 0
+nnoremap <expr><C-S><C-S> ZFVimIME_keymap_toggle_i()
+inoremap <expr><C-S><C-S> ZFVimIME_keymap_toggle_i()
+inoremap <silent><F12>  <C-R>=VimeSwitch()<CR>
+let g:ZFVimIM_pinyin_gitUserEmail='{{ .email }}'
+let g:ZFVimIM_pinyin_gitUserName='{{ .github_username }}'
+let g:ZFVimIM_pinyin_gitUserToken='{{ .github_token }}'
