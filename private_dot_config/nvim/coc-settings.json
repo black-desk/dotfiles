@@ -5,7 +5,7 @@
     ],
     "explorer.file.showHiddenFiles": true,
     "explorer.previewAction.onHover": "labeling",
-    "explorer.icon.enableNerdfont":true,
+    "explorer.icon.enableNerdfont": true,
     "git.addGBlameToVirtualText": true,
     "git.enableGutters": true,
     "git.urlFix": {
