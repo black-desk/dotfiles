@@ -1,4 +1,5 @@
 {
+    "rainbow-fart.voice-packages": [],
     "coc.preferences.extensionUpdateCheck": "daily",
     "coc.preferences.formatOnSaveFiletypes": [
         "*"

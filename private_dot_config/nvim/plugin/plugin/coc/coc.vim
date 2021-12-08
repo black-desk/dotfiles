@@ -13,6 +13,7 @@ let g:coc_global_extensions = [
   \ 'coc-lua',
   \ 'coc-marketplace',
   \ 'coc-pyright',
+  \ 'coc-rainbow-fart',
   \ 'coc-sh',
   \ 'coc-snippets',
   \ 'coc-translator',
