@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+(alacritty -e ssh $@ >/dev/null 2>&1 &)
