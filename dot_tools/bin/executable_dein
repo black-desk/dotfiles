@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+[ ! -d /opt/debian/$1 ] && mkde $1
+
+sudo mount -t proc /proc /opt/debian/$1/proc
+sudo mount -t sysfs /sys /opt/debian/$1/sys
+sudo mount -o bind /dev /opt/debian/$1/dev
+sudo mount -o bind /dev/pts /opt/debian/$1/dev/pts
+
+sudo chroot /opt/debian/$1/ /bin/bash
