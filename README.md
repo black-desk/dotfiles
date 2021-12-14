@@ -41,6 +41,16 @@ then run:
 chezmoi init --apply black-desk
 ```
 
+## TOOLS
+
+  * `~/.tools`: this directory holds some scripts
+    * `bin`: the scripts themselves
+      * `uniontech`: scripts that relay to deepin/uniontech
+      * `mkde`: make chroot environment for debian (based distro)
+      * `dein`: chroot into debian environment
+      * `deout`: clean up things after exit from debian environment
+    * `static`: some static file used by scripts
+
 ## TODO
 
   - [ ] add requirements
