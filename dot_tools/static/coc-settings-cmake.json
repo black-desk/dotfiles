@@ -1,0 +1,9 @@
+{
+  "languageserver": {
+    "ccls": {
+      "initializationOptions": {
+        "compilationDatabaseDirectory": "build"
+      }
+    }
+  }
+}

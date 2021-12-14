@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [[ -f `pwd`/build/compile_commands.json ]]; then
+    init='{"compilationDatabaseDirectory":"build","cache":{"directory":"/home/black_desk/.ccls-cache"}}'
+else
+    init='{"cache":{"directory":"/home/black_desk/.ccls-cache"}}'
+fi
+
+ccls --index=. --init=$init

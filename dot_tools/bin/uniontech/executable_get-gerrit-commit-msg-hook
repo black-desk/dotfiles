@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+save_to=`git rev-parse --git-dir`/hooks/commit-msg
+curl --max-time 2 -Lo $save_to http://ut002531@gerrit.uniontech.com/tools/hooks/commit-msg
+if [ $? -ne 0 ]; then
+  cp $my_tools_dir/static/git-hooks/gerrit-uniontech/commit-msg $save_to
+fi
+chmod +x $save_to

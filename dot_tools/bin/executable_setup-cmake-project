@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+mkdir -p .vim
+cd .vim
+cp $my_tools_dir/static/coc-settings-cmake.json coc-settings.json
+cd ..
+mkdir -p build
+cd build
+cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1
