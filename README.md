@@ -48,7 +48,6 @@ chezmoi init --apply black-desk
       * `uniontech`: scripts that relay to deepin/uniontech
       * `mkde`: make chroot environment for debian (based distro)
       * `dein`: chroot into debian environment
-      * `deout`: clean up things after exit from debian environment
     * `static`: some static file used by scripts
 
 ## TODO
