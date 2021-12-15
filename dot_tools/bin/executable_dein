@@ -12,3 +12,10 @@ sudo mount -o bind /dev /opt/debian/$1/dev
 sudo mount -o bind /dev/pts /opt/debian/$1/dev/pts
 
 sudo chroot /opt/debian/$1/ /bin/bash
+
+sleep 2
+
+sudo umount /opt/debian/$1/proc
+sudo umount /opt/debian/$1/sys
+sudo umount /opt/debian/$1/dev/pts
+sudo umount /opt/debian/$1/dev
