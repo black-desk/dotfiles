@@ -4,7 +4,7 @@ if [[ $SCRIPT_DEBUG ]] ; then
   set -x
 fi
 
-[ ! -d /opt/debian/$1 ] && mkde $1
+[ ! -d /opt/debian/$1 ] || [ -z $1 ] && echo All distro available: && ls /opt/debian/ && exit
 
 sudo mount -t proc /proc /opt/debian/$1/proc
 sudo mount -t sysfs /sys /opt/debian/$1/sys

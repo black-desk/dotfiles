@@ -4,6 +4,8 @@ if [[ $SCRIPT_DEBUG ]] ; then
   set -x
 fi
 
+[ ! -f $my_tools_dir/static/debian/$1 ] && echo All available distros: && ls $my_tools_dir/static/debian/ && exit
+
 source $my_tools_dir/static/debian/$1
 
 sudo mkdir -p /opt/debian/$1
