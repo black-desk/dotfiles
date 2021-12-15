@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+sudo ln -s /usr/share/debootstrap/scripts/oldstable /usr/share/debootstrap/scripts/apricot
+export _MIRROR="https://community-packages.deepin.com/deepin/"

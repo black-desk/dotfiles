@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+sudo ln -s /usr/share/debootstrap/scripts/oldstable /usr/share/debootstrap/scripts/eagle
+
+# export _MIRROR="https://professional-packages.chinauos.com/desktop-professional/"
+export _MIRROR="http://pools.uniontech.com/desktop-professional/"
+
