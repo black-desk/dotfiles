@@ -2,17 +2,6 @@
 
 [[ $(tty) == \/dev\/tty[0-6]* ]] && fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt && echo && exit
 
-# start tmux as a tab manager
-if [[ -z $TMUX ]] && [[ -z $MY_NO_TMUX ]]; then
-    tmux start-server
-    session=`tmux ls | grep -m 1 -v attached | awk -F: '{print $1}'`
-    if [[ -z $session ]]; then
-        exec tmux
-    else
-        exec tmux attach -t $session
-    fi
-fi
-
 # fix a coc-translator issue in 1.6.2 when cache file not found
 if [[ ! -f $HOME/.config/coc/extensions/coc-translator-data/translation.json ]]; then
     mkdir -p $HOME/.config/coc/extensions/coc-translator-data/
