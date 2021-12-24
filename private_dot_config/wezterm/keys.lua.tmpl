@@ -79,13 +79,4 @@ for i = 1, 9 do
   )
 end
 
-return {
-  use_ime = true,
-  color_scheme = "Andromeda",
-  font = wezterm.font_with_fallback({
-    "Fira Code",
-    "Source Han Sans CN"
-  }),
-  leader = { key="b", mods="CTRL", timeout_milliseconds=1000 },
-  keys = keys,
-}
+return keys
