@@ -39,6 +39,7 @@ then run:
 
 ```bash
 chezmoi init --apply black-desk
+yay -S - < ./requirements.txt
 ```
 
 ## TOOLS
@@ -52,4 +53,5 @@ chezmoi init --apply black-desk
 
 ## TODO
 
-  - [ ] add requirements
+  - [x] add requirements
+  - [ ] add auto generated requirements
