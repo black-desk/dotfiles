@@ -1,10 +1,11 @@
 local wezterm = require 'wezterm';
 
 local keys = require 'keys'
+local colors = require 'colors'
 
 return {
   use_ime = true,
-  color_scheme = "Andromeda",
+  colors = colors,
   font = wezterm.font_with_fallback({
     "Fira Code",
     "Source Han Sans CN"
