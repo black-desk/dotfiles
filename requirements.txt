@@ -1,7 +1,6 @@
 adobe-source-han-sans-cn-fonts
 adobe-source-han-sans-otc-fonts
 adobe-source-han-serif-cn-fonts
-alacritty-git
 arc-gtk-theme-git
 baidunetdisk-electron
 bash-language-server
