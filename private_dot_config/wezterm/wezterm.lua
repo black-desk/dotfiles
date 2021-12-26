@@ -7,7 +7,7 @@ return {
   use_ime = true,
   colors = colors,
   font = wezterm.font_with_fallback({
-    "Fira Code",
+    "FiraCode Nerdfont",
     "Source Han Sans CN"
   }),
   leader = keys.leader,
