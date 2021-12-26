@@ -10,6 +10,6 @@ return {
     "Fira Code",
     "Source Han Sans CN"
   }),
-  leader = { key="b", mods="CTRL", timeout_milliseconds=1000 },
-  keys = keys,
+  leader = keys.leader,
+  keys = keys.keys,
 }

@@ -2,7 +2,8 @@ local wezterm = require 'wezterm';
 
 -- this file provid a tmux-like keymapping
 
--- LEADER is  Ctrl-b
+local leader = { key="b", mods="CTRL", timeout_milliseconds=1000 }
+
 
 local keys = {
   {
@@ -83,4 +84,7 @@ for i = 1, 9 do
   )
 end
 
-return keys
+return {
+  leader = leader,
+  keys = keys,
+}
