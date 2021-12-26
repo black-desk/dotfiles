@@ -5,7 +5,6 @@
         "*"
     ],
     "explorer.file.showHiddenFiles": true,
-    "explorer.previewAction.onHover": "labeling",
     "explorer.icon.enableNerdfont": true,
     "git.addGBlameToVirtualText": true,
     "git.enableGutters": true,
@@ -14,7 +13,7 @@
             "(.*)/a/(.*)/blob/(.*)#L(.*)|$1/plugins/gitiles/$2/+/refs/heads/$3#$4",
             "(.*)/a/(.*)/blob/(.*)#L(.*)|$1/plugins/gitiles/$2/+/$3#$4"
         ],
-        "gitea.black-desk.cn": [
+        "{{ .gitea }}": [
             "blob|src/branch",
             "blob|src/commit"
         ],
@@ -48,7 +47,7 @@
             ],
             "initializationOptions": {
                 "cache": {
-                    "directory": "/home/black_desk/.ccls-cache",
+                    "directory": "{{ .chezmoi.homeDir }}/.ccls-cache",
                     "retainInMemory": 0
                 },
                 "highlight": {
@@ -65,7 +64,6 @@
         }
     },
     "python.formatting.provider": "black",
-    "python.pythonPath": "/home/black_desk/miniconda3/bin/python",
     "suggest.completionItemKindLabels": {
         "class": "",
         "color": "",

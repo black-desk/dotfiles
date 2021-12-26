@@ -9,7 +9,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'ZSaberLv0/ZFVimIM'
   Plug 'aklt/plantuml-syntax'
   Plug 'antoinemadec/coc-fzf'
-  Plug 'black-desk/ZFVimIM_pinyin_base'
   Plug 'gcmt/wildfire.vim'
   Plug 'godlygeek/tabular'
   Plug 'itchyny/vim-highlighturl'
@@ -19,9 +18,11 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'justinmk/vim-syntax-extra'
   Plug 'lambdalisue/suda.vim'
+  Plug 'leafgarland/typescript-vim'
   Plug 'lilydjwg/fcitx.vim'
   Plug 'liuchengxu/vista.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'},
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'plasticboy/vim-markdown'
   Plug 'preservim/nerdcommenter'
   Plug 'pseewald/vim-anyfold'
@@ -32,5 +33,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'weirongxu/plantuml-previewer.vim'
+
+  Plug '{{ .github_username }}/ZFVimIM_pinyin_base'
 
 call plug#end()
