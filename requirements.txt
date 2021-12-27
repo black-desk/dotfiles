@@ -15,13 +15,13 @@ clang-format-all-git
 clash-premium-bin
 cloc
 cloudcross
+d-feet
 davinci-resolve
 debootstrap
-deepin-wine6-stable-amd64
 deepin-wine-tim
 deepin-wine-wechat
+deepin-wine6-stable-amd64
 delve
-d-feet
 electron-netease-cloud-music-git
 fcitx5-chinese-addons
 fcitx5-configtool
@@ -40,6 +40,7 @@ lazygit-git
 lightdm
 mosh-git
 neovim-git
+nerd-fonts-fira-code
 net-tools
 noto-fonts-cjk
 obs-studio
@@ -79,4 +80,3 @@ xdg-user-dirs-gtk
 xsel
 yay
 zsh
-nerd-fonts-fira-code
