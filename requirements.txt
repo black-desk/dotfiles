@@ -79,3 +79,4 @@ xdg-user-dirs-gtk
 xsel
 yay
 zsh
+nerd-fonts-fira-code
