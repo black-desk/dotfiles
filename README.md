@@ -9,11 +9,11 @@
 
 This repo hold my config file.
 
-Thanks twpayne's [chezmoi](https://github.com/twpayne/chezmoi).
+Currently it's only aims to arch linux.
 
 ## INSTALL
 
-create file ~/.config/chezmoi/chezmoi.toml like this:
+1. Create file ~/.config/chezmoi/chezmoi.toml like this:
 
 ```toml
 [data]
@@ -34,12 +34,28 @@ create file ~/.config/chezmoi/chezmoi.toml like this:
   # https://github.com/ZSaberLv0/ZFVimIM
   github_token=""
 ```
+2. Install [yay](https://github.com/Jguer/yay):
 
-then run:
+Refer to [installation guide](https://github.com/Jguer/yay#installation), you should run:
+
+> ```bash
+> pacman -S --needed git base-devel
+> git clone https://aur.archlinux.org/yay.git
+> cd yay
+> makepkg -si
+> ```
+
+3. Install [chezmoi](https://github.com/twpayne/chezmoi):
+
+```bash
+sudo pacman -Syu chezmoi
+```
+
+3. Run:
 
 ```bash
 chezmoi init --apply black-desk
-yay -S - < ./requirements.txt
+yay -S - < ~/.local/share/chezmoi/requirements.txt
 ```
 
 ## TOOLS
