@@ -10,7 +10,7 @@ return {
     "FiraCode Nerdfont",
     "Source Han Sans CN"
   }),
-  font_size = 14,
+  font_size = 13,
   leader = keys.leader,
   keys = keys.keys,
 }
