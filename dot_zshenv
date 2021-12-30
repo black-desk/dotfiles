@@ -12,8 +12,7 @@ export EDITOR=nvim;
 export PAGER="less -r";
 
 export GO111MODULE=auto
-export GOPATH="$HOME/Go"
-export PATH="$GOPATH/bin:$PATH"
+export PATH="$HOME/Go/bin:$PATH"
 
 export PATH="$PATH:$HOME/.cargo/bin"
 if [[ -f "$HOME/.cargo/env" ]] ; then 
