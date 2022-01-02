@@ -1,4 +1,5 @@
 vim.api.nvim_set_option('ignorecase', true)
+vim.opt.clipboard = vim.opt.clipboard + {'unnamedplus'}
 
 -- tab size
 -- FIXME use lua here

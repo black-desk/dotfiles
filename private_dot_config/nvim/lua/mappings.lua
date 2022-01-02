@@ -19,9 +19,6 @@ vim.cmd([[
   nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
   nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 
-  " copy
-  vnoremap <silent> <leader>y "+y
-
   " mark
   nnoremap <silent> <leader>lm :marks<cr>
 ]])
