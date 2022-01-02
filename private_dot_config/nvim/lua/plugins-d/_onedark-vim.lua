@@ -11,4 +11,3 @@ return {
   'joshdick/onedark.vim',
   config = config,
 }
-

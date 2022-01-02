@@ -9,7 +9,9 @@ local function config()
   map('n', '<SPACE>a', '<CMD>CodeActionMenu<CR>', opts)
 
   -- FIXME use lua here
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
+  vim.cmd([[
+    autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+  ]])
 end
 
 return {
