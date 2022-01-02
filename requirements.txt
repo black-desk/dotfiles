@@ -32,6 +32,7 @@ fcitx5-pinyin-zhwiki
 flatpak
 gimp
 github-cli
+go
 gopls
 grub
 hmcl-bin
@@ -39,7 +40,7 @@ kicad
 lazygit-git
 lightdm
 mosh-git
-neovim-git
+neovim-nightly-bin
 nerd-fonts-fira-code
 net-tools
 noto-fonts-cjk
@@ -74,7 +75,7 @@ unrar
 vi
 vim
 visual-studio-code-bin
-wezterm-git
+wezterm-nightly-bin
 xclip
 xdg-user-dirs-gtk
 xsel
