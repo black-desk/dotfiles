@@ -5,25 +5,13 @@ export my_tools_dir="$HOME/.tools"
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
-export CHROME_USER_FLAGS="--force-device-scale-factor=1.25"
-
 export VISUAL=nvim;
 export EDITOR=nvim;
 export PAGER="less -r";
 
-export GO111MODULE=auto
 export PATH="$HOME/Go/bin:$PATH"
 
-export PATH="$PATH:$HOME/.cargo/bin"
-if [[ -f "$HOME/.cargo/env" ]] ; then 
-  source "$HOME/.cargo/env"
-fi
-
-# export PATH="$HOME/miniconda3/bin:$PATH"
 export PATH=$PATH:~/.local/bin
-export PATH=$PATH:$my_tools_dir/dev/allure/bin
-
-export PATH="$PATH:$my_tools_dir/app/markpress/bin"
 
 export PATH="$my_tools_dir/bin:$PATH"
 export PATH="$my_tools_dir/bin/uniontech:$PATH"
@@ -32,40 +20,6 @@ export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=5000
 export HISTSIZE=5000
 
-if [[ $(</proc/version) =~ "microsoft" ]] ; then
-  export _WSL_="True"
-fi
-
 if [[ `type Xorg` ]] ; then
   export _GUI_="True"
-fi
-
-_OS_NAME_=$(awk -F= '/PRETTY_NAME/{print $2}' /etc/os-release 2>/dev/null)
-
-if [[ $_OS_NAME_ =~ .*Ubuntu.*21\.04.* ]] ; then
-  _OS_NAME_="ubuntu-21.04"
-else if [[ $_OS_NAME_ =~ .*Deepin.*20.* ]] ; then
-  _OS_NAME_="deepin-20"
-else
-  _OS_NAME_="unknown"
-fi
-fi
-
-export _OS_NAME_
-
-if [[ -n $_WSL_ ]] ; then
-  export windows_host=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null) # it's same as the dns server use in wsl
-  export http_proxy="http://$windows_host:7890"
-  export https_proxy="http://$windows_host:7890"
-  export DISPLAY=$windows_host:0 # for X-server
-  if [[ "$(umask)" == '000' ]] ; then
-    umask 022 # 新建文件的权限
-  fi
-fi
-
-if [[ $_OS_NAME_ == "ubuntu-21.04" ]] ; then
-  :
-else if [[ $_OS_NAME_ == "deepin-20" ]] ; then
-  :
-fi
 fi
