@@ -7,7 +7,7 @@ return {
   use_ime = true,
   colors = colors,
   font = wezterm.font_with_fallback({
-    "FiraCode Nerdfont",
+    "FiraCode Nerd Font",
     "Source Han Sans CN"
   }),
   font_size = 13,
