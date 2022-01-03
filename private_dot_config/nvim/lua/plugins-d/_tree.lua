@@ -4,7 +4,7 @@
 -- file explorer
 
 local function config()
-  vim.g.nvim_tree_quit_on_open = 1 -- 0 by default, closes the tree when you open a file
+  vim.g.nvim_tree_quit_on_open = 0 -- 0 by default, closes the tree when you open a file
   vim.g.nvim_tree_indent_markers = 0 -- 0 by default, this option shows indent markers when folders are open
   vim.g.nvim_tree_git_hl = 0 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
   vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
@@ -31,33 +31,25 @@ local function config()
   local list = {
     { key = "l",     cb = tree_cb("edit") },
     { key = "L",     cb = tree_cb("cd") },
-    { key = "<C-v>", cb = tree_cb("vsplit") },
-    { key = "<C-x>", cb = tree_cb("split") },
-    { key = "<C-t>", cb = tree_cb("tabnew") },
-    { key = "<",     cb = tree_cb("prev_sibling") },
-    { key = ">",     cb = tree_cb("next_sibling") },
-    { key = "P",     cb = tree_cb("parent_node") },
     { key = "h",     cb = tree_cb("close_node") },
     { key = "<Tab>", cb = tree_cb("preview") },
     { key = "K",     cb = tree_cb("first_sibling") },
     { key = "J",     cb = tree_cb("last_sibling") },
-    { key = "I",     cb = tree_cb("toggle_ignored") },
     { key = "H",     cb = tree_cb("toggle_dotfiles") },
     { key = "R",     cb = tree_cb("refresh") },
     { key = "a",     cb = tree_cb("create") },
-    { key = "d",     cb = tree_cb("remove") },
-    { key = "D",     cb = tree_cb("trash") },
+    { key = "D",     cb = tree_cb("remove") },
+    { key = "d",     cb = tree_cb("trash") },
     { key = "r",     cb = tree_cb("rename") },
-    { key = "<C-r>", cb = tree_cb("full_rename") },
     { key = "x",     cb = tree_cb("cut") },
     { key = "c",     cb = tree_cb("copy") },
     { key = "p",     cb = tree_cb("paste") },
     { key = "y",     cb = tree_cb("copy_name") },
     { key = "Y",     cb = tree_cb("copy_path") },
-    { key = "gy",    cb = tree_cb("copy_absolute_path") },
-    { key = "[c",    cb = tree_cb("prev_git_item") },
-    { key = "]c",    cb = tree_cb("next_git_item") },
-    { key = "-",     cb = tree_cb("dir_up") },
+    { key = "<C-y>", cb = tree_cb("copy_absolute_path") },
+    { key = "gk",    cb = tree_cb("prev_git_item") },
+    { key = "gj",    cb = tree_cb("next_git_item") },
+    { key = "..",     cb = tree_cb("dir_up") },
     { key = "s",     cb = tree_cb("system_open") },
     { key = "q",     cb = tree_cb("close") },
     { key = "g?",    cb = tree_cb("toggle_help") },
@@ -91,8 +83,8 @@ local function config()
       }
     },
     update_focused_file = {
-      enable      = false,
-      update_cwd  = false,
+      enable      = true,
+      update_cwd  = true,
       ignore_list = {}
     },
     system_open = {
@@ -115,7 +107,7 @@ local function config()
       side = 'left',
       auto_resize = false,
       mappings = {
-        custom_only = false,
+        custom_only = true,
         list = list,
       },
       number = false,
