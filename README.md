@@ -1,4 +1,3 @@
-
      ______   _______  _______  _______  ___   ___      _______  _______
     |      | |       ||       ||       ||   | |   |    |       ||       |
     |  _    ||   _   ||_     _||    ___||   | |   |    |    ___||  _____|
@@ -34,16 +33,17 @@ Currently it's only aims to arch linux.
   # https://github.com/ZSaberLv0/ZFVimIM
   github_token=""
 ```
+
 2. Install [yay](https://github.com/Jguer/yay):
 
 Refer to [installation guide](https://github.com/Jguer/yay#installation), you should run:
 
-> ```bash
-> pacman -S --needed git base-devel
-> git clone https://aur.archlinux.org/yay.git
-> cd yay
-> makepkg -si
-> ```
+```bash
+pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+```
 
 3. Install [chezmoi](https://github.com/twpayne/chezmoi):
 
@@ -51,7 +51,7 @@ Refer to [installation guide](https://github.com/Jguer/yay#installation), you sh
 sudo pacman -Syu chezmoi
 ```
 
-3. Run:
+4. Run:
 
 ```bash
 chezmoi init --apply black-desk
@@ -71,3 +71,4 @@ yay -S - < ~/.local/share/chezmoi/requirements.txt
 
   - [x] add requirements
   - [ ] add auto generated requirements
+  - [ ] use which-key config key mappings
