@@ -23,5 +23,3 @@ vim.cmd([[
   au Filetype go setlocal colorcolumn=""
   au Filetype markdown setlocal colorcolumn=""
 ]])
-
-vim.g.markdown_fenced_languages = {'c','go','cpp','coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml'}
