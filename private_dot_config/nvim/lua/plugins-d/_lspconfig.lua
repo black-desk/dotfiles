@@ -13,5 +13,6 @@ return {
     require('plugins-d/code-action'),
     require('plugins-d/lspfzf'),
     require('plugins-d/illuminate'),
+    require('plugins-d/cxx-lsp-highlight'),
   }
 }
