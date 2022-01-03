@@ -4,15 +4,13 @@
 -- quick comment plugin
 
 local function config()
-  -- FIXME use lua
-  vim.cmd([[
-    let g:NERDSpaceDelims = 1
-    let g:NERDCreateDefaultMappings = 0
+  vim.g.NERDSpaceDelims = 1
+  vim.g.NERDCreateDefaultMappings = 0
 
-    " this two map come from https://stackoverflow.com/a/48690620
-    nmap <C-_> <Plug>NERDCommenterToggle
-    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-  ]])
+  local wk = require("which-key")
+
+  wk.register({ ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle single line comment", mode = 'n'}, })
+  wk.register({ ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle multiple lines comment", mode = 'v'}, })
 end
 
 return {
