@@ -8,6 +8,7 @@ local function config()
     options = {
       disabled_filetypes = {
         'NvimTree',
+        'packer',
       },
     },
   })
