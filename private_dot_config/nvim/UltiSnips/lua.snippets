@@ -5,7 +5,7 @@ snippet nplg "new plugin group settings"
 -- $2
 
 local function config()
-  $5
+	$5
 end
 
 return {
@@ -24,6 +24,34 @@ nreq}
 endsnippet
 
 snippet kmap "key map function utils of neovim"
-local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
+local wk = require("which-key")${1:
+local key_opts = {
+	-- mode   Help        Affected                              Equivalent
+	-- ''     mapmode-nvo Normal/Visual/Select/Operator-pending :map
+	-- 'n'    mapmode-n	  Normal                                :nmap
+	-- 'v'    mapmode-v   Visual/Select                         :vmap
+	-- 's'    mapmode-s	  Select                                :smap
+	-- 'x'    mapmode-x	  Visual                                :xmap
+	-- 'o'    mapmode-o   Operator-pending                      :omap
+	-- '!'    mapmode-ic  Insert/Command-line                   :map!
+	-- 'i'    mapmode-i   Insert                                :imap
+	-- 'l'    mapmode-l   Insert/Command-line/Lang-Arg          :lmap
+	-- 'c'    mapmode-c   Command-line                          :cmap
+	-- 't'    mapmode-t   Terminal                              :tmap
+	mode    = "${2:n}",
+	prefix  = "${3:<leader>}",
+	buffer  = ${4|nil,0|}, -- Global mappings. Or specify a buffer number for buffer local mappings
+	silent  = ${5|true,false|}, -- use \`silent \` when creating keymaps
+	noremap = ${6|true,false|}, -- use \`noremap\` when creating keymaps${7:
+	nowait = ${8|false,true|}, -- use \`nowait\` when creating keymaps}
+}}
+
+wk.register(
+	{
+		name = "${8:keybind group name}", -- optional group name${9:
+		["1"] = "which_key_ignore",  -- special label to hide it in the popup}
+		${10:lhs} = { ${11:rhs}${13:, "$14"} },
+	},${1/^.*(key_opts).*/(?1:
+	key_opts:)/}
+)
 endsnippet
