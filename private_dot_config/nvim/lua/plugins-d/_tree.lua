@@ -4,8 +4,8 @@
 -- file explorer
 
 local function config()
-  vim.g.nvim_tree_quit_on_open = 0 -- 0 by default, closes the tree when you open a file
-  vim.g.nvim_tree_indent_markers = 0 -- 0 by default, this option shows indent markers when folders are open
+  vim.g.nvim_tree_quit_on_open = 1 -- 0 by default, closes the tree when you open a file
+  vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
   vim.g.nvim_tree_git_hl = 0 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
   vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
   vim.g.nvim_tree_root_folder_modifier = ':~' -- This is the default. See :help filename-modifiers for more options
@@ -26,6 +26,9 @@ local function config()
     buftype={
       'terminal',
     }
+  }
+  vim.g.nvim_tree_icons = {
+    default = '',
   }
   local tree_cb = require'nvim-tree.config'.nvim_tree_callback
   local list = {
@@ -67,14 +70,14 @@ local function config()
     ignore_ft_on_setup  = {},
     auto_close          = false,
     open_on_tab         = false,
-    hijack_cursor       = false,
-    update_cwd          = false,
+    hijack_cursor       = true,
+    update_cwd          = true,
     update_to_buf_dir   = {
       enable = true,
       auto_open = true,
     },
     diagnostics = {
-      enable = false,
+      enable = true,
       icons = {
         hint = "",
         info = "",
