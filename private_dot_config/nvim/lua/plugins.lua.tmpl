@@ -1,8 +1,16 @@
-local use = require('packer').use
-local startup = require('packer').startup
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local is_startup = false
+if fn.empty(fn.glob(install_path)) > 0 then
+  fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd[[packadd packer.nvim]]
+  is_startup = true
+end
 
-return startup(
+
+return require('packer').startup(
   function()
+    local use = require('packer').use
     local plugins = io.popen('find "'..'{{ .chezmoi.homeDir }}/.config/nvim/lua/plugins-d/'..'" -type f')
     for plugin in plugins:lines() do
       local part1, part2 = string.match(plugin,"{{ .chezmoi.homeDir }}/[.]config/nvim/lua/(.*)_(.*)[.]lua")
@@ -14,6 +22,9 @@ return startup(
       if plugin ~= '' then
         use(require(plugin))
       end
+    end
+    if is_startup then
+      require('packer').sync()
     end
   end
 )
