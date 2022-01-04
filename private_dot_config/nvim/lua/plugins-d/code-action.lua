@@ -4,10 +4,6 @@
 -- code action ui for nvim builtin lsp
 
 local function config()
-  local map = vim.api.nvim_set_keymap
-  local opts = { noremap = true, silent = true }
-  map('n', '<SPACE>a', '<CMD>CodeActionMenu<CR>', opts)
-
   -- FIXME use lua here
   vim.cmd([[
     autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
