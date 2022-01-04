@@ -16,7 +16,7 @@ local function recompute_padding(window)
     local new_padding = {
       left = '0.7%',
       right = '0.7%',
-      top = '1%',
+      top = '0.67%',
       bottom = 0,
     };
     if overrides.window_padding and new_padding.left == overrides.window_padding.left then
