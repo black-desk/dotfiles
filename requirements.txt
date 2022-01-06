@@ -39,6 +39,7 @@ hmcl-bin
 kicad
 lazygit-git
 lightdm
+lua-language-server
 mosh-git
 neovim-nightly-bin
 nerd-fonts-fira-code
@@ -49,6 +50,7 @@ orca
 os-prober
 overgrive
 papirus-icon-theme
+pyright
 python-black
 python-markpress-git
 python-pynvim
@@ -70,11 +72,13 @@ tree
 ttf-fira-code
 ttf-meslo-nerd-font-powerlevel10k
 ttf-sarasa-gothic
+typescript-language-server
 unityhub
 unrar
 vi
 vim
 visual-studio-code-bin
+vscode-json-languageserver
 wezterm-nightly-bin
 xclip
 xdg-user-dirs-gtk
