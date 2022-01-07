@@ -43,6 +43,9 @@ local function config()
       '#56b6c2',
       '#be5046',
     },
+    separately = {
+      markdown = 0,
+    }
   }
   vim.g.rainbow_active = 1
 end
