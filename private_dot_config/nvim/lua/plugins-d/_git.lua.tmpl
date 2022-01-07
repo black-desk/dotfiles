@@ -21,8 +21,8 @@ local function config()
   map('n', '<leader>g<space>', '<cmd>GitGutterStageHunk<cr>', opts)
   map('n', '<leader>gu', '<cmd>GitGutterUndoHunk<cr>', opts)
 
-  vim.g.blamer_enabled = 1
-  vim.g.blamer_delay = 500
+  vim.g.gitblame_message_template = '  <<<   <author> | <date> | <summary> || <sha>'
+  vim.g.gitblame_date_format = '%r'
 end
 
 return {
@@ -38,8 +38,8 @@ return {
 
     -- https://github.com/airblade/vim-gitgutter
     'airblade/vim-gitgutter', -- sign column diff mark
-    -- https://github.com/APZelos/blamer.nvim
-    'APZelos/blamer.nvim', -- blame virtual text like gitlens of VSCode
+    -- https://github.com/f-person/git-blame.nvim
+    'f-person/git-blame.nvim', -- blame virtual text like gitlens of VSCode
   },
   config = config,
 }
