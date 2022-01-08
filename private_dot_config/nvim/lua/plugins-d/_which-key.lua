@@ -72,6 +72,6 @@ local function config()
 end
 
 return {
-  'folke/which-key.nvim',
+  'zeertzjq/which-key.nvim', branch = 'patch-1', -- wait https://github.com/folke/which-key.nvim/pull/227 to be merged
   config = config,
 }
