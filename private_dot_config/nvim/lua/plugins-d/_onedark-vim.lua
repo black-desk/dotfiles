@@ -1,13 +1,8 @@
 local config = function()
-  vim.env.NVIM_TUI_ENABLE_TRUE_COLOR=1
-  vim.api.nvim_set_option('termguicolors',true)
-  -- FIXME
-  vim.cmd([[
-    syntax on
-    colorscheme onedark
-  ]])
+  require('onedark').load()
 end
 return {
-  'joshdick/onedark.vim',
+  'navarasu/onedark.nvim',
   config = config,
+  after = 'nvim-treesitter',
 }
