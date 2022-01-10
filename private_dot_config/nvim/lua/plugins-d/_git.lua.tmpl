@@ -24,7 +24,14 @@ local function config()
       delay = 100,
       ignore_whitespace = false,
     },
+    keymaps = {},
   })
+  map('n', '<space>gw', '<cmd>Gitsigns toggle_word_diff<cr>', opts)
+  map('n', '<space>gj', '<cmd>Gitsigns next_hunk<cr>', opts)
+  map('n', '<space>gk', '<cmd>Gitsigns prev_hunk<cr>', opts)
+  map('n', '<space>gu', '<cmd>Gitsigns undo_stage_hunk<cr>', opts)
+  map('n', '<space>gs', '<cmd>Gitsigns stage_hunk<cr>', opts)
+
 end
 
 return {
