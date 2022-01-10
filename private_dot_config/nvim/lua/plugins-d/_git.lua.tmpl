@@ -23,23 +23,31 @@ local function config()
 
   vim.g.blamer_enabled = 1
   vim.g.blamer_delay = 500
+
+  require('gitsigns').setup()
 end
 
 return {
   'tpope/vim-fugitive',
   requires = {
     -- GBrowser handlers
-    -- https://github.com/tpope/vim-rhubarb
-    'tpope/vim-rhubarb', -- github
-    -- https://github.com/borissov/fugitive-gitea
-    'borissov/fugitive-gitea', -- gitea
-    -- https://github.com/shumphrey/fugitive-gitlab.vim
-    'shumphrey/fugitive-gitlab.vim', -- gitlab
-
-    -- https://github.com/airblade/vim-gitgutter
-    'airblade/vim-gitgutter', -- sign column diff mark
-    -- https://github.com/APZelos/blamer.nvim
-    'black-desk/blamer.nvim', -- blame virtual text like gitlens of VSCode
+    {
+      -- https://github.com/tpope/vim-rhubarb
+      'tpope/vim-rhubarb', -- github
+      -- https://github.com/borissov/fugitive-gitea
+      'borissov/fugitive-gitea', -- gitea
+      -- https://github.com/shumphrey/fugitive-gitlab.vim
+      'shumphrey/fugitive-gitlab.vim', -- gitlab
+      -- https://github.com/APZelos/blamer.nvim
+      'black-desk/blamer.nvim', -- blame virtual text like gitlens of VSCode
+    },
+    {
+      -- https://github.com/lewis6991/gitsigns.nvim
+      'lewis6991/gitsigns.nvim', -- sign column diff mark
+      requires = {
+        'nvim-lua/plenary.nvim',
+      },
+    },
   },
   config = config,
 }
