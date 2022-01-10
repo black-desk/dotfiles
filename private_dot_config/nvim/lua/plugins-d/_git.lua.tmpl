@@ -21,10 +21,15 @@ local function config()
   map('n', '<leader>g<space>', '<cmd>GitGutterStageHunk<cr>', opts)
   map('n', '<leader>gu', '<cmd>GitGutterUndoHunk<cr>', opts)
 
-  vim.g.blamer_enabled = 1
-  vim.g.blamer_delay = 500
-
-  require('gitsigns').setup()
+  require('gitsigns').setup({
+    current_line_blame = true,
+    current_line_blame_opts = {
+      virt_text = true,
+      virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+      delay = 100,
+      ignore_whitespace = false,
+    },
+  })
 end
 
 return {
@@ -38,8 +43,6 @@ return {
       'borissov/fugitive-gitea', -- gitea
       -- https://github.com/shumphrey/fugitive-gitlab.vim
       'shumphrey/fugitive-gitlab.vim', -- gitlab
-      -- https://github.com/APZelos/blamer.nvim
-      'black-desk/blamer.nvim', -- blame virtual text like gitlens of VSCode
     },
     {
       -- https://github.com/lewis6991/gitsigns.nvim
