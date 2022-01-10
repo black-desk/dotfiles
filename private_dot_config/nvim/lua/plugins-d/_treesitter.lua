@@ -34,4 +34,7 @@ return {
   'nvim-treesitter/nvim-treesitter',
   run = ':TSUpdate',
   config = config,
+  requires = {
+    'nvim-treesitter/playground',
+  }
 }
