@@ -16,11 +16,6 @@ local function config()
     'https://whgitlab.uniontech.com',
   }
 
-  vim.g.gitgutter_map_keys = 0
-  map('n', '<leader>gs', '<cmd>GitGutterPreviewHunk<cr>', opts)
-  map('n', '<leader>g<space>', '<cmd>GitGutterStageHunk<cr>', opts)
-  map('n', '<leader>gu', '<cmd>GitGutterUndoHunk<cr>', opts)
-
   require('gitsigns').setup({
     current_line_blame = true,
     current_line_blame_opts = {
