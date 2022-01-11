@@ -3,13 +3,6 @@ local config = function()
   od.setup({
     highlights = {
       TSConstructor = {fg = '$yellow', fmt = 'NONE'},
-      TSText = {fg = '$fg'},
-      TSStrong = {fg = '$fg', fmt = 'bold'},
-      TSEmphasis = {fg = '$fg', fmt = 'italic'},
-      TSUnderline = {fg = '$fg', fmt = 'underline'},
-      TSStrike = {fg = '$fg', fmt = 'strikethrough'},
-      TSTitle = {fg = '$orange', fmt = 'bold'},
-      TSURI = {fg = '$cyan', fmt = 'underline'},
     },
   })
   od.load()
