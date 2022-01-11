@@ -141,7 +141,7 @@ local function config()
       },
       number = true,
       relativenumber = true,
-      signcolumn = "yes"
+      signcolumn = "no"
     },
     trash = {
       cmd = "trash",
