@@ -2,6 +2,7 @@ local config = function()
   local od = require('onedark')
   od.setup({
     highlights = {
+      TSConstructor = {fg = '$yellow', fmt = 'NONE'},
       TSText = {fg = '$fg'},
       TSStrong = {fg = '$fg', fmt = 'bold'},
       TSEmphasis = {fg = '$fg', fmt = 'italic'},
