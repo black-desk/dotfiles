@@ -31,9 +31,9 @@ return function(client, bufnr)
   -- FIXME use something like a hook function array
   buf_set_keymap('n', '<space>a', '<CMD>CodeActionMenu<CR>', opts)
 
-  require('illuminate').on_attach(client)
-  vim.api.nvim_command [[ hi def LspReferenceText gui=bold cterm=bold ]]
-  vim.api.nvim_command [[ hi def LspReferenceRead gui=underline,bold cterm=underline,bold ]]
-  vim.api.nvim_command [[ hi def LspReferenceWrite gui=underline,bold,italic cterm=underline,bold,italic ]]
+  -- require('illuminate').on_attach(client)
+  -- vim.api.nvim_command [[ hi def LspReferenceText gui=bold cterm=bold ]]
+  -- vim.api.nvim_command [[ hi def LspReferenceRead gui=underline,bold cterm=underline,bold ]]
+  -- vim.api.nvim_command [[ hi def LspReferenceWrite gui=underline,bold,italic cterm=underline,bold,italic ]]
 end
 

@@ -27,6 +27,16 @@ local function config()
       -- Instead of true it can also be a list of languages
       additional_vim_regex_highlighting = false,
     },
+    refactor = {
+      highlight_definitions = { enable = true },
+      navigation = {
+        enable = true,
+        keymaps = {
+          goto_next_usage = "<leader>j",
+          goto_previous_usage = "<leader>k",
+        },
+      },
+    },
   }
 end
 
@@ -36,5 +46,6 @@ return {
   config = config,
   requires = {
     'nvim-treesitter/playground',
+    'nvim-treesitter/nvim-treesitter-refactor',
   }
 }
