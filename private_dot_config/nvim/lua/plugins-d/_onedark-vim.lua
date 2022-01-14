@@ -4,6 +4,7 @@ local config = function()
     highlights = {
       TSConstructor = {fg = '$yellow', fmt = 'NONE'},
     },
+    transparent = true,
   })
   od.load()
 end
