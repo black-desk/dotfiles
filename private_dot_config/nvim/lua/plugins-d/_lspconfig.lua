@@ -14,15 +14,15 @@ local function config()
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
   for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
+    local default = {
       flags = {
         debounce_text_changes = 150,
       },
       on_attach = Global_On_Attach,
-      settings = require('lsp-d/'..lsp..'_settings'),
-      init_options = require('lsp-d/'..lsp..'_init_options'),
       capabilities = capabilities
     }
+    local cfg = vim.tbl_deep_extend('force', default, require('lsp-d/'..lsp..'_'))
+    nvim_lsp[lsp].setup(cfg)
   end
 end
 

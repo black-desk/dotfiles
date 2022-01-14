@@ -4,6 +4,6 @@ return {
   'gopls',
   'jsonls',
   'pyright',
-  'sumneko_lua',
+  -- 'sumneko_lua',
   'tsserver',
 }
