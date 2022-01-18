@@ -19,9 +19,9 @@ end
 
 return {
   'folke/lua-dev.nvim',
-  requires = {
-    -- https://github.com/neovim/nvim-lspconfig
-    'neovim/nvim-lspconfig',
-  },
   config = config,
+  after = {
+    'nvim-lspconfig',
+    'telescope.nvim',
+  }
 }
