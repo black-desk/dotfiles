@@ -4,9 +4,6 @@
 -- git setup
 
 local function config()
-  local map = vim.api.nvim_set_keymap
-  local opts = { noremap = true, silent = true }
-
   vim.g.fugitive_gitea_domains = {
     'https://{{ .gitea }}',
     'https://gitea.io',
@@ -26,12 +23,48 @@ local function config()
     },
     keymaps = {},
   })
-  map('n', '<space>gw', '<cmd>Gitsigns toggle_word_diff<cr>', opts)
-  map('n', '<space>gj', '<cmd>Gitsigns next_hunk<cr>', opts)
-  map('n', '<space>gk', '<cmd>Gitsigns prev_hunk<cr>', opts)
-  map('n', '<space>gu', '<cmd>Gitsigns undo_stage_hunk<cr>', opts)
-  map('n', '<space>gs', '<cmd>Gitsigns stage_hunk<cr>', opts)
 
+  local wk = require("which-key")
+  local key_opts = {
+    -- mode   Help        Affected                              Equivalent
+    -- ''     mapmode-nvo Normal/Visual/Select/Operator-pending :map
+    -- 'n'    mapmode-n	  Normal                                :nmap
+    -- 'v'    mapmode-v   Visual/Select                         :vmap
+    -- 's'    mapmode-s	  Select                                :smap
+    -- 'x'    mapmode-x	  Visual                                :xmap
+    -- 'o'    mapmode-o   Operator-pending                      :omap
+    -- '!'    mapmode-ic  Insert/Command-line                   :map!
+    -- 'i'    mapmode-i   Insert                                :imap
+    -- 'l'    mapmode-l   Insert/Command-line/Lang-Arg          :lmap
+    -- 'c'    mapmode-c   Command-line                          :cmap
+    -- 't'    mapmode-t   Terminal                              :tmap
+    mode    = "n",
+    prefix  = "<space>g",
+    buffer  = nil, -- Global mappings.
+    silent  = true,
+    noremap = true,
+  }
+
+  wk.register(
+    {
+      ["w"] = {
+        "<cmd>Gitsigns toggle_word_diff<cr>",
+        "GITS:: word diff mode" },
+      ["j"] = {
+        "<cmd>Gitsigns next_hunk<cr>",
+        "GITS:: next hunk" },
+      ["k"] = {
+        "<cmd>Gitsigns prev_hunk<cr>",
+        "GITS:: previous hunk" },
+      ["u"] = {
+        "<cmd>Gitsigns undo_stage_hunk<cr>",
+        "GITS:: undo stage hunk" },
+      ["s"] = {
+        "<cmd>Gitsigns stage_hunk<cr>",
+        "GITS:: stage hunk" },
+    },
+    key_opts
+  )
 end
 
 return {

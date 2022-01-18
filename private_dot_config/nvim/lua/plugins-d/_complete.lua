@@ -49,6 +49,9 @@ local config = function()
 
   -- add a lisp filetype (wrap my-function), FYI: Hardcoded = { "clojure", "clojurescript", "fennel", "janet" }
   cmp_autopairs.lisp[#cmp_autopairs.lisp+1] = "racket"
+
+  Capabilities = require('cmp_nvim_lsp').update_capabilities(Capabilities)
+
 end
 
 return {

@@ -23,54 +23,58 @@ local function config()
   })
 
   local function hook()
+    local wk = require("which-key")
+    local key_opts = {
+      -- mode   Help        Affected                              Equivalent
+      -- ''     mapmode-nvo Normal/Visual/Select/Operator-pending :map
+      -- 'n'    mapmode-n	  Normal                                :nmap
+      -- 'v'    mapmode-v   Visual/Select                         :vmap
+      -- 's'    mapmode-s	  Select                                :smap
+      -- 'x'    mapmode-x	  Visual                                :xmap
+      -- 'o'    mapmode-o   Operator-pending                      :omap
+      -- '!'    mapmode-ic  Insert/Command-line                   :map!
+      -- 'i'    mapmode-i   Insert                                :imap
+      -- 'l'    mapmode-l   Insert/Command-line/Lang-Arg          :lmap
+      -- 'c'    mapmode-c   Command-line                          :cmap
+      -- 't'    mapmode-t   Terminal                              :tmap
+      mode    = "n",
+      buffer  = 0, -- local mappings
+      silent  = true, -- use `silent ` when creating keymaps
+      noremap = true, -- use `noremap` when creating keymaps
+    }
+
+    wk.register({
+        ["gd"] = {
+          "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
+          "TELE::LSP:: definition" },
+        ["gr"] = {
+          "<cmd>lua require('telescope.builtin').lsp_references()<cr>",
+          "TELE::LSP:: reference" },
+        ["gi"] = {
+          "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
+          "TELE::LSP:: implementation" },
+        ["gy"] = {
+          "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
+          "TELE::LSP:: type definition" },
+        ["<space>e"] = {
+          "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
+          "TELE::LSP:: diagnostics" },
+        ["<space>a"] = {
+          "<cmd>lua require('telescope.builtin').lsp_code_actions()<cr>",
+          "TELE::LSP:: code action" },
+        ["<space>S"] = {
+          "<cmd>lua require('telescope.builtin')."..
+          "lsp_dynamic_workspace_symbols()<cr>",
+          "TELE::LSP:: workspace symbol" },
+      },
+      key_opts
+    )
+    end
+
+  table.insert(On_Attach_hooks, hook)
+
   local wk = require("which-key")
   local key_opts = {
-    -- mode   Help        Affected                              Equivalent
-    -- ''     mapmode-nvo Normal/Visual/Select/Operator-pending :map
-    -- 'n'    mapmode-n	  Normal                                :nmap
-    -- 'v'    mapmode-v   Visual/Select                         :vmap
-    -- 's'    mapmode-s	  Select                                :smap
-    -- 'x'    mapmode-x	  Visual                                :xmap
-    -- 'o'    mapmode-o   Operator-pending                      :omap
-    -- '!'    mapmode-ic  Insert/Command-line                   :map!
-    -- 'i'    mapmode-i   Insert                                :imap
-    -- 'l'    mapmode-l   Insert/Command-line/Lang-Arg          :lmap
-    -- 'c'    mapmode-c   Command-line                          :cmap
-    -- 't'    mapmode-t   Terminal                              :tmap
-    mode    = "n",
-    buffer  = 0, -- local mappings
-    silent  = true, -- use `silent ` when creating keymaps
-    noremap = true, -- use `noremap` when creating keymaps
-  }
-
-  wk.register({
-      ["gd"] = {
-        "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
-        "TELE::LSP:: definition" },
-      ["gr"] = {
-        "<cmd>lua require('telescope.builtin').lsp_references()<cr>",
-        "TELE::LSP:: reference" },
-      ["gi"] = {
-        "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
-        "TELE::LSP:: implementation" },
-      ["gy"] = {
-        "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
-        "TELE::LSP:: type definition" },
-      ["<space>e"] = {
-        "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
-        "TELE::LSP:: diagnostics" },
-      ["<space>a"] = {
-        "<cmd>lua require('telescope.builtin').lsp_code_actions()<cr>",
-        "TELE::LSP:: code action" },
-      ["<space>S"] = {
-        "<cmd>lua require('telescope.builtin')."..
-        "lsp_dynamic_workspace_symbols()<cr>",
-        "TELE::LSP:: workspace symbol" },
-    },
-    key_opts
-  )
-
-  key_opts = {
     mode    = "n",
     buffer  = nil, -- Global
     silent  = true, -- use `silent ` when creating keymaps
@@ -94,16 +98,15 @@ local function config()
     },
     key_opts
   )
-  end
-
-  table.insert(Global_On_Attach_hooks, hook)
 end
 
 return {
   'nvim-telescope/telescope.nvim',
   requires = {
     'nvim-lua/plenary.nvim',
-    'neovim/nvim-lspconfig',
+  },
+  after = {
+    'nvim-lspconfig',
   },
   config = config,
 }

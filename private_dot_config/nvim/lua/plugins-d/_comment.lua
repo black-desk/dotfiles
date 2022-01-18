@@ -9,8 +9,13 @@ local function config()
 
   local wk = require("which-key")
 
-  wk.register({ ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle single line comment", mode = 'n'}, })
-  wk.register({ ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle multiple lines comment", mode = 'v'}, })
+  wk.register({
+    ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle comment", mode = 'n'}
+  })
+
+  wk.register({
+    ["<C-_>"] = { "<Plug>NERDCommenterToggle", "Toggle comment", mode = 'v'}
+  })
 end
 
 return {

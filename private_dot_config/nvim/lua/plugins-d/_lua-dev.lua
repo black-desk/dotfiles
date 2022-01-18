@@ -9,7 +9,7 @@ local function config()
   local util = require 'lspconfig.util'
   local luadev = require("lua-dev").setup({
     lspconfig = {
-      on_attach = Global_On_Attach,
+      on_attach = On_Attach,
       root_dir = util.root_pattern('.git','lua')
     },
   })
