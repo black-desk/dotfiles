@@ -7,10 +7,10 @@
 local function config()
   local map = vim.api.nvim_set_keymap
   local opts = { silent = true } -- FIXME why noremap make this broken?
-  map('', '<SPACE><SPACE>', '<plug>(wildfire-fuel)', opts)
+  map('', '<SPACE><SPACE>', '<Plug>(expand_region_expand)', opts)
 end
 
 return {
-  'gcmt/wildfire.vim',
+  'terryma/vim-expand-region',
   config = config,
 }
