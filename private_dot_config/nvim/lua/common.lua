@@ -21,5 +21,4 @@ vim.cmd([[
   set signcolumn=yes
   au Filetype gitcommit setlocal colorcolumn=72
   au Filetype go setlocal colorcolumn=""
-  au Filetype markdown setlocal colorcolumn=""
 ]])
