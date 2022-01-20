@@ -66,6 +66,10 @@ local function config()
           "<cmd>lua require('telescope.builtin')."..
           "lsp_dynamic_workspace_symbols()<cr>",
           "TELE::LSP:: workspace symbol" },
+        ["<space>H"] = {
+          "<cmd>lua require('telescope.builtin')."..
+          "jumplist()<cr>",
+          "TELE:: jump list" },
       },
       key_opts
     )
