@@ -59,4 +59,6 @@ return {
     }),
   },
   window_background_opacity = 0.97,
+  initial_rows = 30,
+  initial_cols = 100,
 }
