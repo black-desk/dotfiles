@@ -12,7 +12,10 @@ local function config()
     sync_install = false,
 
     -- List of parsers to ignore installing
-    ignore_install = { },
+    ignore_install = {
+      'phpdoc',
+      'ocamllex',
+    },
 
     highlight = {
       -- `false` will disable the whole extension
