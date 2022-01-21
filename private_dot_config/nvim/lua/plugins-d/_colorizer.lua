@@ -5,7 +5,11 @@
 
 local function config()
   vim.o.termguicolors = true
-  require'colorizer'.setup()
+  require'colorizer'.setup({
+    ['*'] = {
+      names = false,
+    }
+  })
 end
 
 return {
