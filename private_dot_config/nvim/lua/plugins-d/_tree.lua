@@ -121,7 +121,7 @@ local function config()
       args = {}
     },
     filters = {
-      dotfiles = false,
+      dotfiles = true,
       custom = {}
     },
     git = {
