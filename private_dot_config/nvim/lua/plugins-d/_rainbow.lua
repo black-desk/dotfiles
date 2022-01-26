@@ -39,9 +39,10 @@ local function config()
       '#61afef',
       '#e5c07b',
       '#c678dd',
-      '#abb2bf',
       '#56b6c2',
       '#be5046',
+      '#d19a66',
+      '#98c379',
     },
     separately = {
       markdown = 0,
