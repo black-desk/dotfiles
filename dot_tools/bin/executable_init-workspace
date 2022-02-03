@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+function ghcli_clone() {
+    dirname=${1##*/}
+    gh repo clone $1
+    result=$?
+
+    if [[ $result != 0 ]] ; then
+        rm -rf $dirname
+        /bin/false
+    fi
+}
+
+export -f ghcli_clone
+
+set -e
+
+mkdir -p ~/workspace/repo/source
+mkdir -p ~/workspace/repo/fork
+mkdir -p ~/workspace/repo/refer
+
+pushd ~/workspace/repo/fork
+set +e
+gh repo list --fork --no-archived --json name | jq -r  ".[].name" | xargs -L 1 retry -t 5 -- ghcli_clone
+set -e
+popd
+
+pushd ~/workspace/repo/source
+set +e
+gh repo list --source --no-archived --json name | jq -r  ".[].name" | xargs -L 1 retry -t 5 -- ghcli_clone
+set -e
+popd
+
+pushd ~/workspace/repo/refer
+cat $my_tools_dir/static/refer-list | while read line
+do
+    if [[ $line == http://* ]] || [[ $line == https://* ]] || [[ $line == git://* ]] ; then
+        set +e
+        retry -t 5 -- git clone $line
+        set -e
+    else
+        set +e
+        retry -t 5 -- ghcli_clone $line
+        set -e
+    fi
+done
+popd
