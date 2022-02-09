@@ -15,6 +15,23 @@ function ghcli_clone() {
     fi
 }
 
+function clone_list() {
+    pushd ~/workspace/repo/$1
+    cat $my_tools_dir/static/$1-list | while read line
+    do
+        if [[ $line == http://* ]] || [[ $line == https://* ]] || [[ $line == git://* ]] || [[ $line == ssh://* ]] ; then
+            set +e
+            retry -t 5 -- git clone $line
+            set -e
+        else
+            set +e
+            retry -t 5 -- ghcli_clone $line
+            set -e
+        fi
+    done
+    popd
+}
+
 export -f ghcli_clone
 
 set -e
@@ -22,6 +39,7 @@ set -e
 mkdir -p ~/workspace/repo/source
 mkdir -p ~/workspace/repo/fork
 mkdir -p ~/workspace/repo/refer
+mkdir -p ~/workspace/repo/aur
 
 pushd ~/workspace/repo/fork
 set +e
@@ -35,17 +53,5 @@ gh repo list --source --no-archived --json name | jq -r  ".[].name" | xargs -L 1
 set -e
 popd
 
-pushd ~/workspace/repo/refer
-cat $my_tools_dir/static/refer-list | while read line
-do
-    if [[ $line == http://* ]] || [[ $line == https://* ]] || [[ $line == git://* ]] ; then
-        set +e
-        retry -t 5 -- git clone $line
-        set -e
-    else
-        set +e
-        retry -t 5 -- ghcli_clone $line
-        set -e
-    fi
-done
-popd
+clone_list refer
+clone_list aur
