@@ -70,6 +70,10 @@ local function config()
           "<cmd>lua require('telescope.builtin')."..
           "jumplist()<cr>",
           "TELE:: jump list" },
+        ["<space>M"] = {
+          "<cmd>lua require('telescope.builtin')."..
+          "marks()<cr>",
+          "TELE:: mark list" },
       },
       key_opts
     )
