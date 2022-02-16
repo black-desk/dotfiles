@@ -8,6 +8,13 @@ local function config()
     -- your configuration comes here
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
+    highlight = {
+      keyword  = "bg",
+      pattern = [[.*<(KEYWORDS)(\(.*\))?:]]
+    },
+    search = {
+      pattern = [[\b(KEYWORDS)(\(.*\))?:]]
+    }
   }
 end
 
