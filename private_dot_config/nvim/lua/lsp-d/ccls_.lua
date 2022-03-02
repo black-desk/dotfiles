@@ -1,7 +1,8 @@
+local home = os.getenv('HOME')
 return {
   init_options = {
     cache = {
-      directory = "{{ .chezmoi.homeDir }}/.ccls-cache",
+      directory = home .. "/.ccls-cache",
       retainInMemory = 0,
     },
     -- highlight = {

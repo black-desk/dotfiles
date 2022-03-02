@@ -11,9 +11,10 @@ end
 return require('packer').startup(
   function()
     local use = require('packer').use
-    local plugins = io.popen('find "'..'{{ .chezmoi.homeDir }}/.config/nvim/lua/plugins-d/'..'" -type f')
+    local home = os.getenv('HOME')
+    local plugins = io.popen('find "'.. home .. '/.config/nvim/lua/plugins-d/'..'" -type f')
     for plugin in plugins:lines() do
-      local part1, part2 = string.match(plugin,"{{ .chezmoi.homeDir }}/[.]config/nvim/lua/(.*)_(.*)[.]lua")
+      local part1, part2 = string.match(plugin, home .. "/[.]config/nvim/lua/(.*)_(.*)[.]lua")
       if part1 ~= nil and part2 ~= nil then
         plugin = part1 .. '_' .. part2
       else
