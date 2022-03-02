@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]] ; then
+  set -x
+fi
+
+/bin/mkdir -p "$(dirname "$1")/" && /usr/bin/touch "$1"
