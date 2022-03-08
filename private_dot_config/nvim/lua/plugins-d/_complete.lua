@@ -25,6 +25,15 @@ local config = function()
       { name = 'ultisnips' },
       { name = 'path' },
       { name = 'buffer' },
+      {
+        name = 'look',
+        keyword_length = 2,
+        option = {
+          convert_case = true,
+          loud = true
+          --dict = '/usr/share/dict/words'
+        }
+      }
     })
   })
 
@@ -67,6 +76,8 @@ return {
     'hrsh7th/cmp-cmdline',
     -- https://github.com/quangnguyen30192/cmp-nvim-ultisnips
     'quangnguyen30192/cmp-nvim-ultisnips',
+    -- https://github.com/octaltree/cmp-look
+    'octaltree/cmp-look',
   },
   config = config,
 }
