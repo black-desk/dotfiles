@@ -62,10 +62,9 @@ local function config()
         ["<space>a"] = {
           "<cmd>lua require('telescope.builtin').lsp_code_actions()<cr>",
           "TELE::LSP:: code action" },
-        ["<space>S"] = {
-          "<cmd>lua require('telescope.builtin')."..
-          "lsp_dynamic_workspace_symbols()<cr>",
-          "TELE::LSP:: workspace symbol" },
+        ["<space>s"] = {
+          "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+          "TELE::LSP:: document symbol" },
         ["<space>H"] = {
           "<cmd>lua require('telescope.builtin')."..
           "jumplist()<cr>",
