@@ -58,6 +58,7 @@ alias xopen="xdg-open"
 alias ra="ranger"
 alias cfg="chezmoi"
 alias lazygit="LANG=en_US lazygit"
+alias clang-format-all="find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\|h\)' -exec clang-format -style=file -i {} \;"
 
 alias autoremove="sudo pacman -Rcns \$(pacman -Qdtq)"
 
