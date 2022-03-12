@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ $SCRIPT_DEBUG ]] ; then
-  set -x
-fi
-
-google-chrome-stable --force-device-scale-factor=1.25 $@

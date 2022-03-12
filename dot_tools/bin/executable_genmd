@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ $SCRIPT_DEBUG ]] ; then
-  set -x
-fi
-
-# thanks https://unix.stackexchange.com/questions/32908/how-to-insert-the-content-of-a-file-into-another-file-before-a-pattern-marker#answer-32912
-sed "/<\!----->/e github-markdown $1" $my_tools_dir/static/template.html > $2
