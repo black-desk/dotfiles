@@ -44,7 +44,6 @@ bindkey -s '^k' "^[[A"
 bindkey -s '^l' "^[[C"
 bindkey -s '^o' "open-url^M"
 
-alias mcr="( alacritty --command /usr/local/bin/mosh --ssh=\"ssh -p 60010\" black_desk@he.0g.pub &>/dev/null &)"
 alias gaa="git add --all"
 alias gc="git commit"
 alias gaac="git add --all && git commit"
