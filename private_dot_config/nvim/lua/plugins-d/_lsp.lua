@@ -43,6 +43,9 @@ function On_Attach (client, bufnr)
       ["<space>f"] = {
         "<cmd>lua vim.lsp.buf.formatting()<CR>",
         "LSP:: format" },
+      ["<space>E"] = {
+        "<cmd>lua vim.diagnostic.open_float()<CR>",
+        "LSP:: float diagnostic" },
     },
     key_opts
   )
