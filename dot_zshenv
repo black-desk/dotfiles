@@ -20,6 +20,8 @@ export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=5000
 export HISTSIZE=5000
 
+export CMAKE_EXPORT_COMPILE_COMMANDS=1
+
 if [[ `type Xorg` ]] ; then
   export _GUI_="True"
 fi
