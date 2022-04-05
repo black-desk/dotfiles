@@ -7,6 +7,7 @@ local function config()
 end
 
 return {
-  'lilydjwg/fcitx.vim',
+  "black-desk/fcitx5-ui.nvim",
   config = config,
+  rocks = {'lgi', 'dbus_proxy'},
 }

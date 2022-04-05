@@ -15,8 +15,11 @@ local function config()
   table.insert(cfg.sections.lualine_x,1, {
     'lsp_progress',
     spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
-
   })
+  table.insert(
+    cfg.sections.lualine_y,
+    'require("fcitx5-ui").getCurrentIM()'
+  )
   require('lualine').setup(cfg)
 
 
