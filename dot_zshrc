@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+  tmux attach-session -t ssh || tmux new-session -s ssh
+  exit
+fi
+
 [[ $(tty) == \/dev\/tty[0-6]* ]] && fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt && echo && exit
 
 # fix a coc-translator issue in 1.6.2 when cache file not found
