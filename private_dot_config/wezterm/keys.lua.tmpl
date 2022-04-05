@@ -78,6 +78,24 @@ local keys = {
       ActivateTabRelative=-1,
     }
   },
+  {
+    key="w", mods="CTRL|SHIFT",
+    action=wezterm.action{
+      CloseCurrentPane={confirm=true}
+    }
+  },
+  {
+    key="v", mods="SHIFT|CTRL",
+    action="Paste"
+  },
+  {
+    key="c", mods="SHIFT|CTRL",
+    action="Copy"
+  },
+  {
+    key="Enter", mods="ALT",
+    action="ToggleFullScreen"
+  },
 }
 
 for i = 1, 9 do

@@ -61,4 +61,5 @@ return {
   window_background_opacity = 0.93,
   initial_rows = 30,
   initial_cols = 100,
+  disable_default_key_bindings = true,
 }
