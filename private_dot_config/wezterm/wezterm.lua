@@ -8,10 +8,10 @@ local function recompute_padding(window)
   local overrides = window:get_config_overrides() or {}
 
   if not window_dims.is_full_screen then
-    if not overrides.window_padding then
-      return;
-    end
-    overrides.window_padding = nil;
+    overrides.window_padding = {
+      top = '2.5%',
+      bottom = 0,
+    };
   else
     local new_padding = {
       left = '0.7%',
@@ -58,6 +58,7 @@ return {
       "Source Han Sans CN"
     }),
   },
+  window_decorations = "RESIZE",
   window_background_opacity = 0.93,
   initial_rows = 30,
   initial_cols = 100,
