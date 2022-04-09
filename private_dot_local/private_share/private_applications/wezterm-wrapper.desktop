@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=WezTermWrapper
+Comment=Wez's Terminal Emulator's Wrapper
+Keywords=shell;prompt;command;commandline;cmd;
+Icon=org.wezfurlong.wezterm-wrapper
+TryExec=wezterm-wrapper
+Exec=wezterm-wrapper
+Type=Application
+Categories=System;TerminalEmulator;Utility;
+Terminal=false
