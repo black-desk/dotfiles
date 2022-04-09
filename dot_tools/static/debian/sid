@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ $SCRIPT_DEBUG ]] ; then
-  set -x
-fi
-
-export _MIRROR="https://deb.debian.org/debian"

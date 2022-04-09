@@ -47,7 +47,6 @@ bindkey -s '^h' "^[[D"
 bindkey -s '^j' "^[[B"
 bindkey -s '^k' "^[[A"
 bindkey -s '^l' "^[[C"
-bindkey -s '^o' "open-url^M"
 
 alias gaa="git add --all"
 alias gc="git commit"

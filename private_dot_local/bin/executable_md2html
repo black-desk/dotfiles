@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# convert md to html using github's css
+
+pandoc $1 --template=$HOME/.local/share/md2html/template.html -o ${1%.md}.html

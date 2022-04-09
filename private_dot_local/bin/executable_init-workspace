@@ -17,7 +17,7 @@ function ghcli_clone() {
 
 function clone_list() {
     pushd ~/workspace/repo/$1
-    cat $my_tools_dir/static/$1-list | while read line
+    cat $HOME/.local/share/workspace-repo-lists/$1-list | while read line
     do
         if [[ $line == http://* ]] || [[ $line == https://* ]] || [[ $line == git://* ]] || [[ $line == ssh://* ]] ; then
             set +e
