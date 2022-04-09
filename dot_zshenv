@@ -1,7 +1,4 @@
 #!/usr/bin/env zsh
-export my_dotfile_dir="$HOME/.dotfile"
-export my_tools_dir="$HOME/.tools"
-
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
@@ -12,9 +9,6 @@ export PAGER="less -r";
 export PATH="$HOME/Go/bin:$PATH"
 
 export PATH=$PATH:~/.local/bin
-
-export PATH="$my_tools_dir/bin:$PATH"
-export PATH="$my_tools_dir/bin/uniontech:$PATH"
 
 export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=5000

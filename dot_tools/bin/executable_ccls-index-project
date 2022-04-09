@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ -f `pwd`/build/compile_commands.json ]]; then
-    init="{\"compilationDatabaseDirectory\":\"build\",\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}"
-else
-    init="{\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}"
-fi
-
-ccls --index=. --init=$init
