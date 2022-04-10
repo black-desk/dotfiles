@@ -7,7 +7,7 @@ vim.cmd([[
   set updatetime=100
   set number
   set relativenumber
-  set mouse=a
+  set mouse=nv
   set expandtab tabstop=2 shiftwidth=2 softtabstop=2
   au Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
   au Filetype sh setlocal tabstop=4 shiftwidth=4 softtabstop=4
