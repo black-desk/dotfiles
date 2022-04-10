@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ -f `pwd`/build/compile_commands.json ]]; then
-    ln -s build/compile_commands.json
-fi
-
-ccls --index=. --init={\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}
