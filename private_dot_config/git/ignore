@@ -1,5 +1,6 @@
 /.cache
+/.gdb_history
+/.vimrc
 /build
 /compile_commands.json
-/.vimrc
-/.gdb_history
+/m4

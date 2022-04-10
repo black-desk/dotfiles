@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]]; then
+  set -x
+fi
+
+function setup() {
+    if [[ -f ../meson.build ]]; then
+        meson setup . ..
+        meson compile
+    elif [[ -f ../CMakeLists.txt ]]; then
+        cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G Ninja
+        ninja
+    else
+        if [[ -f ../configure.ac ]]; then
+            autoreconf -fis ..
+        fi
+
+        if [[ -f ../configure ]]; then
+            ../configure
+        fi
+
+        cores=`nproc`
+        cores=`expr $cores / 2`
+
+        if [[ -f GNUmakefile ]] || [[ -f makefile ]] || [[ -f Makefile ]]; then
+            bear -- make -j $cores
+        else
+            popd
+            if [[ -f GNUmakefile ]] || [[ -f makefile ]] || [[ -f Makefile ]]; then
+                bear -- make -j $cores
+            else
+                echo setup project failed
+            fi
+        fi
+    fi
+}
+
+PROJECT_ROOT=`realpath .`
+
+if [[ ! -z $1 ]] ; then
+    PROJECT_ROOT=`realpath $1`
+fi
+
+BUILD_ROOT=build
+
+if [[ ! -z $2 ]] ; then
+    BUILD_ROOT=$2
+fi
+
+mkdir -p $BUILD_ROOT
+
+BUILD_ROOT=`realpath $BUILD_ROOT`
+
+echo project dir : $PROJECT_ROOT
+echo build dir   : $BUILD_ROOT
+
+read -p "sure? " -n 1 -r
+echo
+
+pushd $PROJECT_ROOT
+
+mkdir -p m4
+
+if [[ -d ./.git ]]; then
+    retry -t 5 -- git submodule update --init --recursive
+fi
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    pushd $BUILD_ROOT
+    setup
+    popd
+    if [[ ! -f ./compile_commands.json ]] && [[ -f $BUILD_ROOT/compile_commands.json ]]; then
+        ln -s $BUILD_ROOT/compile_commands.json
+    fi
+    ccls --index=. --init={\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}
+fi
+
+popd
