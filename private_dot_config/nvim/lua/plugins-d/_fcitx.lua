@@ -1,4 +1,4 @@
--- https://github.com/lilydjwg/fcitx.vim
+-- https://github.com/black-desk/fcitx5-ui.nvim
 
 -- Description:
 -- Keep and restore fcitx state
@@ -31,4 +31,5 @@ return {
   "black-desk/fcitx5-ui.nvim",
   config = config,
   rocks = {'lgi', 'dbus_proxy'},
+  branch = 'dev',
 }
