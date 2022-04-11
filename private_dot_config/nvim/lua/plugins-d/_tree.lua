@@ -4,7 +4,6 @@
 -- file explorer
 
 local function config()
-  vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
   vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
   vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
   vim.g.nvim_tree_root_folder_modifier = ':~' -- This is the default. See :help filename-modifiers for more options
@@ -89,6 +88,11 @@ local function config()
     update_to_buf_dir   = {
       enable = true,
       auto_open = true,
+    },
+    renderer = {
+      indent_markers = {
+        enable = true,
+      },
     },
     diagnostics = {
       enable = true,
