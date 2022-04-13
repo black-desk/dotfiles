@@ -6,10 +6,10 @@ fi
 
 function setup() {
     if [[ -f ../meson.build ]]; then
-        meson setup . ..
+        CC=clang CXX=clang++ meson setup . ..
         meson compile
     elif [[ -f ../CMakeLists.txt ]]; then
-        cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G Ninja
+        cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G Ninja
         ninja
     else
         if [[ -f ../configure.ac ]]; then
