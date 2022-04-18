@@ -5,7 +5,7 @@
 
 local function config()
   vim.g.fugitive_gitea_domains = {
-    'https://{{ .gitea }}',
+    'https://gitea.black-desk.cn',
     'https://gitea.io',
   }
   vim.g.fugitive_gitlab_domains = {
