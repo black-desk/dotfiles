@@ -5,5 +5,18 @@
 ["workspace/aur/overgrive"]
     type = "git-repo"
     url = "ssh://aur@aur.archlinux.org/overgrive.git"
-    refreshPeriod = "8h"
-
+["workspace/source/fcitx5-ui.nvim"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/fcitx5-ui.nvim"
+["workspace/source/tree-sitter-commonmark"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/tree-sitter-commonmark"
+["workspace/source/mahjim"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/mahjim"
+["workspace/source/posts"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/posts"
+["workspace/refer/cmark"]
+    type = "git-repo"
+    url = "https://github.com/commonmark/cmark"
