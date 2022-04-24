@@ -1,0 +1,37 @@
+[".tmux.conf"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
+    refreshPeriod = "24h"
+["workspace/aur/overgrive"]
+    type = "git-repo"
+    url = "ssh://aur@aur.archlinux.org/overgrive.git"
+["workspace/source/fcitx5-ui.nvim"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/fcitx5-ui.nvim"
+["workspace/source/tree-sitter-commonmark"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/tree-sitter-commonmark"
+["workspace/source/mahjim"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/mahjim"
+["workspace/source/posts"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/posts"
+["workspace/refer/cmark"]
+    type = "git-repo"
+    url = "https://github.com/commonmark/cmark"
+["workspace/refer/cmark-gfm"]
+    type = "git-repo"
+    url = "https://github.com/github/cmark-gfm"
+["workspace/refer/pandoc"]
+    type = "git-repo"
+    url = "https://github.com/jgm/pandoc"
+["workspace/refer/pandoc-types"]
+    type = "git-repo"
+    url = "https://github.com/jgm/pandoc-types"
+["workspace/refer/neovim"]
+    type = "git-repo"
+    url = "https://github.com/neovim/neovim"
+["workspace/source/nvim-lspconfig"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/nvim-lspconfig"
