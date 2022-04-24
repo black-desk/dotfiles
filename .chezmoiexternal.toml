@@ -20,3 +20,6 @@
 ["workspace/refer/cmark"]
     type = "git-repo"
     url = "https://github.com/commonmark/cmark"
+["workspace/refer/cmark-gfm"]
+    type = "git-repo"
+    url = "https://github.com/github/cmark-gfm"
