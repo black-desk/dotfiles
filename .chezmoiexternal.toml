@@ -2,3 +2,8 @@
     type = "file"
     url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
     refreshPeriod = "24h"
+["workspace/aur/overgrive"]
+    type = "git-repo"
+    url = "ssh://aur@aur.archlinux.org/overgrive.git"
+    refreshPeriod = "8h"
+
