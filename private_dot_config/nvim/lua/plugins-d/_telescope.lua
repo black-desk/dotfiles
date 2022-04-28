@@ -19,6 +19,11 @@ local function config()
           ["<C-k>"] = actions.cycle_history_prev,
         }
       }
+    },
+    extensions = {
+      ["ui-select"] = {
+        require("telescope.themes").get_dropdown {}
+      }
     }
   })
 
@@ -44,39 +49,36 @@ local function config()
     }
 
     wk.register({
-        ["gd"] = {
-          "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
-          "TELE::LSP:: definition" },
-        ["gr"] = {
-          "<cmd>lua require('telescope.builtin').lsp_references()<cr>",
-          "TELE::LSP:: reference" },
-        ["gi"] = {
-          "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
-          "TELE::LSP:: implementation" },
-        ["gy"] = {
-          "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
-          "TELE::LSP:: type definition" },
-        ["<space>e"] = {
-          "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
-          "TELE::LSP:: diagnostics" },
-        ["<space>a"] = {
-          "<cmd>lua require('telescope.builtin').lsp_code_actions()<cr>",
-          "TELE::LSP:: code action" },
-        ["<space>s"] = {
-          "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
-          "TELE::LSP:: document symbol" },
-        ["<space>H"] = {
-          "<cmd>lua require('telescope.builtin')."..
-          "jumplist()<cr>",
-          "TELE:: jump list" },
-        ["<space>M"] = {
-          "<cmd>lua require('telescope.builtin')."..
-          "marks()<cr>",
-          "TELE:: mark list" },
-      },
+      ["gd"] = {
+        "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
+        "TELE::LSP:: definition" },
+      ["gr"] = {
+        "<cmd>lua require('telescope.builtin').lsp_references()<cr>",
+        "TELE::LSP:: reference" },
+      ["gi"] = {
+        "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
+        "TELE::LSP:: implementation" },
+      ["gy"] = {
+        "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
+        "TELE::LSP:: type definition" },
+      ["<space>e"] = {
+        "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
+        "TELE::LSP:: diagnostics" },
+      ["<space>s"] = {
+        "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+        "TELE::LSP:: document symbol" },
+      ["<space>H"] = {
+        "<cmd>lua require('telescope.builtin')." ..
+            "jumplist()<cr>",
+        "TELE:: jump list" },
+      ["<space>M"] = {
+        "<cmd>lua require('telescope.builtin')." ..
+            "marks()<cr>",
+        "TELE:: mark list" },
+    },
       key_opts
     )
-    end
+  end
 
   table.insert(On_Attach_hooks, hook)
 
@@ -105,12 +107,15 @@ local function config()
     },
     key_opts
   )
+
+  require("telescope").load_extension("ui-select")
 end
 
 return {
   'nvim-telescope/telescope.nvim',
   requires = {
     'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope-ui-select.nvim',
   },
   after = {
     'nvim-lspconfig',

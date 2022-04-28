@@ -46,6 +46,9 @@ function On_Attach (client, bufnr)
       ["<space>E"] = {
         "<cmd>lua vim.diagnostic.open_float()<CR>",
         "LSP:: float diagnostic" },
+      ["<space>a"] = {
+        "<cmd>lua vim.lsp.buf.code_action()<CR>",
+        "LSP:: code action" },
     },
     key_opts
   )
