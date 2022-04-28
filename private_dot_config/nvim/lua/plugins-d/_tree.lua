@@ -43,32 +43,32 @@ local function config()
       ignored = "~"
     },
   }
-  local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+  local tree_cb = require 'nvim-tree.config'.nvim_tree_callback
   local list = {
-    { key = "l",     cb = tree_cb("edit") },
-    { key = "L",     cb = tree_cb("cd") },
-    { key = "h",     cb = tree_cb("close_node") },
+    { key = "l", cb = tree_cb("edit") },
+    { key = "L", cb = tree_cb("cd") },
+    { key = "h", cb = tree_cb("close_node") },
     { key = "<Tab>", cb = tree_cb("preview") },
-    { key = "K",     cb = tree_cb("first_sibling") },
-    { key = "J",     cb = tree_cb("last_sibling") },
-    { key = "H",     cb = tree_cb("toggle_dotfiles") },
-    { key = "R",     cb = tree_cb("refresh") },
-    { key = "a",     cb = tree_cb("create") },
-    { key = "D",     cb = tree_cb("remove") },
-    { key = "d",     cb = tree_cb("trash") },
-    { key = "r",     cb = tree_cb("rename") },
-    { key = "x",     cb = tree_cb("cut") },
-    { key = "c",     cb = tree_cb("copy") },
-    { key = "p",     cb = tree_cb("paste") },
-    { key = "y",     cb = tree_cb("copy_name") },
-    { key = "Y",     cb = tree_cb("copy_path") },
+    { key = "K", cb = tree_cb("first_sibling") },
+    { key = "J", cb = tree_cb("last_sibling") },
+    { key = "H", cb = tree_cb("toggle_dotfiles") },
+    { key = "R", cb = tree_cb("refresh") },
+    { key = "a", cb = tree_cb("create") },
+    { key = "D", cb = tree_cb("remove") },
+    { key = "d", cb = tree_cb("trash") },
+    { key = "r", cb = tree_cb("rename") },
+    { key = "x", cb = tree_cb("cut") },
+    { key = "c", cb = tree_cb("copy") },
+    { key = "p", cb = tree_cb("paste") },
+    { key = "y", cb = tree_cb("copy_name") },
+    { key = "Y", cb = tree_cb("copy_path") },
     { key = "<C-y>", cb = tree_cb("copy_absolute_path") },
-    { key = "gk",    cb = tree_cb("prev_git_item") },
-    { key = "gj",    cb = tree_cb("next_git_item") },
-    { key = "..",     cb = tree_cb("dir_up") },
-    { key = "s",     cb = tree_cb("system_open") },
-    { key = "q",     cb = tree_cb("close") },
-    { key = "g?",    cb = tree_cb("toggle_help") },
+    { key = "gk", cb = tree_cb("prev_git_item") },
+    { key = "gj", cb = tree_cb("next_git_item") },
+    { key = "..", cb = tree_cb("dir_up") },
+    { key = "s", cb = tree_cb("system_open") },
+    { key = "q", cb = tree_cb("close") },
+    { key = "g?", cb = tree_cb("toggle_help") },
   }
 
   -- FIXME use lua here
@@ -81,20 +81,19 @@ local function config()
     hijack_netrw        = true,
     open_on_setup       = false,
     ignore_ft_on_setup  = {},
-    auto_close          = false,
     open_on_tab         = false,
     hijack_cursor       = true,
     update_cwd          = true,
-    update_to_buf_dir   = {
+    hijack_directories  = {
       enable = true,
       auto_open = true,
     },
-    renderer = {
+    renderer            = {
       indent_markers = {
         enable = true,
       },
     },
-    diagnostics = {
+    diagnostics         = {
       enable = true,
       icons = {
         hint = "",
@@ -108,25 +107,24 @@ local function config()
       update_cwd  = true,
       ignore_list = {}
     },
-    system_open = {
+    system_open         = {
       cmd  = nil,
       args = {}
     },
-    filters = {
+    filters             = {
       dotfiles = true,
       custom = {}
     },
-    git = {
+    git                 = {
       enable = true,
       ignore = false,
       timeout = 500,
     },
-    view = {
+    view                = {
       width = 30,
       height = 30,
       hide_root_folder = false,
       side = 'left',
-      auto_resize = false,
       mappings = {
         custom_only = true,
         list = list,
@@ -135,26 +133,27 @@ local function config()
       relativenumber = true,
       signcolumn = "no"
     },
-    trash = {
+    trash               = {
       cmd = "trash",
       require_confirm = true
     },
-    actions = {
+    actions             = {
       open_file = {
         window_picker = {
-          enable = 1,
+          enable = true,
           exclude = {
-            filetype ={
+            filetype = {
               'notify',
               'packer',
               'qf'
             },
-            buftype={
+            buftype = {
               'terminal',
             },
           },
         },
-        quit_on_open = 1,
+        quit_on_open = true,
+        resize_window = false,
       },
     },
   }
