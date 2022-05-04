@@ -8,7 +8,7 @@ Capabilities = vim.lsp.protocol.make_client_capabilities()
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 On_Attach_hooks = {}
-function On_Attach (client, bufnr)
+function On_Attach(client, bufnr)
   local wk = require("which-key")
   local key_opts = {
     -- mode   Help        Affected                              Equivalent
@@ -86,37 +86,61 @@ function On_Attach (client, bufnr)
 end
 
 local function config()
-  local nvim_lsp = require('lspconfig')
 
-  -- Use a loop to conveniently call 'setup' on multiple servers and
-  -- map buffer local keybindings when the language server attaches
-  local servers ={
+  local installer_servers = {
     'bashls',
     'ccls',
     'gopls',
     'jsonls',
     'pyright',
     'tsserver',
+    'hls',
   }
 
+  require("nvim-lsp-installer").setup({
+    ensure_installed = installer_servers,
+    automatic_installation = false, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+  })
+
+  local nvim_lsp = require('lspconfig')
+
+  local extra_servers = {
+    'mdlsp'
+  }
+
+  local servers = {}
+
+  for _, server in ipairs(installer_servers) do
+    table.insert(servers, server)
+  end
+
+  for _, server in ipairs(extra_servers) do
+    table.insert(servers, server)
+  end
+
+  -- Use a loop to conveniently call 'setup' on multiple servers and
+  -- map buffer local keybindings when the language server attaches
   for _, lsp in ipairs(servers) do
     local default = {
       flags = {
-        debounce_text_changes = 150,
+        debounce_text_changes = nil,
       },
       on_attach = On_Attach,
       capabilities = Capabilities
     }
 
-    local cfg = vim.tbl_deep_extend('force', default, require('lsp-d/'..lsp..'_'))
+    local cfg = vim.tbl_deep_extend('force', default, require('lsp-d/' .. lsp .. '_'))
     nvim_lsp[lsp].setup(cfg)
   end
 end
 
 return {
-  'neovim/nvim-lspconfig',
+  'black-desk/nvim-lspconfig',
   config = config,
   after = {
     'nvim-cmp',
+  },
+  requires = {
+    'williamboman/nvim-lsp-installer',
   }
 }

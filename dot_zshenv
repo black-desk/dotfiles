@@ -6,9 +6,11 @@ export VISUAL=nvim;
 export EDITOR=nvim;
 export PAGER="less -r";
 
-export PATH="$HOME/Go/bin:$PATH"
+export PATH=$HOME/Go/bin:$PATH
 
-export PATH=$PATH:~/.local/bin
+export PATH=$HOME/.ghcup/bin:$PATH
+
+export PATH=$HOME/.local/bin:$PATH
 
 export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=5000
