@@ -19,7 +19,6 @@ function setup() {
         if [[ -f ../configure ]]; then
             ../configure
         fi
-
         cores=`nproc`
         cores=`expr $cores / 2`
 
@@ -59,6 +58,15 @@ read -p "sure? " -n 1 -r
 echo
 
 pushd $PROJECT_ROOT
+
+workspace=$(realpath ~/workspace)
+
+if [[ $PROJECT_ROOT == $workspace* ]]; then
+    repo=${PROJECT_ROOT#"$workspace"}
+    if [[ -f ~/.local/share/vimrcs/$repo/.vimrc ]]; then
+        ln -s ~/.local/share/vimrcs/$repo/.vimrc
+    fi
+fi
 
 mkdir -p m4
 
