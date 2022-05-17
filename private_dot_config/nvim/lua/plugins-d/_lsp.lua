@@ -95,6 +95,7 @@ local function config()
     'pyright',
     'tsserver',
     'hls',
+    'texlab',
   }
 
   require("nvim-lsp-installer").setup({

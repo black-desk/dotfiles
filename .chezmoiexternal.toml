@@ -2,6 +2,9 @@
     type = "file"
     url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
     refreshPeriod = "24h"
+["texmf/tex/latex/uniontech"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/uniontech-latex"
 ["workspace/aur/overgrive"]
     type = "git-repo"
     url = "ssh://aur@aur.archlinux.org/overgrive.git"
