@@ -41,6 +41,9 @@
 ["workspace/refer/neovim"]
     type = "git-repo"
     url = "https://github.com/neovim/neovim"
+["workspace/refer/qtctreator"]
+    type = "git-repo"
+    url = "https://github.com/qt-creator/qt-creator"
 ["workspace/source/nvim-lspconfig"]
     type = "git-repo"
     url = "https://github.com/black-desk/nvim-lspconfig"
