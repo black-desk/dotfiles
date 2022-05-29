@@ -8,6 +8,9 @@
 ["workspace/aur/overgrive"]
     type = "git-repo"
     url = "ssh://aur@aur.archlinux.org/overgrive.git"
+["workspace/source/pandoc-include.lua"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/pandoc-include.lua"
 ["workspace/source/fcitx5-ui.nvim"]
     type = "git-repo"
     url = "https://github.com/black-desk/fcitx5-ui.nvim"
