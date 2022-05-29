@@ -23,6 +23,9 @@
 ["workspace/source/posts"]
     type = "git-repo"
     url = "https://github.com/black-desk/posts"
+["workspace/source/ccls"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/ccls"
 ["workspace/refer/cmark"]
     type = "git-repo"
     url = "https://github.com/commonmark/cmark"
