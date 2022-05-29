@@ -81,7 +81,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [[ ! -f ./compile_commands.json ]] && [[ -f $BUILD_ROOT/compile_commands.json ]]; then
         ln -s $BUILD_ROOT/compile_commands.json
     fi
-    ccls --index=. --init={\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}
+    ~/.local/share/nvim/lsp_servers/ccls/bin/ccls --index=. --init={\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}
 fi
 
 popd
