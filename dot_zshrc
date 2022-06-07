@@ -78,4 +78,6 @@ alias dowork="curl -sL https://raw.githubusercontent.com/huan/docker-wxwork/mast
 
 alias bk="popd"
 
+alias phtml="pandoc -f markdown+east_asian_line_breaks+gfm_auto_identifiers --toc --standalone --reference-links -t html --lua-filter=$HOME/workspace/source/pandoc-include.lua/include.lua"
+
 R
