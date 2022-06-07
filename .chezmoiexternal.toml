@@ -11,6 +11,9 @@
 ["workspace/note"]
     type = "git-repo"
     url = "https://github.com/black-desk/Note"
+["workspace/source/udoc"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/udoc"
 ["workspace/source/pandoc-include.lua"]
     type = "git-repo"
     url = "https://github.com/black-desk/pandoc-include.lua"
