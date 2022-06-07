@@ -1,22 +1,26 @@
+# tmux config
 [".tmux.conf"]
     type = "file"
     url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
     refreshPeriod = "24h"
+# latex
 ["texmf/tex/latex/uniontech"]
     type = "git-repo"
     url = "https://github.com/black-desk/uniontech-latex"
-["workspace/aur/overgrive"]
-    type = "git-repo"
-    url = "ssh://aur@aur.archlinux.org/overgrive.git"
-["workspace/note"]
-    type = "git-repo"
-    url = "https://github.com/black-desk/Note"
 ["workspace/source/udoc"]
     type = "git-repo"
     url = "https://github.com/black-desk/udoc"
+# note
+["workspace/note"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/Note"
+["workspace/source/posts"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/posts"
 ["workspace/source/pandoc-include.lua"]
     type = "git-repo"
     url = "https://github.com/black-desk/pandoc-include.lua"
+# my projects
 ["workspace/source/fcitx5-ui.nvim"]
     type = "git-repo"
     url = "https://github.com/black-desk/fcitx5-ui.nvim"
@@ -26,30 +30,35 @@
 ["workspace/source/mahjim"]
     type = "git-repo"
     url = "https://github.com/black-desk/mahjim"
-["workspace/source/posts"]
+["workspace/aur/overgrive"]
     type = "git-repo"
-    url = "https://github.com/black-desk/posts"
+    url = "ssh://aur@aur.archlinux.org/overgrive.git"
+# my fork
 ["workspace/source/ccls"]
     type = "git-repo"
     url = "https://github.com/black-desk/ccls"
-["workspace/refer/cmark"]
-    type = "git-repo"
-    url = "https://github.com/commonmark/cmark"
 ["workspace/refer/cmark-gfm"]
     type = "git-repo"
     url = "https://github.com/github/cmark-gfm"
+["workspace/source/nvim-lspconfig"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/nvim-lspconfig"
+# refer
+["workspace/refer/cmark"]
+    type = "git-repo"
+    url = "https://github.com/commonmark/cmark"
+["workspace/refer/dbus"]
+    type = "git-repo"
+    url = "https://github.com/freedesktop/dbus"
+["workspace/refer/neovim"]
+    type = "git-repo"
+    url = "https://github.com/neovim/neovim"
 ["workspace/refer/pandoc"]
     type = "git-repo"
     url = "https://github.com/jgm/pandoc"
 ["workspace/refer/pandoc-types"]
     type = "git-repo"
     url = "https://github.com/jgm/pandoc-types"
-["workspace/refer/neovim"]
-    type = "git-repo"
-    url = "https://github.com/neovim/neovim"
 ["workspace/refer/qtctreator"]
     type = "git-repo"
     url = "https://github.com/qt-creator/qt-creator"
-["workspace/source/nvim-lspconfig"]
-    type = "git-repo"
-    url = "https://github.com/black-desk/nvim-lspconfig"
