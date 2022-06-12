@@ -62,3 +62,6 @@
 ["workspace/refer/qtctreator"]
     type = "git-repo"
     url = "https://github.com/qt-creator/qt-creator"
+["workspace/refer/golang-tools"]
+    type = "git-repo"
+    url = "https://github.com/golang/tools"
