@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-  tmux attach-session -t ssh || tmux new-session -s ssh
-  exit
+ tmux attach-session -t ssh || tmux new-session -s ssh
+ exit
 fi
 
 [[ $(tty) == \/dev\/tty[0-6]* ]] && fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt && echo && exit
@@ -33,6 +33,7 @@ atload"_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions \
 blockf atpull'zinit creinstall -q .' \
     zsh-users/zsh-completions \
+    spwhitt/nix-zsh-completions \
 atload"[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && compdef dial=ssh" \
     agkozak/zsh-z \
     esc/conda-zsh-completion \

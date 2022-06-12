@@ -95,8 +95,9 @@ local function config()
     'gopls',
     'jsonls',
     'pyright',
-    'tsserver',
+    'rnix',
     'texlab',
+    'tsserver',
   }
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
