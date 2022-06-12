@@ -96,7 +96,6 @@ local function config()
     'jsonls',
     'pyright',
     'tsserver',
-    'hls',
     'texlab',
   }
 
