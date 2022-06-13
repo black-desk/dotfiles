@@ -27,3 +27,6 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 if [[ `type Xorg` ]] ; then
   export _GUI_="True"
 fi
+
+mkdir -p /tmp/$UID
+ln -nfs /tmp/$UID $HOME/tmp
