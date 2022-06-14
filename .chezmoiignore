@@ -2,5 +2,3 @@ README.md
 requirements.txt
 requirements-gui.txt
 .config/nvim/plugin/packer_compiled.lua
-
-/env.nix

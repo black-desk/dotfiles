@@ -87,18 +87,36 @@ end
 
 local function config()
 
-  local nvim_lsp = require('lspconfig')
-
-  local servers = {
+  local installer_servers = {
     'bashls',
     'ccls',
     'gopls',
     'jsonls',
     'pyright',
-    'rnix',
-    'texlab',
     'tsserver',
+    'texlab',
   }
+
+  require("nvim-lsp-installer").setup({
+    ensure_installed = installer_servers,
+    automatic_installation = false, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+  })
+
+  local nvim_lsp = require('lspconfig')
+
+  local extra_servers = {
+    'mdlsp'
+  }
+
+  local servers = {}
+
+  for _, server in ipairs(installer_servers) do
+    table.insert(servers, server)
+  end
+
+  for _, server in ipairs(extra_servers) do
+    table.insert(servers, server)
+  end
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
@@ -122,4 +140,7 @@ return {
   after = {
     'nvim-cmp',
   },
+  requires = {
+    'williamboman/nvim-lsp-installer',
+  }
 }
