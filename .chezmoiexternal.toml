@@ -70,3 +70,7 @@
 ["workspace/refer/golang-tools"]
     type = "git-repo"
     url = "https://github.com/golang/tools"
+# others
+["workspace/uniontech/dde-go"]
+    type = "git-repo"
+    url = "https://github.com/black-desk/dde-go"
