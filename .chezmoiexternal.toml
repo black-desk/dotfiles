@@ -49,6 +49,9 @@
     type = "git-repo"
     url = "https://github.com/black-desk/nvim-lspconfig"
 # refer
+["workspace/refer/linux-pam"]
+    type = "git-repo"
+    url = "https://github.com/linux-pam/linux-pam"
 ["workspace/refer/cmark"]
     type = "git-repo"
     url = "https://github.com/commonmark/cmark"
