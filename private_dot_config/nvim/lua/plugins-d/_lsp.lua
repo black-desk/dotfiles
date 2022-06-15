@@ -74,6 +74,9 @@ function On_Attach(client, bufnr)
       ["gy"] = {
         "<cmd>lua vim.lsp.buf.type_definition()<cr>",
         "LSP:: type definition" },
+      ["<leader>t"] = {
+        "<cmd>AerialToggle<cr>",
+        "LSP:: show outline" },
     },
     key_opts
   )
@@ -132,6 +135,8 @@ local function config()
     local cfg = vim.tbl_deep_extend('force', default, require('lsp-d/' .. lsp .. '_'))
     nvim_lsp[lsp].setup(cfg)
   end
+
+  require("aerial").setup()
 end
 
 return {
@@ -142,5 +147,6 @@ return {
   },
   requires = {
     'williamboman/nvim-lsp-installer',
+    'stevearc/aerial.nvim',
   }
 }
