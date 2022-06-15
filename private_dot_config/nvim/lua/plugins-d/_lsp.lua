@@ -89,7 +89,7 @@ local function config()
 
   local installer_servers = {
     'bashls',
-    'ccls',
+    'clangd',
     'gopls',
     'jsonls',
     'pyright',
