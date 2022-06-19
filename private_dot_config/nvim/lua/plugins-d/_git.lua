@@ -4,88 +4,73 @@
 -- git setup
 
 local function config()
-  vim.g.fugitive_gitea_domains = {
-    'https://gitea.black-desk.cn',
-    'https://gitea.io',
-  }
-  vim.g.fugitive_gitlab_domains = {
-    'https://salsa.debian.org',
-    'https://whgitlab.uniontech.com',
-  }
+        vim.g.fugitive_gitea_domains = {
+                'https://gitea.black-desk.cn',
+                'https://gitea.io',
+        }
+        vim.g.fugitive_gitlab_domains = {
+                'https://salsa.debian.org',
+                'https://whgitlab.uniontech.com',
+        }
 
-  require('gitsigns').setup({
-    current_line_blame = true,
-    current_line_blame_opts = {
-      virt_text = true,
-      virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-      delay = 300,
-      ignore_whitespace = false,
-    },
-    keymaps = {},
-  })
+        require('gitsigns').setup({
+                current_line_blame = true,
+                current_line_blame_opts = {
+                        virt_text = true,
+                        virt_text_pos = 'eol',
+                        delay = 300,
+                        ignore_whitespace = false,
+                },
+                keymaps = {},
+        })
 
-  local wk = require("which-key")
-  local key_opts = {
-    -- mode   Help        Affected                              Equivalent
-    -- ''     mapmode-nvo Normal/Visual/Select/Operator-pending :map
-    -- 'n'    mapmode-n	  Normal                                :nmap
-    -- 'v'    mapmode-v   Visual/Select                         :vmap
-    -- 's'    mapmode-s	  Select                                :smap
-    -- 'x'    mapmode-x	  Visual                                :xmap
-    -- 'o'    mapmode-o   Operator-pending                      :omap
-    -- '!'    mapmode-ic  Insert/Command-line                   :map!
-    -- 'i'    mapmode-i   Insert                                :imap
-    -- 'l'    mapmode-l   Insert/Command-line/Lang-Arg          :lmap
-    -- 'c'    mapmode-c   Command-line                          :cmap
-    -- 't'    mapmode-t   Terminal                              :tmap
-    mode    = "n",
-    prefix  = "<space>g",
-    buffer  = nil, -- Global mappings.
-    silent  = true,
-    noremap = true,
-  }
+        local wk = require("which-key")
+        local key_opts = {
+                mode    = "n",
+                prefix  = "<space>g",
+                buffer  = nil, -- Global mappings.
+                silent  = true,
+                noremap = true,
+        }
 
-  wk.register(
-    {
-      ["w"] = {
-        "<cmd>Gitsigns toggle_word_diff<cr>",
-        "GITS:: word diff mode" },
-      ["j"] = {
-        "<cmd>Gitsigns next_hunk<cr>",
-        "GITS:: next hunk" },
-      ["k"] = {
-        "<cmd>Gitsigns prev_hunk<cr>",
-        "GITS:: previous hunk" },
-      ["u"] = {
-        "<cmd>Gitsigns undo_stage_hunk<cr>",
-        "GITS:: undo stage hunk" },
-      ["s"] = {
-        "<cmd>Gitsigns stage_hunk<cr>",
-        "GITS:: stage hunk" },
-    },
-    key_opts
-  )
+        wk.register({
+                ["w"] = {
+                        "<cmd>Gitsigns toggle_word_diff<cr>",
+                        "GITS:: word diff mode" },
+                ["j"] = {
+                        "<cmd>Gitsigns next_hunk<cr>",
+                        "GITS:: next hunk" },
+                ["k"] = {
+                        "<cmd>Gitsigns prev_hunk<cr>",
+                        "GITS:: previous hunk" },
+                ["u"] = {
+                        "<cmd>Gitsigns undo_stage_hunk<cr>",
+                        "GITS:: undo stage hunk" },
+                ["s"] = {
+                        "<cmd>Gitsigns stage_hunk<cr>",
+                        "GITS:: stage hunk" },
+        }, key_opts)
 end
 
 return {
-  'tpope/vim-fugitive',
-  requires = {
-    -- GBrowser handlers
-    {
-      -- https://github.com/tpope/vim-rhubarb
-      'tpope/vim-rhubarb', -- github
-      -- https://github.com/borissov/fugitive-gitea
-      'borissov/fugitive-gitea', -- gitea
-      -- https://github.com/shumphrey/fugitive-gitlab.vim
-      'shumphrey/fugitive-gitlab.vim', -- gitlab
-    },
-    {
-      -- https://github.com/lewis6991/gitsigns.nvim
-      'lewis6991/gitsigns.nvim', -- sign column diff mark
-      requires = {
-        'nvim-lua/plenary.nvim',
-      },
-    },
-  },
-  config = config,
+        'tpope/vim-fugitive',
+        requires = {
+                -- GBrowser handlers
+                {
+                        -- https://github.com/tpope/vim-rhubarb
+                        'tpope/vim-rhubarb', -- github
+                        -- https://github.com/borissov/fugitive-gitea
+                        'borissov/fugitive-gitea', -- gitea
+                        -- https://github.com/shumphrey/fugitive-gitlab.vim
+                        'shumphrey/fugitive-gitlab.vim', -- gitlab
+                },
+                {
+                        -- https://github.com/lewis6991/gitsigns.nvim
+                        'lewis6991/gitsigns.nvim', -- sign column diff mark
+                        requires = {
+                                'nvim-lua/plenary.nvim',
+                        },
+                },
+        },
+        config = config,
 }

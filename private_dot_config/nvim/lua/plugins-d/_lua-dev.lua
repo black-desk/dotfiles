@@ -6,22 +6,22 @@
 -- but this configuration will not suitable for really develop projects in lua.
 
 local function config()
-  local util = require 'lspconfig.util'
-  local luadev = require("lua-dev").setup({
-    lspconfig = {
-      on_attach = On_Attach,
-      root_dir = util.root_pattern('.git','lua')
-    },
-  })
-  local lspconfig = require('lspconfig')
-  lspconfig.sumneko_lua.setup(luadev)
+        local util = require 'lspconfig.util'
+        local luadev = require("lua-dev").setup({
+                lspconfig = {
+                        on_attach = On_Attach,
+                        root_dir = util.root_pattern('.git', 'lua')
+                },
+        })
+        local lspconfig = require('lspconfig')
+        lspconfig.sumneko_lua.setup(luadev)
 end
 
 return {
-  'folke/lua-dev.nvim',
-  config = config,
-  after = {
-    'nvim-lspconfig',
-    'telescope.nvim',
-  }
+        'folke/lua-dev.nvim',
+        config = config,
+        after = {
+                'nvim-lspconfig',
+                'telescope.nvim',
+        }
 }

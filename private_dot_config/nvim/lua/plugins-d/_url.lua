@@ -7,6 +7,6 @@ local function config()
 end
 
 return {
-  'itchyny/vim-highlighturl',
-  config = config,
+        'itchyny/vim-highlighturl',
+        config = config,
 }

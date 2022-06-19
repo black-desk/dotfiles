@@ -4,15 +4,15 @@
 -- kiss local vimrc with hash protection
 
 local function config()
-  vim.g.local_vimrc = {
-    names = {
-      '.vimrc'
-    },
-    hash_fun = 'LVRHashOfFile',
-  }
+        vim.g.local_vimrc = {
+                names = {
+                        '.vimrc'
+                },
+                hash_fun = 'LVRHashOfFile',
+        }
 end
 
 return {
-  'MarcWeber/vim-addon-local-vimrc',
-  config = config,
+        'MarcWeber/vim-addon-local-vimrc',
+        config = config,
 }

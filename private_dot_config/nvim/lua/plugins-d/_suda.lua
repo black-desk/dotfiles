@@ -7,7 +7,6 @@ local function config()
 end
 
 return {
-  'lambdalisue/suda.vim',
-  config = config,
+        'lambdalisue/suda.vim',
+        config = config,
 }
-
