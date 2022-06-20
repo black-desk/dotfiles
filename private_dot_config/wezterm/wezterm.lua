@@ -60,7 +60,7 @@ return {
   },
   window_decorations = "RESIZE",
   window_background_opacity = 0.93,
-  initial_rows = 30,
-  initial_cols = 100,
+  initial_rows = 35,
+  initial_cols = 120,
   disable_default_key_bindings = true,
 }
