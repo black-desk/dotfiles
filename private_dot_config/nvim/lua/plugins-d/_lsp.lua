@@ -119,6 +119,25 @@ local function config()
                 automatic_installation = false,
         })
 
+        -- my own lsp config
+
+        -- NOTE: This only work if `table.unpack` is the last argument.
+        -- https://stackoverflow.com/questions/1410862/concatenation-of-tables-in-lua#comment123687523_54352037
+        -- https://stackoverflow.com/questions/37372182/what-is-happening-when-i-call-unpack-as-luas-function-arguments
+        server_list = table.pack(
+                "mdlsp",
+                table.unpack(server_list)
+        )
+
+        require("lspconfig.configs")["mdlsp"] = {
+                default_config = {
+                        cmd = { 'mdlsp' },
+                        filetypes = { 'markdown' },
+                        root_dir = require('lspconfig.util').find_git_ancestor,
+                        single_file_support = true,
+                },
+        }
+
         local default_lsp_config = {
                 flags = {
                         debounce_text_changes = nil,
@@ -135,8 +154,7 @@ local function config()
                         my_cfg = {}
                 end
                 local cfg = vim.tbl_deep_extend(
-                        'force',
-                        default_lsp_config, my_cfg)
+                        'force', default_lsp_config, my_cfg)
                 require('lspconfig')[lsp].setup(cfg)
         end
 
@@ -144,7 +162,7 @@ local function config()
 end
 
 return {
-        'black-desk/nvim-lspconfig',
+        'neovim/nvim-lspconfig',
         config = config,
         after = {
                 'nvim-cmp',
