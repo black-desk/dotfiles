@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+function help() {
+        echo \
+"
+mem-status-dump [pid | command]
+        dump memory related information to current directory.
+        root needed
+
+example:
+        mem-status-dump init # cmd of process
+        mem-status-dump 1 # or pid
+
+        You will get something like:
+        .
+        └── systemd-5.18.3-arch1-1-2022-06-21 14:35:23.461776893+08:00
+            ├── cmdline
+            ├── maps
+            ├── smaps
+            ├── stack
+            ├── status
+            └── thp
+                ├── defrag
+                ├── enabled
+                ├── hpage_pmd_size
+                ├── shmem_enabled
+                └── use_zero_page
+"
+        exit 1
+}
+
+if [[ $# -eq 1 ]]; then
+        input=$1
+        re='^[0-9]+$'
+        if ! [[ $input =~ $re ]] ; then
+                PID=$(pidof "$input")
+        else
+                PID=$input
+        fi
+
+        if ! [[ $PID =~ $re ]] ; then
+                echo "Can not get only pid of $input"
+                help
+        fi
+else
+        help
+fi
+
+echo "We need sudo:"
+
+sudo echo "got it, thanks!" || exit 1
+
+now=$(date --rfc-3339=ns)
+exec=$(sudo readlink "/proc/$PID/exe")
+exec=$(basename "$exec")
+uname=$(uname -r)
+mkdir "$exec-$uname-$now" && cd "$exec-$uname-$now" || exit 1
+
+function cat_file() {
+        if [[ $1 == /* ]]; then
+                # shellcheck disable=SC2024
+                sudo cat "$1" > "$(basename "$1")"
+        else
+                # shellcheck disable=SC2024
+                sudo cat "/proc/$PID/$1" > "$1"
+        fi
+}
+
+cat_file cmdline
+cat_file smaps
+cat_file maps
+cat_file status
+cat_file stack
+
+mkdir "thp" && cd "thp" || exit 1
+
+cat_file /sys/kernel/mm/transparent_hugepage/defrag
+cat_file /sys/kernel/mm/transparent_hugepage/enabled
+cat_file /sys/kernel/mm/transparent_hugepage/hpage_pmd_size
+cat_file /sys/kernel/mm/transparent_hugepage/shmem_enabled
+cat_file /sys/kernel/mm/transparent_hugepage/use_zero_page
+
+cd ../..
