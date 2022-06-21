@@ -2,4 +2,18 @@
 
 # convert md to html using github's css
 
-pandoc $1 --template=$HOME/.local/share/md2html/template.html -o ${1%.md}.html
+function get_title() {
+        if [[ $1 = *index.md ]] ; then
+                TITLE=(--metadata title="$(basename "$(dirname "$(realpath "$1")")")")
+        else
+                TITLE="$(basename "$1")"
+                TITLE=(--metadata title="${TITLE%.md}")
+        fi
+}
+
+get_title "$1"
+
+pandoc -f markdown+east_asian_line_breaks+gfm_auto_identifiers \
+        --toc --standalone --reference-links -t html \
+        --lua-filter="$HOME/.local/share/md2html/filter.lua" \
+        "$1" "${TITLE[@]}" -o "${1%.md}.html"
