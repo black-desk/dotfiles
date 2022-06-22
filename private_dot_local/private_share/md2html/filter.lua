@@ -60,7 +60,8 @@ function CodeBlock(block)
                                 local abs_file_path = dir .. file
                                 local content = read_all(abs_file_path)
                                 if content == nil then
-                                        print("WARNING: cannot read from " .. abs_file_path .. "!")
+                                        print("WARNING: cannot read from " ..
+                                                abs_file_path .. "!")
                                         return block
                                 end
                                 ret:insert(
