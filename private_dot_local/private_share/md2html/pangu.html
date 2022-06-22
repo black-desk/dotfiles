@@ -8,35 +8,34 @@
 }
 
 input[type="checkbox"] {
-        margin-left: -1em;
-        width: 1em;
+        margin-left: -1.5em;
+        width: 1.5em;
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js"> </script>
-<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"> </script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"> </script> -->
 <script>
 
-$(document).ready( () => {
+$(document).ready(()=>{
 
-$(".uri:only-child").each( function() {
-        if (
+
+$(".uri:only-child").each(function(){
+        if ((
                 this.nextSibling &&
                 this.nextSibling.nodeValue &&
-                this.nextSibling.nodeValue.trim() ||
+                this.nextSibling.nodeValue.trim()
+           ) || (
                 this.previousSibling &&
                 this.previousSibling.nodeValue &&
                 this.previousSibling.nodeValue.trim()
-        ) {
-                $(this)
-                .css("display","inline")
-                .css("white-space","break-spaces");
+        )) {
+                $(this).css("display","inline").css("white-space","break-spaces");
         }
-} );
-
-} )
-
-document.addEventListener('DOMContentLoaded', () => {
-        pangu.autoSpacingPage();
 });
 
+})
+
+// document.addEventListener('DOMContentLoaded', () => {
+//        pangu.autoSpacingPage();
+// });
 </script>
