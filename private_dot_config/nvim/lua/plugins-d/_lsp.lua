@@ -105,10 +105,11 @@ local function config()
                 'bashls',
                 'clangd',
                 'gopls',
+                'hls',
                 'jsonls',
                 'pyright',
-                'tsserver',
                 'texlab',
+                'tsserver',
         }
 
         require("nvim-lsp-installer").setup({
