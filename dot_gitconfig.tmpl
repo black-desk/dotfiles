@@ -1,7 +1,13 @@
 [user]
-	email = {{ .email }}
-	name = {{ .github_username }}
+        email = {{ .email }}
+        name = {{ .github_username }}
 [credential]
-	helper = store
+        helper = store
 [pull]
-	rebase = true
+        rebase = true
+[includeIf "hasconfig:remote.*.url:http://{{ .utid }}@gerrit.uniontech.com/**"]
+        path = ~/.config/git/uniontech.gitconfig
+[includeIf "hasconfig:remote.*.url:http://gerrit.uniontech.com/**"]
+        path = ~/.config/git/uniontech.gitconfig
+[includeIf "gitdir:~/workspace/uniontech"]
+        path = ~/.config/git/uniontech.gitconfig
