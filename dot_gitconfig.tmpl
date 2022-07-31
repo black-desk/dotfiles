@@ -1,6 +1,7 @@
 [user]
         email = {{ .email }}
         name = {{ .github_username }}
+        signingkey = F848DC429B7EDD84
 [credential]
         helper = store
 [pull]
@@ -11,3 +12,11 @@
         path = ~/.config/git/uniontech.gitconfig
 [includeIf "gitdir:~/workspace/uniontech"]
         path = ~/.config/git/uniontech.gitconfig
+[core]
+	quotePath = false
+	commitGraph = true
+[receive]
+	advertisePushOptions = true
+	procReceiveRefs = refs/for
+[gc]
+	writeCommitGraph = true

@@ -1563,7 +1563,7 @@ QPrintPreviewDialog QToolBar QToolBarSeparator
 /*  I did not want to color this window, but it inherits  */
 /*  the styles of other windows from which it was called; */
 /* I had to "balance" it out, and besides, the ID of this */
-/*  window, generated on {{ .chezmoi.kernel.ostype }}, does not work on Windows, */
+/*  window, generated on Linux, does not work on Windows, */
 /*   and I have not yet found a way to find out the ID    */
 /*                  directly on Windows                   */
 QDialog,
