@@ -2,6 +2,8 @@
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 export VISUAL=nvim;
 export EDITOR=nvim;
 export PAGER="less -r";
