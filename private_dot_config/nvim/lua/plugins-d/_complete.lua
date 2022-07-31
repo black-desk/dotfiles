@@ -6,6 +6,11 @@
 local config = function()
         local cmp = require('cmp')
         cmp.setup({
+                enabled = function()
+                        if vim.api.nvim_get_mode()["mode"] == 'i' then
+                                return require("fcitx5-ui").getCurrentIM() == ""
+                        end
+                end,
                 snippet = {
                         -- REQUIRED - you must specify a snippet engine
                         expand = function(args)
