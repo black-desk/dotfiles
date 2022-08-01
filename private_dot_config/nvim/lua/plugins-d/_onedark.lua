@@ -8,7 +8,6 @@ local config = function()
                 transparent = true,
         })
         od.load()
-        vim.api.nvim_del_keymap('n', '<leader>ts')
 end
 
 return {
