@@ -104,6 +104,7 @@ local function config()
         local server_list = {
                 'bashls',
                 'clangd',
+                'cmake',
                 'gopls',
                 'hls',
                 'jsonls',
