@@ -1,0 +1,11 @@
+Host aur.archlinux.org
+   IdentitiesOnly yes
+   IdentityFile ~/.ssh/arch/id_rsa
+
+Host gwth
+  HostName he.0g.pub
+  Port 10088
+
+Host home
+  HostName home.black-desk.cn
+  Port 40022
