@@ -58,7 +58,6 @@ return {
                         "Source Han Sans CN"
                 }),
         },
-        window_decorations = "RESIZE",
         window_background_opacity = 0.8,
         initial_rows = 35,
         initial_cols = 120,
