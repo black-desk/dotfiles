@@ -105,6 +105,7 @@ local function config()
                 'bashls',
                 'clangd',
                 'cmake',
+                'eslint',
                 'gopls',
                 'hls',
                 'jsonls',
