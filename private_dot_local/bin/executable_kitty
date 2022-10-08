@@ -1,3 +1,0 @@
-#!/bin/env sh
-
-GLFW_IM_MODULE=ibus exec /usr/bin/kitty
