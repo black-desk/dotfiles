@@ -1,5 +1,10 @@
 [user]
         email = {{ .name }}@uniontech.com
-        name = {{ .name }}
+        name = {{ .Name }}
 [commit]
         gpgsign = false
+[sendemail]
+        smtpServer = smtp.exmail.qq.com
+        smtpServerPort = 465
+        smtpEncryption = ssl
+        smtpUser = {{ .name }}@uniontech.com
