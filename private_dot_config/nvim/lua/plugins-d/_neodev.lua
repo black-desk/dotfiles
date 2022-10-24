@@ -7,7 +7,7 @@
 
 local function config()
         local util = require 'lspconfig.util'
-        local luadev = require("lua-dev").setup({
+        local luadev = require("neodev").setup({
                 lspconfig = {
                         on_attach = On_Attach,
                         root_dir = util.root_pattern('.git', 'lua')
@@ -18,7 +18,7 @@ local function config()
 end
 
 return {
-        'folke/lua-dev.nvim',
+        'folke/neodev',
         config = config,
         after = {
                 'nvim-lspconfig',

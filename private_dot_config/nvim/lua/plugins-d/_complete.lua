@@ -65,7 +65,7 @@ local config = function()
                 'confirm_done',
                 cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
-        Capabilities = require('cmp_nvim_lsp').update_capabilities(Capabilities)
+        Capabilities = require('cmp_nvim_lsp').default_capabilities(Capabilities)
 
 end
 
@@ -86,4 +86,5 @@ return {
                 'octaltree/cmp-look',
         },
         config = config,
+        after = 'fcitx5-ui.nvim',
 }
