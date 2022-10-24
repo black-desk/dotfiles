@@ -18,7 +18,7 @@ local function config()
 end
 
 return {
-        'folke/neodev',
+        'folke/neodev.nvim',
         config = config,
         after = {
                 'nvim-lspconfig',
