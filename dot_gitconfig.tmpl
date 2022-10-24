@@ -1,6 +1,6 @@
 [user]
         email = {{ .email }}
-        name = {{ .github_username }}
+        name = {{ .github_id }}
         signingkey = F848DC429B7EDD84
 [credential]
         helper = store
@@ -18,9 +18,11 @@
 	gpgsign = true
 [includeIf "hasconfig:remote.*.url:https://gitlabwh.uniontech.com/**"]
         path = ~/.config/git/uniontech.gitconfig
-[includeIf "hasconfig:remote.*.url:http://{{ .utid }}@gerrit.uniontech.com/**"]
+[includeIf "hasconfig:remote.*.url:http://{{ .ut_id }}@gerrit.uniontech.com/**"]
         path = ~/.config/git/uniontech.gitconfig
 [includeIf "hasconfig:remote.*.url:http://gerrit.uniontech.com/**"]
         path = ~/.config/git/uniontech.gitconfig
 [includeIf "gitdir:~/workspace/uniontech/"]
         path = ~/.config/git/uniontech.gitconfig
+[includeIf "gitdir:~/workspace/upstream/"]
+        path = ~/.config/git/upstream.gitconfig
