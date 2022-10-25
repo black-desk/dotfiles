@@ -6,15 +6,7 @@
 -- but this configuration will not suitable for really develop projects in lua.
 
 local function config()
-        local util = require 'lspconfig.util'
-        local luadev = require("neodev").setup({
-                lspconfig = {
-                        on_attach = On_Attach,
-                        root_dir = util.root_pattern('.git', 'lua')
-                },
-        })
-        local lspconfig = require('lspconfig')
-        lspconfig.sumneko_lua.setup(luadev)
+        require("neodev").setup({ })
 end
 
 return {
@@ -22,6 +14,5 @@ return {
         config = config,
         after = {
                 'nvim-lspconfig',
-                'telescope.nvim',
         }
 }
