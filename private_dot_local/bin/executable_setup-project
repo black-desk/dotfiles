@@ -5,34 +5,32 @@ if [[ $SCRIPT_DEBUG ]]; then
 fi
 
 function setup() {
-    if [[ -f ../meson.build ]]; then
-        CC=clang CXX=clang++ meson setup . ..
-        meson compile
-    elif [[ -f ../CMakeLists.txt ]]; then
-        cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G Ninja
-        ninja
-    else
-        if [[ -f ../configure.ac ]]; then
-            autoreconf -fis ..
-        fi
-
-        if [[ -f ../configure ]]; then
-            ../configure
-        fi
-        cores=`nproc`
-        cores=`expr $cores / 2`
-
-        if [[ -f GNUmakefile ]] || [[ -f makefile ]] || [[ -f Makefile ]]; then
-            bear -- make -j $cores
+        if [[ -f ../meson.build ]]; then
+                meson setup . ..
+                meson compile
+        elif [[ -f ../CMakeLists.txt ]]; then
+                cmake .. -DCMAKE_BUILD_TYPE=Debug
+                cmake --build .
         else
-            popd
-            if [[ -f GNUmakefile ]] || [[ -f makefile ]] || [[ -f Makefile ]]; then
-                bear -- make -j $cores
-            else
-                echo setup project failed
-            fi
+                if [[ -f ../autogen.sh ]]; then
+                        pushd ..
+                        ./autogen.sh
+                        popd
+                fi
+
+                if [[ -f ../configure ]]; then
+                        ../configure
+                fi
+
+                cores=`nproc`
+                cores=`expr $cores - 1`
+
+                if [[ -f GNUmakefile ]]\
+                        || [[ -f makefile ]]\
+                        || [[ -f Makefile ]]; then
+                        bear -- make -j $cores
+                fi
         fi
-    fi
 }
 
 PROJECT_ROOT=`realpath .`
@@ -68,8 +66,6 @@ if [[ $PROJECT_ROOT == $workspace* ]]; then
     fi
 fi
 
-mkdir -p m4
-
 if [[ -d ./.git ]]; then
     retry -t 5 -- git submodule update --init --recursive
 fi
@@ -78,10 +74,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     pushd $BUILD_ROOT
     setup
     popd
-    if [[ ! -f ./compile_commands.json ]] && [[ -f $BUILD_ROOT/compile_commands.json ]]; then
-        ln -s $BUILD_ROOT/compile_commands.json
-    fi
-    ~/.local/share/nvim/lsp_servers/ccls/bin/ccls --index=. --init={\"cache\":{\"directory\":\"$HOME/.ccls-cache\"}}
 fi
 
 popd
