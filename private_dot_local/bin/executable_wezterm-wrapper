@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if [[ $1 == "-e" ]] ; then
-    /usr/bin/env wezterm start ${@:2}
+    /usr/bin/env WAYLAND_DISPLAY="" wezterm start ${@:2}
 else
-    /usr/bin/env wezterm $@
+    /usr/bin/env WAYLAND_DISPLAY="" wezterm $@
 fi
 
