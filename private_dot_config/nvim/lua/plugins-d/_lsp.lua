@@ -114,12 +114,10 @@ local function config()
                 'tsserver',
         }
 
-        require("nvim-lsp-installer").setup({
-                ensure_installed = server_list,
-                -- NOTE: this `automatic_installation` means automatically
-                -- detect which servers to install (based on which servers are
-                -- set up via lspconfig), but I do not want this.
-                automatic_installation = false,
+        require("mason").setup()
+
+        require("mason-lspconfig").setup({
+                automatic_installation = true,
         })
 
         -- my own lsp config
@@ -171,7 +169,8 @@ return {
                 'nvim-cmp',
         },
         requires = {
-                'williamboman/nvim-lsp-installer',
+                'williamboman/mason.nvim',
+                'williamboman/mason-lspconfig.nvim',
                 'stevearc/aerial.nvim',
         }
 }
