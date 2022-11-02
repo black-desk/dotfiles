@@ -6,24 +6,24 @@ fi
 
 function setup() {
         if [[ -f ../meson.build ]]; then
-                meson setup . ..
-                meson compile
+                meson setup . .. || exit 255
+                meson compile || exit 255
         elif [[ -f ../CMakeLists.txt ]]; then
-                cmake .. -DCMAKE_BUILD_TYPE=Debug
-                cmake --build .
+                cmake .. -DCMAKE_BUILD_TYPE=Debug || exit 255
+                cmake --build . || exit 255
         else
                 if [[ -f ../autogen.sh ]]; then
                         pushd ..
                         ./autogen.sh
-                        popd
+                        popd || exit 255
                 fi
 
                 if [[ -f ../configure ]]; then
                         ../configure
                 fi
 
-                cores=`nproc`
-                cores=`expr $cores - 1`
+                cores=$(nproc)
+                cores=$(("$cores" - 1))
 
                 if [[ -f GNUmakefile ]]\
                         || [[ -f makefile ]]\
@@ -33,36 +33,36 @@ function setup() {
         fi
 }
 
-PROJECT_ROOT=`realpath .`
+PROJECT_ROOT=$(realpath .)
 
-if [[ ! -z $1 ]] ; then
-    PROJECT_ROOT=`realpath $1`
+if [[ -n $1 ]] ; then
+        PROJECT_ROOT=$(realpath "$1")
 fi
 
 BUILD_ROOT=build
 
-if [[ ! -z $2 ]] ; then
+if [[ -n $2 ]] ; then
     BUILD_ROOT=$2
 fi
 
-mkdir -p $BUILD_ROOT
+mkdir -p "$BUILD_ROOT"
 
-BUILD_ROOT=`realpath $BUILD_ROOT`
+BUILD_ROOT=$(realpath "$BUILD_ROOT")
 
-echo project dir : $PROJECT_ROOT
-echo build dir   : $BUILD_ROOT
+echo project dir : "$PROJECT_ROOT"
+echo build dir   : "$BUILD_ROOT"
 
 read -p "sure? " -n 1 -r
 echo
 
-pushd $PROJECT_ROOT
+pushd "$PROJECT_ROOT" || exit 255
 
 workspace=$(realpath ~/workspace)
 
 if [[ $PROJECT_ROOT == $workspace* ]]; then
     repo=${PROJECT_ROOT#"$workspace"}
-    if [[ -f ~/.local/share/vimrcs/$repo/.vimrc ]]; then
-        ln -s ~/.local/share/vimrcs/$repo/.vimrc
+    if [[ -f ~/.local/share/vimrcs/"$repo"/.vimrc ]]; then
+        ln -s ~/.local/share/vimrcs/"$repo"/.vimrc .
     fi
 fi
 
@@ -71,9 +71,9 @@ if [[ -d ./.git ]]; then
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    pushd $BUILD_ROOT
+    pushd "$BUILD_ROOT" || exit 255
     setup
-    popd
+    popd || exit 255
 fi
 
-popd
+popd || exit 255
