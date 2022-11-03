@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ $SCRIPT_DEBUG ]]; then
-  set -x
+        set -x
 fi
 
 function setup() {
@@ -14,7 +14,7 @@ function setup() {
         else
                 if [[ -f ../autogen.sh ]]; then
                         pushd ..
-                        ./autogen.sh
+                        ./autogen.sh || exit 255
                         popd || exit 255
                 fi
 
@@ -25,9 +25,9 @@ function setup() {
                 cores=$(nproc)
                 cores=$(("$cores" - 1))
 
-                if [[ -f GNUmakefile ]]\
-                        || [[ -f makefile ]]\
-                        || [[ -f Makefile ]]; then
+                if [[ -f GNUmakefile ]] ||
+                        [[ -f makefile ]] ||
+                        [[ -f Makefile ]]; then
                         bear -- make -j $cores
                 fi
         fi
@@ -35,14 +35,14 @@ function setup() {
 
 PROJECT_ROOT=$(realpath .)
 
-if [[ -n $1 ]] ; then
+if [[ -n $1 ]]; then
         PROJECT_ROOT=$(realpath "$1")
 fi
 
 BUILD_ROOT=build
 
-if [[ -n $2 ]] ; then
-    BUILD_ROOT=$2
+if [[ -n $2 ]]; then
+        BUILD_ROOT=$2
 fi
 
 mkdir -p "$BUILD_ROOT"
@@ -50,7 +50,7 @@ mkdir -p "$BUILD_ROOT"
 BUILD_ROOT=$(realpath "$BUILD_ROOT")
 
 echo project dir : "$PROJECT_ROOT"
-echo build dir   : "$BUILD_ROOT"
+echo build dir : "$BUILD_ROOT"
 
 read -p "sure? " -n 1 -r
 echo
@@ -60,20 +60,20 @@ pushd "$PROJECT_ROOT" || exit 255
 workspace=$(realpath ~/workspace)
 
 if [[ $PROJECT_ROOT == $workspace* ]]; then
-    repo=${PROJECT_ROOT#"$workspace"}
-    if [[ -f ~/.local/share/vimrcs/"$repo"/.vimrc ]]; then
-        ln -s ~/.local/share/vimrcs/"$repo"/.vimrc .
-    fi
+        repo=${PROJECT_ROOT#"$workspace"}
+        if [[ -f ~/.local/share/vimrcs/"$repo"/.vimrc ]]; then
+                ln -s ~/.local/share/vimrcs/"$repo"/.vimrc .
+        fi
 fi
 
 if [[ -d ./.git ]]; then
-    retry -t 5 -- git submodule update --init --recursive
+        retry -t 5 -- git submodule update --init --recursive
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    pushd "$BUILD_ROOT" || exit 255
-    setup
-    popd || exit 255
+        pushd "$BUILD_ROOT" || exit 255
+        setup
+        popd || exit 255
 fi
 
 popd || exit 255
