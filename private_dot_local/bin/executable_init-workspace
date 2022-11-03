@@ -1,57 +1,67 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 if [[ $SCRIPT_DEBUG ]] ; then
   set -x
 fi
 
-function ghcli_clone() {
-    dirname=${1##*/}
-    gh repo clone $1
-    result=$?
+__workspace_init_git_clone () {
+        addr=$1
 
-    if [[ $result != 0 ]] ; then
-        rm -rf $dirname
-        /bin/false
-    fi
-}
+        dirname=${addr##*/}
+        dirname=${dirname%.git}
 
-function clone_list() {
-    pushd ~/workspace/repo/$1
-    cat $HOME/.local/share/workspace-repo-lists/$1-list | while read line
-    do
-        if [[ $line == http://* ]] || [[ $line == https://* ]] || [[ $line == git://* ]] || [[ $line == ssh://* ]] ; then
-            set +e
-            retry -t 5 -- git clone $line
-            set -e
-        else
-            set +e
-            retry -t 5 -- ghcli_clone $line
-            set -e
+        if [[ -d "$dirname" ]]; then
+                echo git repo "$addr" existed
+                return
         fi
-    done
-    popd
+
+        if [[ $addr == http://* ]] || [[ $addr == https://* ]] || [[ $addr == git://* ]] || [[ $addr == ssh://* ]] ; then
+                git clone "$addr"
+        else
+                gh repo clone "$1"
+        fi
+
+        result=$?
+
+        if [[ $result != 0 ]] ; then
+                rm -rf "$dirname"
+                /bin/false
+        fi
 }
 
-export -f ghcli_clone
+__workspace_init_list () {
+        part=$1
+        if [[ $part == "fork" ]]; then
+                gh repo list --fork --no-archived --json name | \
+                        jq -r  ".[].name"
+        elif [[ $part == "source" ]]; then
+                gh repo list --source --no-archived --json name | \
+                        jq -r  ".[].name"
+        else
+                cat ~/.local/share/workspace-repo-lists/"$part"-list
+        fi
+        return
+}
+
+export -f __workspace_init_list
+export -f __workspace_init_git_clone
 
 set -e
 
-mkdir -p ~/workspace/repo/source
-mkdir -p ~/workspace/repo/fork
-mkdir -p ~/workspace/repo/refer
-mkdir -p ~/workspace/repo/aur
+parts=(source fork refer aur)
 
-pushd ~/workspace/repo/fork
-set +e
-gh repo list --fork --no-archived --json name | jq -r  ".[].name" | xargs -L 1 retry -t 5 -- ghcli_clone
-set -e
-popd
+if [[ $# -ne 0 ]]; then
+        parts=("$@")
+fi
 
-pushd ~/workspace/repo/source
-set +e
-gh repo list --source --no-archived --json name | jq -r  ".[].name" | xargs -L 1 retry -t 5 -- ghcli_clone
-set -e
-popd
+for part in "${parts[@]}"; do
+        mkdir -p ~/workspace/repo/"$part"
+        pushd ~/workspace/repo/"$part"
+        set +e
+        __workspace_init_list "$part" | \
+                xargs -L 1 retry -t 5 -- __workspace_init_git_clone
+        set -e
+done
 
-clone_list refer
-clone_list aur
+unset -f list
+unset -f git_clone

@@ -1,6 +1,6 @@
 **/.cache/clangd
 **/.gdb_history
-.vimrc
-/build
+**/.vimrc
+**/build
 **/compile_commands.json
-/m4
+**/m4
