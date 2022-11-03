@@ -160,6 +160,11 @@ local function config()
         end
 
         require("aerial").setup()
+
+        require("null-ls").setup({ sources = {
+                require("null-ls").builtins.formatting.shfmt,
+                require("null-ls").builtins.completion.spell
+        }})
 end
 
 return {
@@ -169,6 +174,7 @@ return {
                 'nvim-cmp',
         },
         requires = {
+                'jose-elias-alvarez/null-ls.nvim',
                 'williamboman/mason.nvim',
                 'williamboman/mason-lspconfig.nvim',
                 'stevearc/aerial.nvim',
