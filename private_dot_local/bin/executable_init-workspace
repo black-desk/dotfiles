@@ -15,7 +15,8 @@ __workspace_init_git_clone () {
                 return
         fi
 
-        if [[ $addr == http://* ]] || [[ $addr == https://* ]] || [[ $addr == git://* ]] || [[ $addr == ssh://* ]] ; then
+        if [[ $addr == http://* ]] || [[ $addr == https://* ]] || \
+                [[ $addr == git://* ]] || [[ $addr == ssh://* ]] ; then
                 git clone "$addr"
         else
                 gh repo clone "$1"
