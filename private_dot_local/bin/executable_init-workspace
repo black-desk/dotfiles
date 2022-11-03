@@ -1,47 +1,47 @@
 #!/bin/env bash
 
-if [[ $SCRIPT_DEBUG ]] ; then
-  set -x
+if [[ $SCRIPT_DEBUG ]]; then
+	set -x
 fi
 
-__workspace_init_git_clone () {
-        addr=$1
+__workspace_init_git_clone() {
+	addr=$1
 
-        dirname=${addr##*/}
-        dirname=${dirname%.git}
+	dirname=${addr##*/}
+	dirname=${dirname%.git}
 
-        if [[ -d "$dirname" ]]; then
-                echo git repo "$addr" existed
-                return
-        fi
+	if [[ -d "$dirname" ]]; then
+		echo git repo "$addr" existed
+        elif [[ $addr == http://* ]] || [[ $addr == https://* ]] ||
+		[[ $addr == git://* ]] || [[ $addr == ssh://* ]]; then
+		git clone "$addr"
+	else
+		gh repo clone "$addr"
+	fi
 
-        if [[ $addr == http://* ]] || [[ $addr == https://* ]] || \
-                [[ $addr == git://* ]] || [[ $addr == ssh://* ]] ; then
-                git clone "$addr"
+	result=$?
+
+	if [[ $result != 0 ]]; then
+		rm -rf "$dirname"
+		/bin/false
         else
-                gh repo clone "$1"
+                get_gerrit_hook "$dirname"
         fi
 
-        result=$?
-
-        if [[ $result != 0 ]] ; then
-                rm -rf "$dirname"
-                /bin/false
-        fi
 }
 
-__workspace_init_list () {
-        part=$1
-        if [[ $part == "fork" ]]; then
-                gh repo list --fork --no-archived --json name | \
-                        jq -r  ".[].name"
-        elif [[ $part == "source" ]]; then
-                gh repo list --source --no-archived --json name | \
-                        jq -r  ".[].name"
-        else
-                cat ~/.local/share/workspace-repo-lists/"$part"-list
-        fi
-        return
+__workspace_init_list() {
+	part=$1
+	if [[ $part == "fork" ]]; then
+		gh repo list --fork --no-archived --json name |
+			jq -r ".[].name"
+	elif [[ $part == "source" ]]; then
+		gh repo list --source --no-archived --json name |
+			jq -r ".[].name"
+	else
+		cat ~/.local/share/workspace-repo-lists/"$part"-list
+	fi
+	return
 }
 
 export -f __workspace_init_list
@@ -52,16 +52,16 @@ set -e
 parts=(source fork refer aur)
 
 if [[ $# -ne 0 ]]; then
-        parts=("$@")
+	parts=("$@")
 fi
 
 for part in "${parts[@]}"; do
-        mkdir -p ~/workspace/repo/"$part"
-        pushd ~/workspace/repo/"$part"
-        set +e
-        __workspace_init_list "$part" | \
-                xargs -L 1 retry -t 5 -- __workspace_init_git_clone
-        set -e
+	mkdir -p ~/workspace/repo/"$part"
+	pushd ~/workspace/repo/"$part"
+	set +e
+	__workspace_init_list "$part" |
+		xargs -L 1 retry -t 5 -- __workspace_init_git_clone
+	set -e
 done
 
 unset -f list

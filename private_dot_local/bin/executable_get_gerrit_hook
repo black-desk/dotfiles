@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [[ $SCRIPT_DEBUG ]]; then
+	set -x
+fi
+
+if [[ -d $1 ]]; then
+	cd "$1" || exit 255
+fi
+
+if ! git remote -v | grep gerrit\.uniontech; then
+        exit
+fi
+
+mkdir -p .git/hooks
+curl -Lo "$(git rev-parse --git-dir)"/hooks/commit-msg \
+	http://gerrit.uniontech.com/tools/hooks/commit-msg
+chmod +x "$(git rev-parse --git-dir)"/hooks/commit-msg
