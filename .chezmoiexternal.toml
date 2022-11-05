@@ -1,9 +1,13 @@
 # tmux config
 [".tmux.conf"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
-    refreshPeriod = "24h"
+        type = "file"
+        url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
+        refreshPeriod = "24h"
 # latex
 ["texmf/tex/latex/uniontech"]
-    type = "git-repo"
-    url = "https://github.com/black-desk/uniontech-latex"
+        type = "git-repo"
+        url = "https://github.com/black-desk/uniontech-latex"
+# goenv
+[".goenv"]
+        type = "git-repo"
+        url = "https://github.com/syndbg/goenv"

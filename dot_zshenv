@@ -1,26 +1,26 @@
-#!/usr/bin/env zsh
+#!/bin/env bash
+
+if [[ $(type Xorg) ]]; then
+	export _GUI_="True"
+fi
+
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-export VISUAL=nvim;
-export EDITOR=nvim;
-export PAGER="less -r";
-
-export PATH=$HOME/Go/bin:$PATH
-
-export PATH=$HOME/.ghcup/bin:$PATH
-
-export PATH=$HOME/.local/bin:$PATH
+export VISUAL=nvim
+export EDITOR=nvim
+export PAGER="less -r"
 
 export HISTFILE="$HOME/.zsh_history"
-export SAVEHIST=5000
-export HISTSIZE=5000
+export SAVEHIST=100000
+export HISTSIZE=100000
+
+# CMAKE
 
 export CC=clang
 export CXX=clang++
-
 export CMAKE_C_COMPILER=$CC
 export CMAKE_CXX_COMPILER=$CXX
 export CMAKE_GENERATOR=Ninja
@@ -28,9 +28,36 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 export CMAKE_C_FLAGS="-Wno-unused-command-line-argument"
 export CMAKE_CXX_FLAGS="-Wno-unused-command-line-argument"
 
-if [[ `type Xorg` ]] ; then
-  export _GUI_="True"
-fi
+function update_path() {
+        local dir=$1
+        local append=$2
+        if [[ ${path[(ie)$dir]} -gt ${#path} ]]; then 
+                if [[ -n $append ]]; then
+                        path+=($dir)
+                else
+                        path=($dir $path)
+                fi
+        fi
+}
 
-mkdir -p /tmp/$UID
-ln -nfs /tmp/$UID $HOME/tmp
+update_path "/sbin" append
+update_path "/bin" append
+update_path "/usr/sbin" append
+update_path "/usr/bin" append
+update_path "/usr/local/sbin" append
+update_path "/usr/local/bin" append
+
+# GOENV
+
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+export GOENV_APPEND_GOPATH=1
+
+update_path "$GOENV_ROOT/bin"
+update_path "$GOENV_ROOT/shims"
+eval "$(goenv init -)"
+update_path "$GOROOT/bin" append
+update_path "$GOPATH/bin" append
+update_path "$HOME/.ghcup/bin"
+
+unset update_path
