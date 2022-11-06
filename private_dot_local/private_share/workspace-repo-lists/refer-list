@@ -13,3 +13,5 @@ opencontainers/runc
 opencontainers/runtime-spec
 postgres/postgres
 redis/redis
+flatpak/xdg-dbus-proxy
+flatpak/xdg-desktop-portal
