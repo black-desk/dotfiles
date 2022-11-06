@@ -162,8 +162,7 @@ local function config()
         require("aerial").setup()
 
         require("null-ls").setup({ sources = {
-                require("null-ls").builtins.formatting.shfmt,
-                require("null-ls").builtins.completion.spell
+                require("null-ls").builtins.formatting.shfmt
         }})
 end
 
