@@ -58,8 +58,7 @@ export GOPATH=
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
 eval "$(goenv init -)"
-update_path "$GOROOT/bin" append
-update_path "$GOPATH/bin" append
+
 update_path "$HOME/.ghcup/bin"
 
 unset update_path
