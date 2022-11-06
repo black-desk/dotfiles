@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 if [[ $SCRIPT_DEBUG ]]; then
-	set -x
+        set -x
 fi
 
 pwd=$PWD
@@ -13,6 +13,5 @@ done
 if [[ -f ./.goenvrc ]]; then
         source ./.goenvrc || exit 255
 fi
-
 
 cd "$pwd" || exit 255
