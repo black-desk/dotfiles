@@ -36,6 +36,28 @@ wezterm.on("window-config-reloaded", function(window)
         recompute_padding(window)
 end);
 
+wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
+        local zoomed_text = ''
+        if tab.active_pane.is_zoomed then
+                zoomed_text = ' ZOOMED'
+        end
+
+        local panes_text = ''
+
+        for _, pane_in_panes in ipairs(panes) do
+                local title = pane_in_panes.title
+                if pane_in_panes.pane_id == pane.pane_id then
+                        title = '['..title..']'
+                end
+                panes_text = panes_text .. ' ' .. title
+        end
+
+        local _,pos = string.find(pane.current_working_dir, 'file://[^/]*/')
+        local pwd = string.sub(pane.current_working_dir, pos)
+
+        return '  Wezterm:'.. zoomed_text .. panes_text .. ' at ' .. pwd
+end)
+
 return {
         use_ime = true,
         colors = colors,
@@ -58,6 +80,7 @@ return {
                         "Source Han Sans CN"
                 }),
         },
+
         initial_rows = 35,
         initial_cols = 120,
         disable_default_key_bindings = true,
