@@ -11,3 +11,8 @@
 [".goenv"]
         type = "git-repo"
         url = "https://github.com/syndbg/goenv"
+# neovim
+[".local/bin/nvim"]
+    type = "file"
+    url = "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
+    executable = true
