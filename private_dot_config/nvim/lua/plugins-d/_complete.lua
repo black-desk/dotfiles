@@ -23,9 +23,6 @@ local config = function()
                                 cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
                         ['<C-f>'] = cmp.mapping(
                                 cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-                        -- Specify `cmp.config.disable` if you want to remove
-                        -- the default `<C-y>` mapping.
-                        ['<C-y>'] = cmp.config.disable,
                         ["<tab>"] = cmp.mapping.select_next_item(),
                         ["<S-tab>"] = cmp.mapping.select_prev_item(),
                         -- Accept currently selected item. Set `select` to

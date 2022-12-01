@@ -28,7 +28,7 @@ function On_Attach(client, bufnr)
                         "<cmd>lua vim.lsp.buf.rename()<CR>",
                         "LSP:: rename" },
                 ["<space>f"] = {
-                        "<cmd>lua vim.lsp.buf.formatting()<CR>",
+                        "<cmd>lua vim.lsp.buf.format()<CR>",
                         "LSP:: format" },
                 ["<space>E"] = {
                         "<cmd>lua vim.diagnostic.open_float()<CR>",
@@ -46,18 +46,6 @@ function On_Attach(client, bufnr)
         }
 
         wk.register({
-                ["gd"] = {
-                        "<cmd>lua vim.lsp.buf.definition()<cr>",
-                        "LSP:: definition" },
-                ["gr"] = {
-                        "<cmd>lua vim.lsp.buf.references()<cr>",
-                        "LSP:: reference" },
-                ["gi"] = {
-                        "<cmd>lua vim.lsp.buf.implementation()<cr>",
-                        "LSP:: implementation" },
-                ["gy"] = {
-                        "<cmd>lua vim.lsp.buf.type_definition()<cr>",
-                        "LSP:: type definition" },
                 ["<leader>t"] = {
                         "<cmd>AerialToggle<cr>",
                         "LSP:: show outline" },
