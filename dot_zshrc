@@ -1,19 +1,15 @@
 #!/usr/bin/env zsh
 
-if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-  tmux attach-session -t ssh || tmux new-session -s ssh
-  exit
+if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
+        [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+        tmux attach-session -t ssh || tmux new-session -s ssh
+        exit
 fi
 
-[[ $(tty) == \/dev\/tty[0-6]* ]] && fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt && echo && exit
+[[ $(tty) == \/dev\/tty[0-6]* ]] &&
+        fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt &&
+        exit
 
-# fix a coc-translator issue in 1.6.2 when cache file not found
-if [[ ! -f $HOME/.config/coc/extensions/coc-translator-data/translation.json ]]; then
-    mkdir -p $HOME/.config/coc/extensions/coc-translator-data/
-    echo "[]" > $HOME/.config/coc/extensions/coc-translator-data/translation.json # create a empty json array
-fi
-
-### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
@@ -21,7 +17,6 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
-
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -39,6 +34,7 @@ atload"[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && compdef dial=ssh" \
 
 zinit ice depth=1 atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh"
 zinit light romkatv/powerlevel10k
+zinit snippet OMZP::ssh-agent/ssh-agent.plugin.zsh
 
 bindkey -v #使用vim快捷键
 
@@ -74,14 +70,9 @@ setopt autopushd pushdsilent pushdtohome
 setopt pushdignoredups # Remove duplicate entries
 setopt pushdminus # This reverts the +/- operators.
 
-alias bk=popd
+alias bk="popd"
 
 alias R='cd "$(realpath "`pwd`")"'
 alias s="dirs -v"
-alias dowork="curl -sL https://raw.githubusercontent.com/huan/docker-wxwork/master/dowork.sh | bash"
-
-alias bk="popd"
-
-alias phtml="pandoc -f markdown+east_asian_line_breaks+gfm_auto_identifiers --toc --standalone --reference-links -t html --lua-filter=$HOME/workspace/source/pandoc-include.lua/include.lua"
 
 R
