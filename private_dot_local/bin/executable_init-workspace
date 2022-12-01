@@ -62,12 +62,13 @@ if [[ $# -ne 0 ]]; then
 fi
 
 for part in "${parts[@]}"; do
-        mkdir -p ~/workspace/repo/"$part"
-        pushd ~/workspace/repo/"$part"
+        mkdir -p ~/Documents/workspace/repo/"$part"
+        pushd ~/Documents/workspace/repo/"$part"
         set +e
         __workspace_init_list "$part" |
                 xargs -L 1 retry -t 5 -- __workspace_init_git_clone
         set -e
+        popd
 done
 
 unset -f list
