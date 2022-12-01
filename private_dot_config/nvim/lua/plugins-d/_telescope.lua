@@ -70,16 +70,19 @@ local function config()
         }
 
         wk.register({
-                ["<leader>E"] = {
+                ["te"] = {
                         builtin .. "find_files()<cr>",
                         "TELE:: search filename" },
-                ["<leader>R"] = {
+                ["tr"] = {
                         builtin .. "live_grep()<cr>",
                         "TELE:: search in files" },
-                ["<leader>B"] = {
+                ["tR"] = {
+                        builtin .. "grep_string()<cr>",
+                        "TELE:: search in files" },
+                ["tb"] = {
                         builtin .. "buffers()<cr>",
                         "TELE:: buffer list" },
-                ["<leader>?"] = {
+                ["t?"] = {
                         builtin .. "help_tags()<cr>",
                         "TELE:: helps" },
         }, key_opts)
