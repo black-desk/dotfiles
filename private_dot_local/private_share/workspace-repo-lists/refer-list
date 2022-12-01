@@ -9,8 +9,10 @@ containers/podman
 flatpak/xdg-dbus-proxy
 flatpak/xdg-desktop-portal
 https://git.postgresql.org/git/postgresql.git
+https://go.googlesource.com/tools
 https://salsa.debian.org/apt-team/apt.git
 libfuse/libfuse
+linuxdeepin/deepin-styleguide
 microsoft/language-server-protocol
 opencontainers/image-spec
 opencontainers/runc
