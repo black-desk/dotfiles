@@ -98,6 +98,7 @@ local function config()
                 'hls',
                 'jsonls',
                 'pyright',
+                'rust_analyzer',
                 'texlab',
                 'tsserver',
         }
