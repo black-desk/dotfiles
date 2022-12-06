@@ -1,0 +1,67 @@
+snippet setup "setup some common cmake variables" b
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+
+enable_testing()
+
+include_directories(BEFORE include)
+endsnippet
+
+snippet cpm "setup CPM.cmake" b
+set(CPM_LOCAL_PACKAGES ON)
+
+if(NOT DEFINED CPM_USE_LOCAL_PACKAGES)
+  set(CPM_USE_LOCAL_PACKAGES ON)
+endif()
+
+include(cmake/CPM.cmake)
+endsnippet
+
+snippet cpm_nlohmann_json "setup nlohmann_json using CPM.cmake" b
+CPMAddPackage(
+  GITHUB_REPOSITORY nlohmann/json
+  NAME nlohmann_json
+  VERSION 3.11.2
+  GIT_SHALLOW ON
+)
+endsnippet
+
+snippet cpm_libfmt "setup libfmt using CPM.cmake" b
+CPMAddPackage(
+  GITHUB_REPOSITORY fmtlib/fmt
+  GIT_TAG 9.1.0
+  GIT_SHALLOW ON
+)
+endsnippet
+
+snippet cpm_docopt "setup docopt using CPM.cmake" b
+CPMAddPackage(
+  GITHUB_REPOSITORY docopt/docopt.cpp
+  NAME docopt
+  GIT_TAG master
+  VERSION 0.6.2
+  GIT_SHALLOW ON
+)
+endsnippet
+
+snippet cpm_gtest "setup googletest using CPM.cmake" b
+CPMAddPackage(
+  GITHUB_REPOSITORY google/googletest
+  NAME GTest
+  VERSION 1.12.1
+  GIT_SHALLOW ON
+)
+endsnippet
+
+snippet git "dump git-describe version to variable GIT" b
+find_package(Git)
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} describe --abbrev=6 --dirty --always --tags
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  OUTPUT_VARIABLE GIT
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+endsnippet
