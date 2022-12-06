@@ -53,6 +53,9 @@ wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
         end
 
         local _,pos = string.find(pane.current_working_dir, 'file://[^/]*/')
+        if not pos then
+                pos = 0
+        end
         local pwd = string.sub(pane.current_working_dir, pos)
 
         return '  ⌨️  -=WezTerm=- ||'.. zoomed_text .. panes_text .. ' @ ' .. pwd
