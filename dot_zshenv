@@ -27,6 +27,7 @@ export CMAKE_GENERATOR=Ninja
 export CMAKE_EXPORT_COMPILE_COMMANDS=1
 export CMAKE_C_FLAGS="-Wno-unused-command-line-argument"
 export CMAKE_CXX_FLAGS="-Wno-unused-command-line-argument"
+export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
 
 function update_path() {
         local dir=$1
