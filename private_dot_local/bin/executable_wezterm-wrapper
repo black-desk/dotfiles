@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ $1 == "-e" ]]; then
-	exec /usr/bin/env WAYLAND_DISPLAY="" wezterm start --cwd "$PWD" "${@:2}"
+if [[ $1 == "-e" || $1 == "--" ]]; then
+	exec wezterm start --cwd "$PWD" "${@:2}"
 else
-	exec /usr/bin/env WAYLAND_DISPLAY="" wezterm start --cwd "$PWD" "$@"
+	exec wezterm start --cwd "$PWD" "$@"
 fi
