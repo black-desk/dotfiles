@@ -151,7 +151,14 @@ local function config()
         require("aerial").setup()
 
         require("null-ls").setup({ sources = {
-                require("null-ls").builtins.formatting.shfmt
+                require("null-ls").builtins.formatting.shfmt,
+                require("null-ls").builtins.formatting.golines.with({
+                        extra_args = {
+                                "-m", "80", "-t", "8",
+                                -- "--shorten-comments",
+                                -- comment as golines will shorten comment inside raw string
+                        }
+                })
         }})
 end
 
