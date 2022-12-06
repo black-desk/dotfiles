@@ -8,11 +8,6 @@
 #   https://clang.llvm.org/docs/ClangFormat.html
 #   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 #
-# MODIFY from .clang-format of linux kernel at b13baccc3850ca8b8cccbf8ed9912dbaa0fdf7f3
-#
-# MY CHANGE:
-# UseTab Always -> Never
-
 ---
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
@@ -521,6 +516,7 @@ ForEachMacros:
   - 'of_property_for_each_string'
   - 'of_property_for_each_u32'
   - 'pci_bus_for_each_resource'
+  - 'pci_doe_for_each_off'
   - 'pcl_for_each_chunk'
   - 'pcl_for_each_segment'
   - 'pcm_for_each_format'
@@ -632,11 +628,51 @@ ForEachMacros:
   - 'xbc_node_for_each_subkey'
   - 'zorro_for_each_dev'
 
-IncludeBlocks: Preserve
+IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '.*'
+  - Regex: '^<g(test|mock)/'
     Priority: 1
-IncludeIsMainRegex: '(Test)?$'
+  # C system headers.
+  - Regex: '^[<"](aio|arpa/inet|assert|complex|cpio|ctype|curses|dirent|dlfcn|\
+            errno|fcntl|fenv|float|fmtmsg|fnmatch|ftw|glob|grp|iconv|inttypes|\
+            iso646|langinfo|libgen|limits|locale|math|monetary|mqueue|ndbm|\
+            netdb|net/if|netinet/in|netinet/tcp|nl_types|poll|pthread|pwd|\
+            regex|sched|search|semaphore|setjmp|signal|spawn|stdalign|stdarg|\
+            stdatomic|stdbool|stddef|stdint|stdio|stdlib|stdnoreturn|string|\
+            strings|stropts|sys/ipc|syslog|sys/mman|sys/msg|sys/resource|\
+            sys/select|sys/sem|sys/shm|sys/socket|sys/stat|sys/statvfs|\
+            sys/time|sys/times|sys/types|sys/uio|sys/un|sys/utsname|sys/wait|\
+            tar|term|termios|tgmath|threads|time|trace|uchar|ulimit|uncntrl|\
+            unistd|utime|utmpx|wchar|wctype|wordexp)\.h[">]$'
+    Priority: 2
+  # C++ system headers (as of C++23). 
+  - Regex: '^[<"](algorithm|any|array|atomic|barrier|bit|bitset|cassert|\
+            ccomplex|cctype|cerrno|cfenv|cfloat|charconv|chrono|cinttypes|\
+            ciso646|climits|clocale|cmath|codecvt|compare|complex|concepts|\
+            condition_variable|coroutine|csetjmp|csignal|cstdalign|cstdarg|\
+            cstdbool|cstddef|cstdint|cstdio|cstdlib|cstring|ctgmath|ctime|\
+            cuchar|cwchar|cwctype|deque|exception|execution|expected|\
+            filesystem|flat_map|flat_set|format|forward_list|fstream|\
+            functional|future|generator|initializer_list|iomanip|ios|iosfwd|\
+            iostream|istream|iterator|latch|limits|list|locale|map|mdspan|\
+            memory|memory_resource|mutex|new|numbers|numeric|optional|ostream|\
+            print|queue|random|ranges|ratio|regex|scoped_allocator|semaphore|\
+            set|shared_mutex|source_location|span|spanstream|sstream|stack|\
+            stacktrace|stdexcept|stdfloat|stop_token|streambuf|string|\
+            string_view|strstream|syncstream|system_error|thread|tuple|\
+            type_traits|typeindex|typeinfo|unordered_map|unordered_set|utility|\
+            valarray|variant|vector|version)[">]$'
+    Priority: 3
+  # Other libraries' h files (with angles).
+  - Regex:    '^<ext/'
+    Priority: 4
+  # Your project's h files.
+  - Regex:    '^<'
+    Priority: 5
+  # Other libraries' h files (with quotes).
+  - Regex:    '^"'
+    Priority: 6
+IncludeIsMainRegex: '((T|t)est)?$'
 IndentCaseLabels: false
 IndentGotoLabels: false
 IndentPPDirectives: None
@@ -665,8 +701,8 @@ PenaltyReturnTypeOnItsOwnLine: 60
 
 PointerAlignment: Right
 ReflowComments: false
-SortIncludes: false
-SortUsingDeclarations: false
+SortIncludes: true
+SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
