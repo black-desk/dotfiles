@@ -54,7 +54,8 @@ export GOENV_ROOT="$HOME/.goenv"
 export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
 export GOENV_APPEND_GOPATH=
 export GOENV_PREPEND_GOPATH=1
-export GOPATH=
+export GOPATH="$HOME/Documents/go"
+export GOENV_GOPATH_PREFIX="$GOPATH"
 
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
