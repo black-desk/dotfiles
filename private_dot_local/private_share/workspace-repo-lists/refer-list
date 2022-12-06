@@ -8,6 +8,7 @@ containers/fuse-overlayfs
 containers/podman
 flatpak/xdg-dbus-proxy
 flatpak/xdg-desktop-portal
+freedesktop/dbus
 https://git.postgresql.org/git/postgresql.git
 https://go.googlesource.com/tools
 https://salsa.debian.org/apt-team/apt.git
