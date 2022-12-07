@@ -58,6 +58,17 @@ CPMAddPackage(
 )
 endsnippet
 
+snippet cpm_gtest "setup spdlog using CPM.cmake" b
+CPMAddPackage(
+  GITHUB_REPOSITORY gabime/spdlog
+  VERSION 1.11.0
+  OPTIONS "SPDLOG_FMT_EXTERNAL 1"
+  GIT_SHALLOW ON
+)
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DSPDLOG_ACTIVE_LEVEL=0")
+endsnippet
+
 snippet clang_tidy "setup clang-tidy" b
 find_program(CLANG_TIDY_EXE NAMES "clang-tidy" REQUIRE)
 set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
