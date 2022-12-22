@@ -62,5 +62,6 @@ update_path "$GOENV_ROOT/shims"
 eval "$(goenv init -)"
 
 update_path "$HOME/.ghcup/bin"
+update_path "$(go env GOBIN)"
 
 unset update_path
