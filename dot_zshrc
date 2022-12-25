@@ -52,6 +52,7 @@ alias ra="ranger"
 
 alias pkg_auto_remove="sudo pacman -Rcns \$(pacman -Qdtq)"
 alias pkg_source="asp export"
+alias yay="CC= CXX= CMAKE_C_COMPILER= CMAKE_CXX_COMPILER= CMAKE_GENERATOR= CMAKE_C_FLAGS= CMAKE_CXX_FLAGS= yay"
 
 alias gst="git status"
 alias lazygit="LANG=en_US lazygit"
