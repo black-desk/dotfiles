@@ -28,3 +28,9 @@
         path = ~/.config/git/kernel.gitconfig
 [includeIf "hasconfig:remote.*.url:https://git.kernel.org/**"]
         path = ~/.config/git/kernel.gitconfig
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
