@@ -11,6 +11,10 @@
 [".goenv"]
         type = "git-repo"
         url = "https://github.com/syndbg/goenv"
+# pyenv
+[".pyenv"]
+        type = "git-repo"
+        url = "https://github.com/pyenv/pyenv"
 # neovim
 [".local/bin/nvim"]
     type = "file"

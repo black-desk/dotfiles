@@ -1,9 +1,5 @@
 #!/bin/env bash
 
-if [[ $(type Xorg) ]]; then
-	export _GUI_="True"
-fi
-
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
@@ -59,9 +55,44 @@ export GOENV_GOPATH_PREFIX="$GOPATH"
 
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
-eval "$(goenv init -)"
 
-update_path "$HOME/.ghcup/bin"
+goenv(){
+        unset -f goenv
+        eval "$(goenv init -)"
+}
+
 update_path "$(go env GOBIN)"
 
+# pyenv
+
+export PYENV_ROOT="$HOME/.pyenv"
+
+update_path "$PYENV_ROOT/bin"
+update_path "$PYENV_ROOT/shims"
+
+pyenv(){
+        unset -f pyenv
+        eval "$(pyenv init -)"
+}
+
+# n
+
+export N_PREFIX="$HOME/.n"
+
+update_path "$N_PREFIX/bin"
+
+[ -s "$N_PREFIX/bin/n" ] ||
+        ( echo "Setting up n" &&
+          curl -L https://bit.ly/n-install | N_PREFIX=~/.n bash /dev/stdin -n -y
+        )
+
+# ghcpu
+
+update_path "$HOME/.ghcup/bin"
+
+# rustup
+
+. "$HOME/.cargo/env"
+
 unset update_path
+
