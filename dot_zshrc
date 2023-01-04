@@ -36,7 +36,7 @@ zinit ice depth=1 atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh"
 zinit light romkatv/powerlevel10k
 zinit snippet OMZP::ssh-agent/ssh-agent.plugin.zsh
 
-bindkey -v #使用vim快捷键
+bindkey -v
 
 bindkey -s '^g' "lazygit^M"
 bindkey -s '^h' "^[[D"
@@ -60,7 +60,7 @@ alias lazygit="LANG=en_US lazygit"
 alias cfg="chezmoi"
 
 alias clang-format-all="find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\|h\)' -exec clang-format -style=file -i {} \;"
-alias cmake-buildj="cmake --build build -j $(("$(nproc)" - 1))"
+alias cmake-buildj="cmake --build build -j $(($(nproc) - 1))"
 alias getcpm="wget -O CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake"
 
 setopt autopushd pushdsilent pushdtohome
