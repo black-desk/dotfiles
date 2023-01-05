@@ -91,7 +91,10 @@ update_path "$N_PREFIX/bin"
 
 [ -s "$N_PREFIX/bin/n" ] || (
         echo "Setting up n" &&
-        curl -L https://bit.ly/n-install | N_PREFIX=~/.n bash /dev/stdin -n -y
+        curl -L https://bit.ly/n-install | \
+                N_PREFIX=~/.n \
+                N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
+                bash /dev/stdin -n -y
 )
 
 # ghcup
