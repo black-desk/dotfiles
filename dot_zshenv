@@ -78,6 +78,11 @@ pyenv(){
         pyenv $@
 }
 
+python --help &> /dev/null || (
+        pyenv install anaconda3
+        pyenv global anaconda3
+)
+
 # n
 
 export N_PREFIX="$HOME/.n"
