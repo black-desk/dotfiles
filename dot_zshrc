@@ -72,4 +72,6 @@ alias bk="popd"
 alias R='cd "$(realpath "`pwd`")"'
 alias s="dirs -v"
 
+export GPG_TTY=$(tty)
+
 R
