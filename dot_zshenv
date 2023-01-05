@@ -94,8 +94,8 @@ update_path "$N_PREFIX/bin"
           curl -L https://bit.ly/n-install | N_PREFIX=~/.n bash /dev/stdin -n -y
         )
 
-# ghcpu
 
+# ghcup
 update_path "$HOME/.ghcup/bin"
 
 # rustup
