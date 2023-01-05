@@ -89,11 +89,10 @@ export N_PREFIX="$HOME/.n"
 
 update_path "$N_PREFIX/bin"
 
-[ -s "$N_PREFIX/bin/n" ] ||
-        ( echo "Setting up n" &&
-          curl -L https://bit.ly/n-install | N_PREFIX=~/.n bash /dev/stdin -n -y
-        )
-
+[ -s "$N_PREFIX/bin/n" ] || (
+        echo "Setting up n" &&
+        curl -L https://bit.ly/n-install | N_PREFIX=~/.n bash /dev/stdin -n -y
+)
 
 # ghcup
 update_path "$HOME/.ghcup/bin"
