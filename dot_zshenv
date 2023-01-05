@@ -75,6 +75,7 @@ update_path "$PYENV_ROOT/shims"
 pyenv(){
         unset -f pyenv
         eval "$(pyenv init -)"
+        pyenv $@
 }
 
 # n
