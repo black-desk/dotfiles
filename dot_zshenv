@@ -98,8 +98,8 @@ update_path "$N_PREFIX/bin"
 update_path "$HOME/.ghcup/bin"
 
 # rustup
+cargo &> /dev/null || rustup install nightly
 
-. "$HOME/.cargo/env"
+[ ! -f "$HOME/.cargo/env" ] || . "$HOME/.cargo/env"
 
 unset update_path
-
