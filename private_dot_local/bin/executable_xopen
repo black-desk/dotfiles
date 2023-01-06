@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
 
-xdgopen=$(command -pv xdg-open)
-
-$xdgopen "$@" > /dev/null 2>&1
+&> /dev/null xdg-open "$@"
