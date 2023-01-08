@@ -4,3 +4,4 @@
 **/build
 **/compile_commands.json
 **/m4
+/.worktrees
