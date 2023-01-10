@@ -1,75 +1,152 @@
 #!/bin/env bash
 
-if [[ $SCRIPT_DEBUG ]]; then
-        set -x
-fi
-
-__workspace_init_git_clone() {
-        addr=$1
-
-        dirname=${addr##*/}
-        dirname=${dirname%.git}
-
-        if [[ -d "$dirname" ]]; then
-                echo git repo "$addr" existed
-        elif [[ $addr == http://* ]] || [[ $addr == https://* ]] ||
-                [[ $addr == git://* ]] || [[ $addr == ssh://* ]]; then
-                git clone "$addr"
-        else
-                gh repo clone "$addr"
-        fi
-
-        result=$?
-
-        if [[ $result != 0 ]]; then
-                rm -rf "$dirname"
-                /bin/false
-        else
-                get_gerrit_hook "$dirname"
-        fi
-
+pushd() {
+	command pushd "$@" >/dev/null || exit
 }
 
-__workspace_init_list() {
-        part=$1
-        if [[ $part == "fork" ]]; then
-                gh repo list --fork --no-archived --json name |
-                        jq -r ".[].name"
-        elif [[ $part == "source" ]]; then
-                gh repo list --source --no-archived --json name |
-                        jq -r ".[].name"
-        else
-                cat ~/.local/share/workspace-repo-lists/"$part"-list
-        fi
-        return
+popd() {
+	command popd >/dev/null || exit
 }
 
-export -f __workspace_init_list
-export -f __workspace_init_git_clone
+echo "Parsing json..."
 
-set -e
+json=$(cat "$HOME"/.config/workspace.json)
 
-parts=(
-        source
-        kernel
-        fork
-        refer
-        aur
+cmds=$(
+	echo "$json" | jq -r '
+                paths as $path |
+                select(getpath($path).eval?) |
+                "jq \".\( $path | join(".") )=$(\(getpath($path).eval))\""
+        '
 )
 
-if [[ $# -ne 0 ]]; then
-        parts=("$@")
-fi
+readarray -t evals <<<"$cmds"
 
-for part in "${parts[@]}"; do
-        mkdir -p ~/Documents/workspace/repo/"$part"
-        pushd ~/Documents/workspace/repo/"$part"
-        set +e
-        __workspace_init_list "$part" |
-                xargs -L 1 retry -t 5 -- __workspace_init_git_clone
-        set -e
-        popd
+for cmd in "${evals[@]}"; do
+	json=$(echo "$json" | eval "$cmd")
 done
 
-unset -f list
-unset -f git_clone
+echo "Parsing json... done"
+
+root="$(echo "$json" | jq -r ".root")"
+
+echo "Workspace root: $root"
+
+mkdir -p "$root"
+
+pushd "$root" || exit
+
+readarray -t components <<<"$(echo "$json" | jq -r '.components[]')"
+
+if [[ $# -ne 0 ]]; then
+	components=("$@")
+fi
+
+echo "Enabled components:"
+echo "${components[@]}"
+
+filter() {
+	for component in "${components[@]}"; do
+		if [[ "$1" = *"$component"* ]]; then
+			return 0
+		fi
+	done
+	return 255
+}
+
+echo "Cloning repo using github-cli..."
+
+echo "$json" | jq -r '
+        paths as $path |
+        select(getpath($path).github?) |
+        [ ($path[0:-1] | join ("/") ), getpath($path).github ] |
+        @tsv
+' | while IFS=$'\t' read -r dir repo; do
+	if filter "$dir"; then
+		mkdir -p "$dir"
+		pushd "$dir" || exit
+		dir=${repo##*/}
+		git -C "$dir" rev-parse &>/dev/null ||
+			retry -t 5 -- gh repo clone "$repo" -- --recurse-submodules
+		popd || exit
+	fi
+done
+
+echo "Cloning repo using github-cli... done"
+
+echo "Cloning repo using git..."
+
+echo "$json" | jq -r '
+        paths as $path |
+        select(getpath($path).url?) |
+        select( $path | any(.=="remote") | not ) |
+        [ ($path[0:-1] | join ("/") ), getpath($path).url ] |
+        @tsv
+' | while IFS=$'\t' read -r dir url; do
+	if filter "$dir"; then
+		mkdir -p "$dir"
+		pushd "$dir" || exit
+		dir=${url%.git}
+		dir=${dir##*/}
+		git -C "$dir" rev-parse &>/dev/null ||
+			retry -t 5 -- git clone "$url" --recurse-submodules
+		popd || exit
+	fi
+done
+
+echo "Cloning repo using git... done"
+
+echo "Setup remotes..."
+
+echo "$json" | jq -r '
+        paths as $path |
+        select(getpath($path).url?) |
+        select( $path | any(.=="remote") ) | [
+                ($path[0:-3] | join ("/") ),
+                getpath($path[0:-2]).url,
+                getpath($path[0:-2]).github,
+                getpath($path).name,
+                getpath($path).url
+        ] | @tsv
+' | while IFS=$'\t' read -r dir main name url; do
+	if filter "$dir"; then
+		main=${main%.git}
+		main=${main##*/}
+		mkdir -p "$dir/$main"
+		pushd "$dir/$main" || exit
+		git remote | grep "$name" &>/dev/null ||
+			git remote add "$name" "$url"
+		retry -t 5 -- git fetch "$name"
+		popd || exit
+	fi
+done
+
+echo "Setup remotes... done"
+
+echo "Setup worktrees..."
+
+echo "$json" | jq -r '
+        paths as $path |
+        select(getpath($path).worktrees?) | 
+        getpath($path) as $repo |
+        getpath($path).worktrees[] | [
+                ( $path[0:-1] | join("/") ),
+                $repo.url,
+                .branch,
+                .reference
+        ] | @tsv
+' | while IFS=$'\t' read -r dir main branch reference; do
+	if filter "$dir"; then
+		main=${main%.git}
+		main=${main##*/}
+		mkdir -p "$dir/$main/.worktrees"
+		pushd "$dir/$main/.worktrees" || exit
+		git worktree list | grep "$branch" &>/dev/null ||
+			git worktree add "$branch" "$reference" -b "$branch"
+		popd || exit
+	fi
+done
+
+echo "Setup worktrees... done"
+
+popd || exit

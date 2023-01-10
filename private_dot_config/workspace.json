@@ -1,0 +1,139 @@
+{
+        "root": {
+                "eval": "echo \\\"\"$(xdg-user-dir DOCUMENTS)\"/workspace\\\""
+        },
+        "components": [
+                "source",
+                "fork",
+                "refer",
+                "kernel"
+        ],
+        "repos": {
+                "source": {
+                        "eval": "gh repo list --source --no-archived --json name | jq -r \"[ {github:(\\\"black-desk/\\\"+.[].name)}]\""
+                },
+                "fork": {
+                        "eval": "gh repo list --fork --no-archived --json name | jq -r \"[{github:(\\\"black-desk/\\\"+.[].name)}]\""
+                },
+                "refer": [
+                        {
+                                "github": "Dreamacro/clash"
+                        },
+                        {
+                                "github": "ZLMediaKit/ZLMediaKit"
+                        },
+                        {
+                                "github": "chenshuo/muduo"
+                        },
+                        {
+                                "github": "chenyuntc/pytorch-book"
+                        },
+                        {
+                                "github": "containers/bubblewrap"
+                        },
+                        {
+                                "github": "containers/crun"
+                        },
+                        {
+                                "github": "containers/fuse-overlayfs"
+                        },
+                        {
+                                "github": "containers/podman"
+                        },
+                        {
+                                "github": "flatpak/xdg-dbus-proxy"
+                        },
+                        {
+                                "github": "flatpak/xdg-desktop-portal"
+                        },
+                        {
+                                "github": "freedesktop/dbus"
+                        },
+                        {
+                                "github": "libfuse/libfuse"
+                        },
+                        {
+                                "github": "linuxdeepin/deepin-styleguide"
+                        },
+                        {
+                                "github": "microsoft/language-server-protocol"
+                        },
+                        {
+                                "github": "opencontainers/image-spec"
+                        },
+                        {
+                                "github": "opencontainers/runc"
+                        },
+                        {
+                                "github": "opencontainers/runtime-spec"
+                        },
+                        {
+                                "github": "postgres/postgres"
+                        },
+                        {
+                                "github": "redis/redis"
+                        },
+                        {
+                                "github": "seccomp/libseccomp"
+                        },
+                        {
+                                "url": "git://git.postgresql.org/git/postgresql.git"
+                        },
+                        {
+                                "url": "https://go.googlesource.com/tools"
+                        },
+                        {
+                                "github": "Debian/apt",
+                                "remote": [
+                                        {
+                                                "name": "salsa",
+                                                "url": "https://salsa.debian.org/apt-team/apt.git"
+                                        }
+                                ]
+                        }
+                ],
+                "kernel": [
+                        {
+                                "url": "https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git"
+                        },
+                        {
+                                "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git",
+                                "remote": [
+                                        {
+                                                "name": "stable",
+                                                "url": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git"
+                                        },
+                                        {
+                                                "name": "wsl",
+                                                "url": "https://github.com/microsoft/WSL2-Linux-Kernel"
+                                        }
+                                ],
+                                "worktrees": [
+                                        {
+                                                "branch": "linux-msft-wsl-5.15.y",
+                                                "reference": "wsl/linux-msft-wsl-5.15.y"
+                                        },
+                                        {
+                                                "branch": "linux-4.19.y",
+                                                "reference": "stable/linux-4.19.y"
+                                        },
+                                        {
+                                                "branch": "linux-rolling-lts",
+                                                "reference": "stable/linux-rolling-lts"
+                                        }
+                                ]
+                        }
+                ],
+                "uniontech": [
+                        {
+                                "url": "http://gerrit.uniontech.com/a/linglong-pica"
+                        },
+                        {
+                                "github": "black-desk/dde-go"
+                        },
+                        {
+                                "github": "black-desk/uniontech-docs"
+                        }
+                ]
+        }
+}
