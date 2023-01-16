@@ -83,6 +83,10 @@ python --help &> /dev/null || (
         pyenv global anaconda3
 )
 
+__conda_setup="$('conda' 'shell.zsh' 'hook' 2> /dev/null)"
+eval "$__conda_setup"
+unset __conda_setup
+
 # n
 
 export N_PREFIX="$HOME/.n"
