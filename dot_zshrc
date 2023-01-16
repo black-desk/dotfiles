@@ -6,6 +6,7 @@ if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
         exit
 fi
 
+
 [[ $(tty) == \/dev\/tty[0-6]* ]] &&
         fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt &&
         exit
@@ -34,7 +35,6 @@ atload"[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && compdef dial=ssh" \
 
 zinit ice depth=1 atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh"
 zinit light romkatv/powerlevel10k
-zinit snippet OMZP::ssh-agent/ssh-agent.plugin.zsh
 
 bindkey -v
 
