@@ -6,10 +6,14 @@ if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
         exit
 fi
 
-
-[[ $(tty) == \/dev\/tty[0-6]* ]] &&
-        fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt &&
-        exit
+if [[ $(tty) == \/dev\/tty[0-6]* ]]; then
+        fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt
+        if [[ $(cat ~/.cache/fbterm-log.txt) ]]; then
+                echo "failed to start fbterm, check ~/.cache/fbterm-log.txt"
+        else
+                exit
+        fi
+fi
 
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
