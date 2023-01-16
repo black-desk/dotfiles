@@ -77,7 +77,13 @@
                                 "github": "seccomp/libseccomp"
                         },
                         {
-                                "url": "git://git.postgresql.org/git/postgresql.git"
+                                "github": "postgres/postgres",
+                                "remote": [
+                                        {
+                                                "name": "official",
+                                                "url": "git://git.postgresql.org/git/postgresql.git"
+                                        }
+                                ]
                         },
                         {
                                 "url": "https://go.googlesource.com/tools"
