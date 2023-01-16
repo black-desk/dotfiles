@@ -139,6 +139,9 @@
                         },
                         {
                                 "github": "black-desk/uniontech-docs"
+                        },
+                        {
+                                "github": "linuxdeepin/warm-sched"
                         }
                 ]
         }
