@@ -92,12 +92,10 @@ end
 
 return {
         'nvim-telescope/telescope.nvim',
-        requires = {
+        dependencies = {
+                'nvim-lspconfig',
                 'nvim-lua/plenary.nvim',
                 'nvim-telescope/telescope-ui-select.nvim',
-        },
-        after = {
-                'nvim-lspconfig',
         },
         config = config,
 }

@@ -12,7 +12,4 @@ end
 return {
         'folke/neodev.nvim',
         config = config,
-        after = {
-                'nvim-lspconfig',
-        }
 }

@@ -6,11 +6,6 @@
 local config = function()
         local cmp = require('cmp')
         cmp.setup({
-                enabled = function()
-                        if vim.api.nvim_get_mode()["mode"] == 'i' then
-                                return require("fcitx5-ui").getCurrentIM() == ""
-                        end
-                end,
                 snippet = {
                         -- REQUIRED - you must specify a snippet engine
                         expand = function(args)
@@ -39,14 +34,18 @@ local config = function()
                                 keyword_length = 2,
                                 option = {
                                         convert_case = true,
-                                        loud = true } } })
+                                        loud = true
+                                }
+                        }
+                })
         })
 
         -- Use buffer source for `/` (if you enabled `native_menu`, this won't
         -- work anymore).
         cmp.setup.cmdline('/', {
                 mapping = cmp.mapping.preset.cmdline(),
-                sources = { { name = 'buffer' } } })
+                sources = { { name = 'buffer' } }
+        })
 
         -- Use cmdline & path source for ':' (if you enabled `native_menu`,
         -- this won't work anymore).
@@ -68,7 +67,7 @@ end
 
 return {
         'hrsh7th/nvim-cmp',
-        requires = {
+        dependencies = {
                 -- https://github.com/hrsh7th/cmp-nvim-lsp
                 'hrsh7th/cmp-nvim-lsp',
                 -- https://github.com/hrsh7th/cmp-buffer
@@ -83,5 +82,4 @@ return {
                 'octaltree/cmp-look',
         },
         config = config,
-        after = 'fcitx5-ui.nvim',
 }

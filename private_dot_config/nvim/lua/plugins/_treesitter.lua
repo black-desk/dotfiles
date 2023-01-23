@@ -1,8 +1,5 @@
 -- https://github.com/nvim-treesitter/nvim-treesitter
 
--- Description:
--- better syntax highlight
-
 local function config()
         require 'nvim-treesitter.configs'.setup {
                 -- One of "all", or a list of languages
@@ -39,7 +36,7 @@ end
 
 return {
         'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
+        build = ':TSUpdate',
         config = config,
         requires = {
                 'nvim-treesitter/playground',

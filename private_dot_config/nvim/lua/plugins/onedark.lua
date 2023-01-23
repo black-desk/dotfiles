@@ -13,5 +13,4 @@ end
 return {
         'navarasu/onedark.nvim',
         config = config,
-        after = 'nvim-treesitter',
 }

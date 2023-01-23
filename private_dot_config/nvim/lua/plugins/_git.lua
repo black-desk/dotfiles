@@ -54,7 +54,7 @@ end
 
 return {
         'tpope/vim-fugitive',
-        requires = {
+        dependencies = {
                 -- GBrowser handlers
                 {
                         -- https://github.com/tpope/vim-rhubarb

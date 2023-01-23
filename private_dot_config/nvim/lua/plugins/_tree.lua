@@ -36,7 +36,7 @@ end
 return {
         'nvim-neo-tree/neo-tree.nvim',
         branch = "v2.x",
-        requires = {
+        dependencies = {
                 -- https://github.com/kyazdani42/nvim-web-devicons
                 'kyazdani42/nvim-web-devicons', -- icon
                 'nvim-lua/plenary.nvim',
