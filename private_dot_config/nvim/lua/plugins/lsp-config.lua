@@ -165,11 +165,12 @@ return {
         'neovim/nvim-lspconfig',
         config = config,
         dependencies = {
-                'jose-elias-alvarez/null-ls.nvim',
-                'williamboman/mason.nvim',
-                'williamboman/mason-lspconfig.nvim',
-                'stevearc/aerial.nvim',
-                'folke/which-key.nvim',
                 'folke/neodev.nvim',
+                'folke/which-key.nvim',
+                'jose-elias-alvarez/null-ls.nvim',
+                'kevinhwang91/nvim-ufo',
+                'stevearc/aerial.nvim',
+                'williamboman/mason-lspconfig.nvim',
+                'williamboman/mason.nvim',
         }
 }
