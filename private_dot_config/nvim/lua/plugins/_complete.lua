@@ -26,6 +26,7 @@ local config = function()
                 }),
                 sources = cmp.config.sources({
                         { name = 'nvim_lsp' },
+                        { name = 'codeium' },
                         { name = 'ultisnips' },
                         { name = 'path' },
                         { name = 'buffer' },
@@ -80,6 +81,7 @@ return {
                 'quangnguyen30192/cmp-nvim-ultisnips',
                 -- https://github.com/octaltree/cmp-look
                 'octaltree/cmp-look',
+                'jcdickinson/codeium.nvim',
         },
         config = config,
 }
