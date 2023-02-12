@@ -20,22 +20,28 @@ function On_Attach(client, bufnr)
         wk.register({
                 ["K"] = {
                         "<cmd>lua vim.lsp.buf.hover()<CR>",
-                        "LSP:: hover" },
+                        "LSP:: hover"
+                },
                 ["<C-k>"] = {
                         "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-                        "LSP:: signature help" },
+                        "LSP:: signature help"
+                },
                 ["<space>rn"] = {
                         "<cmd>lua vim.lsp.buf.rename()<CR>",
-                        "LSP:: rename" },
+                        "LSP:: rename"
+                },
                 ["<space>f"] = {
                         "<cmd>lua vim.lsp.buf.format()<CR>",
-                        "LSP:: format" },
+                        "LSP:: format"
+                },
                 ["<space>E"] = {
                         "<cmd>lua vim.diagnostic.open_float()<CR>",
-                        "LSP:: float diagnostic" },
+                        "LSP:: float diagnostic"
+                },
                 ["<space>a"] = {
                         "<cmd>lua vim.lsp.buf.code_action()<CR>",
-                        "LSP:: code action" },
+                        "LSP:: code action"
+                },
         }, key_opts)
 
         key_opts = {
@@ -48,7 +54,8 @@ function On_Attach(client, bufnr)
         wk.register({
                 ["<leader>t"] = {
                         "<cmd>AerialToggle<cr>",
-                        "LSP:: show outline" },
+                        "LSP:: show outline"
+                },
         }, key_opts)
 
         for _, hook in ipairs(On_Attach_hooks) do
@@ -63,7 +70,6 @@ end
 -- config()
 
 local function config()
-
         local function get_my_lsp_configs()
                 -- TODO: reduce duplicate code for read plugins config.
                 local home = os.getenv('HOME')
@@ -115,7 +121,7 @@ local function config()
         -- NOTE: This only work if `table.unpack` is the last argument.
         -- https://stackoverflow.com/questions/1410862/concatenation-of-tables-in-lua#comment123687523_54352037
         -- https://stackoverflow.com/questions/37372182/what-is-happening-when-i-call-unpack-as-luas-function-arguments
-        table.insert(server_list,1,"mdlsp")
+        table.insert(server_list, 1, "mdlsp")
 
         require("lspconfig.configs")["mdlsp"] = {
                 default_config = {
