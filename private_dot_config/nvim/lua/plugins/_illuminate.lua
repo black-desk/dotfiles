@@ -15,4 +15,5 @@ end
 return {
         'RRethy/vim-illuminate',
         config = config,
+        dependencies = { 'neovim/nvim-lspconfig' },
 }
