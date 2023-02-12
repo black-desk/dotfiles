@@ -79,13 +79,9 @@ pyenv(){
 }
 
 python --help &> /dev/null || (
-        pyenv install anaconda3
-        pyenv global anaconda3
+        pyenv install 3.11.1
+        pyenv global 3.11.1
 )
-
-__conda_setup="$('conda' 'shell.zsh' 'hook' 2> /dev/null)"
-eval "$__conda_setup"
-unset __conda_setup
 
 # n
 
