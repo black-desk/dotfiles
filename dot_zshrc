@@ -76,6 +76,8 @@ alias bk="popd"
 alias R='cd "$(realpath "`pwd`")"'
 alias s="dirs -v"
 
+alias ghdash="LANG=en_US gh dash"
+
 export GPG_TTY=$(tty)
 
 R
