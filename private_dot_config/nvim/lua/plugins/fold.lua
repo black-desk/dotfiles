@@ -44,8 +44,11 @@ local config = function()
                         -- make sure buffer is attached
                         require('ufo').attach(bufnr)
                         -- getFolds return Promise if providerName == 'lsp'
-                        local ranges = await(require('ufo').getFolds(bufnr, providerName))
-                        local ok = require('ufo').applyFolds(bufnr, ranges)
+                        local ok, ranges = pcall(await, require('ufo').getFolds(bufnr, providerName))
+                        if not ok or not ranges then
+                                return
+                        end
+                        ok = require('ufo').applyFolds(bufnr, ranges)
                         if ok then
                                 require('ufo').closeAllFolds()
                         end
