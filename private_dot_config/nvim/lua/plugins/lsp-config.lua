@@ -31,7 +31,7 @@ function On_Attach(client, bufnr)
                         "LSP:: rename"
                 },
                 ["<space>f"] = {
-                        "<cmd>lua vim.lsp.buf.format()<CR>",
+                        "<cmd>lua vim.lsp.buf.format( {filter = function(client) return client.name ~= \"clangd\" end})<CR>",
                         "LSP:: format"
                 },
                 ["<space>E"] = {
@@ -154,17 +154,69 @@ local function config()
 
         require("aerial").setup()
 
-        require("null-ls").setup({ sources = {
-                require("null-ls").builtins.formatting.shfmt,
-                require("null-ls").builtins.formatting.golines.with({
-                        extra_args = {
-                                "-m", "80", "-t", "8",
-                                -- "--shorten-comments",
-                                -- comment as golines will shorten comment inside raw string
-                        }
-                }),
-                require("null-ls").builtins.diagnostics.golangci_lint,
-        }})
+
+        local h = require("null-ls.helpers")
+        local methods = require("null-ls.methods")
+
+        local FORMATTING = methods.internal.FORMATTING
+
+
+        local get_lines = function(diff)
+                local lines = {}
+                for begin, length in string.gmatch(diff, '@@ [^+]++(%d+),?([^ @]*) @@') do
+                        if #length ==0 then
+                                length = 0
+                        end
+                        table.insert(lines, "--lines=" .. begin .. ":" .. begin + length)
+                end
+                return lines
+        end
+
+        require("null-ls").setup({
+                debug = true,
+                on_init = function(new_client, _)
+                        new_client.offset_encoding = 'utf-8'
+                end,
+                on_attach = On_Attach,
+                sources = {
+                        require("null-ls").builtins.formatting.shfmt,
+                        h.make_builtin({
+                                name = "git_clang_format",
+                                meta = {
+                                        description = "Invoke clang-format on the changes in current files or a specific commit",
+                                },
+                                method = { FORMATTING },
+                                filetypes = { "c", "cpp", "cs", "java", "cuda" },
+                                generator_opts = {
+                                        command = "clang-format",
+                                        args = function(params)
+                                                local tempfile = vim.fn.tempname()
+                                                local git_repo_root = vim.fn.system("git rev-parse --show-toplevel")
+                                                local filepath = params.bufname:sub(#git_repo_root + 1)
+                                                local head_content = vim.fn.systemlist("git show HEAD:" .. filepath)
+                                                vim.fn.writefile(head_content, tempfile)
+                                                local diff = vim.fn.system(
+                                                        { "git", "diff", "-U0", "--no-index", "--", tempfile, "-" },
+                                                        params.content
+                                                )
+                                                vim.fn.delete(tempfile)
+                                                local lines = get_lines(diff)
+                                                return { "--assume-filename", "$FILENAME", unpack(lines) }
+                                        end,
+                                        to_stdin = true,
+                                },
+                                factory = h.formatter_factory,
+                        }),
+                        require("null-ls").builtins.formatting.golines.with({
+                                extra_args = {
+                                        "-m", "80", "-t", "8",
+                                        -- "--shorten-comments",
+                                        -- comment as golines will shorten comment inside raw string
+                                }
+                        }),
+                        require("null-ls").builtins.diagnostics.golangci_lint,
+                }
+        })
 end
 
 return {
