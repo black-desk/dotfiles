@@ -5,8 +5,6 @@ export LANGUAGE=zh_CN:en_US
 
 fcitx5 --keep -d >/dev/null 2>&1
 
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
 export VISUAL=nvim
 export EDITOR=nvim
 export PAGER="less -r"
@@ -14,17 +12,6 @@ export PAGER="less -r"
 export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=100000
 export HISTSIZE=100000
-
-# CMAKE
-
-export CC=clang
-export CXX=clang++
-export CMAKE_C_COMPILER=$CC
-export CMAKE_CXX_COMPILER=$CXX
-export CMAKE_GENERATOR=Ninja
-export CMAKE_EXPORT_COMPILE_COMMANDS=1
-export CMAKE_C_FLAGS="-Wno-unused-command-line-argument"
-export CMAKE_CXX_FLAGS="-Wno-unused-command-line-argument"
 
 function update_path() {
         local dir=$1

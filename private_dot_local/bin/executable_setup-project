@@ -1,48 +1,71 @@
 #!/usr/bin/env bash
 
 if [[ $SCRIPT_DEBUG ]]; then
-        set -x
+	set -x
 fi
 
 function setup() {
-        if [[ -f ../meson.build ]]; then
-                meson setup . .. || exit 255
-                meson compile || exit 255
-        elif [[ -f ../CMakeLists.txt ]]; then
-                cmake .. -DCMAKE_BUILD_TYPE=Debug || exit 255
-                cmake --build . || exit 255
-        else
-                if [[ -f ../autogen.sh ]]; then
-                        pushd ..
-                        ./autogen.sh || exit 255
-                        popd || exit 255
-                fi
+	export CC="clang"
+	export CXX="clang++"
 
-                if [[ -f ../configure ]]; then
-                        ../configure
-                fi
+        export CC_LD="mold"
+        export CXX_LD="$CC_LD"
 
-                cores=$(nproc)
-                cores=$(("$cores" - 1))
+        export CMAKE_C_FLAGS="-fuse-ld=$CC_LD"
+        export CMAKE_CXX_FLAGS="-fuse-ld=$CC_LD"
 
-                if [[ -f GNUmakefile ]] ||
-                        [[ -f makefile ]] ||
-                        [[ -f Makefile ]]; then
-                        bear -- make -j $cores
-                fi
-        fi
+	export CFLAGS="-Wall -Wextra $CFLAGS"
+	export CXXFLAGS="$CFLAGS"
+
+	if [[ -f ../meson.build ]]; then
+		if [[ ! -f ../.clang-tidy ]]; then
+                        touch ../.clang-tidy
+		fi
+
+		meson setup . .. || exit 255
+		meson compile || exit 255
+	elif [[ -f ../CMakeLists.txt ]]; then
+		cmake .. --fresh -DCMAKE_GENERATOR=Ninja \
+			-DCMAKE_BUILD_TYPE=Debug \
+			-DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+			-DCMAKE_INSTALL_SYSCONFDIR=/etc \
+			-DCMAKE_CXX_CLANG_TIDY=clang-tidy ||
+			exit 255
+		cmake --build . || exit 255
+	else
+		if [[ -f ../autogen.sh ]]; then
+			pushd ..
+			./autogen.sh || exit 255
+			popd || exit 255
+		fi
+
+		if [[ -f ../configure ]]; then
+			../configure
+		fi
+
+		cores=$(nproc)
+		cores=$(("$cores" - 1))
+
+		if [[ -f GNUmakefile ]] ||
+			[[ -f makefile ]] ||
+			[[ -f Makefile ]]; then
+
+			make clean
+			bear -- make -j $cores
+		fi
+	fi
 }
 
 PROJECT_ROOT=$(realpath .)
 
 if [[ -n $1 ]]; then
-        PROJECT_ROOT=$(realpath "$1")
+	PROJECT_ROOT=$(realpath "$1")
 fi
 
 BUILD_ROOT=build
 
 if [[ -n $2 ]]; then
-        BUILD_ROOT=$2
+	BUILD_ROOT=$2
 fi
 
 mkdir -p "$BUILD_ROOT"
@@ -60,20 +83,20 @@ pushd "$PROJECT_ROOT" || exit 255
 workspace=$(realpath ~/workspace)
 
 if [[ $PROJECT_ROOT == $workspace* ]]; then
-        repo=${PROJECT_ROOT#"$workspace"}
-        if [[ -f ~/.local/share/vimrcs/"$repo"/.vimrc ]]; then
-                ln -s ~/.local/share/vimrcs/"$repo"/.vimrc .
-        fi
+	repo=${PROJECT_ROOT#"$workspace"}
+	if [[ -f ~/.local/share/vimrcs/"$repo"/.vimrc ]]; then
+		ln -s ~/.local/share/vimrcs/"$repo"/.vimrc .
+	fi
 fi
 
 if [[ -d ./.git ]]; then
-        retry -t 5 -- git submodule update --init --recursive
+	retry -t 5 -- git submodule update --init --recursive
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-        pushd "$BUILD_ROOT" || exit 255
-        setup
-        popd || exit 255
+	pushd "$BUILD_ROOT" || exit 255
+	setup
+	popd || exit 255
 fi
 
 popd || exit 255
