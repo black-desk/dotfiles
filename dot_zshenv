@@ -66,8 +66,8 @@ pyenv(){
 }
 
 python --help &> /dev/null || (
-        pyenv install 3.10.9
-        pyenv global 3.10.9
+        pyenv install 3.10
+        pyenv global 3.10
 )
 
 # n
