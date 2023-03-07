@@ -42,19 +42,27 @@ export GOENV_PREPEND_GOPATH=1
 export GOPATH="$HOME/Documents/go"
 export GOENV_GOPATH_PREFIX="$GOPATH"
 
+update_path "$GOPATH/bin"
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
 
 goenv(){
         unset -f goenv
         eval "$(goenv init -)"
+        command -v lazygit &>/dev/null || go install github.com/jesseduffield/lazygit@latest
+        command -v chezmoi &>/dev/null || go install github.com/twpayne/chezmoi@latest
+        command -v gh &>/dev/null || go install github.com/cli/cli@latest
+        goenv $@
 }
 
-update_path "$(go env GOBIN)"
+command -v go &>/dev/null || (
+        goenv install latest
+)
 
 # pyenv
 
 export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
 
 update_path "$PYENV_ROOT/bin"
 update_path "$PYENV_ROOT/shims"
@@ -65,8 +73,9 @@ pyenv(){
         pyenv $@
 }
 
-python --help &> /dev/null || (
+command -v python &>/dev/null || (
         pyenv install 3.10
+        pyenv install miniconda3
         pyenv global 3.10
 )
 

@@ -1,5 +1,6 @@
 **/.cache/clangd
 **/.gdb_history
+**/.python-version
 **/.vimrc
 **/build
 **/compile_commands.json
