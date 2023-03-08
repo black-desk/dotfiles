@@ -105,7 +105,7 @@ local function config()
                 'jsonls',
                 'pyright',
                 'rust_analyzer',
-                'sumneko_lua',
+                'lua_ls',
                 'texlab',
                 'tsserver',
         }
