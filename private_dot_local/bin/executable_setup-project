@@ -14,7 +14,7 @@ function setup() {
         export CMAKE_C_FLAGS="-fuse-ld=$CC_LD"
         export CMAKE_CXX_FLAGS="-fuse-ld=$CC_LD"
 
-	export CFLAGS="-Wall -Wextra $CFLAGS"
+	export CFLAGS="-Wall -Wextra -Werror -fsanitize=undefined $CFLAGS"
 	export CXXFLAGS="$CFLAGS"
 
 	if [[ -f ../meson.build ]]; then
