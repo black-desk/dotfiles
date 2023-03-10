@@ -81,11 +81,11 @@ export N_PREFIX="$HOME/.n"
 
 update_path "$N_PREFIX/bin"
 
-unset update_path
-
 # RUSTUP
 
 update_path "$HOME/.cargo/bin"
+
+unset update_path
 
 setopt EXTENDED_GLOB
 cmds=(${(M)commands%%[^/]##})
