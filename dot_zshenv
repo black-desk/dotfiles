@@ -11,6 +11,15 @@ export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=100000
 export HISTSIZE=100000
 
+function remove_windows_path() {
+        setopt EXTENDED_GLOB
+        export windows_path=(${(M)path:#/mnt/c/*})
+        path=(${(M)path:#^/mnt/c/*})
+        unsetopt EXTENDED_GLOB
+}
+
+remove_windows_path
+
 function update_path() {
         local dir=$1
         local append=$2
@@ -23,6 +32,7 @@ function update_path() {
         fi
 }
 
+# BASIC
 update_path "$HOME/.local/bin"
 update_path "/sbin" append
 update_path "/bin" append
@@ -32,7 +42,6 @@ update_path "/usr/local/sbin" append
 update_path "/usr/local/bin" append
 
 # GOENV
-
 export GOENV_ROOT="$HOME/.goenv"
 export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
 export GOENV_APPEND_GOPATH=
@@ -44,28 +53,22 @@ update_path "$GOPATH/bin"
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
 
+[ -d "$GOENV_ROOT" ] || git clone https://github.com/syndbg/goenv.git "$GOENV_ROOT"
+
 goenv(){
         unset -f goenv
         eval "$(goenv init -)"
         goenv $@
 }
 
-(( $+commands[go] )) || goenv install latest
-(( $+commands[chezmoi] )) || go install github.com/twpayne/chezmoi@latest
-(( $+commands[chezmoi] )) || go install github.com/twpayne/chezmoi@latest
-(( $+commands[croba-cli] )) || go install github.com/spf13/cobra-cli@latest
-(( $+commands[dlv] )) || go install github.com/go-delve/delve/cmd/dlv@latest
-(( $+commands[gh] )) || go install github.com/cli/cli@latest
-(( $+commands[lazygit] )) || go install github.com/jesseduffield/lazygit@latest
-(( $+commands[stringer] )) || go install golang.org/x/tools/cmd/stringer@latest
-
-# pyenv
-
+# PYENV
 export PYENV_ROOT="$HOME/.pyenv"
 export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
 
 update_path "$PYENV_ROOT/bin"
 update_path "$PYENV_ROOT/shims"
+
+[ -d "$PYENV_ROOT" ] || git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 
 pyenv(){
         unset -f pyenv
@@ -73,32 +76,82 @@ pyenv(){
         pyenv $@
 }
 
-command -v python &>/dev/null || (
-        pyenv install 3.10
-        pyenv install miniconda3
-        pyenv global 3.10
-)
-
-# n
-
+# N
 export N_PREFIX="$HOME/.n"
 
 update_path "$N_PREFIX/bin"
 
-[ -s "$N_PREFIX/bin/n" ] || (
-        echo "Setting up n" &&
+unset update_path
+
+# RUSTUP
+
+update_path "$HOME/.cargo/bin"
+
+setopt EXTENDED_GLOB
+cmds=(${(M)commands%%[^/]##})
+unsetopt EXTENDED_GLOB
+
+install_if_not_found() {
+        if (( $cmds[(Ie)$1] )) ; then
+                return
+        fi
+        echo "\033[0;31mInstall $1\033[0m"
+        false
+}
+
+install_if_not_found go || (
+        goenv install latest
+        goenv global `goenv install -l | tail -1`
+)
+install_if_not_found chezmoi || (
+        go install github.com/twpayne/chezmoi@latest
+)
+install_if_not_found cobra-cli || (
+        go install github.com/spf13/cobra-cli@latest
+)
+install_if_not_found dlv || (
+        go install github.com/go-delve/delve/cmd/dlv@latest
+)
+install_if_not_found gh || (
+        go install github.com/cli/cli/cmd/gh@latest
+)
+install_if_not_found lazygit || (
+        go install github.com/jesseduffield/lazygit@latest
+)
+install_if_not_found stringer || (
+        go install golang.org/x/tools/cmd/stringer@latest
+)
+
+install_if_not_found python || (
+        pyenv install 3.10
+        pyenv global 3.10
+        pip install --user neovim
+)
+install_if_not_found ranger || (
+        pip install --user ranger-fm
+)
+
+install_if_not_found n || (
         curl -L https://bit.ly/n-install | \
-                N_PREFIX=~/.n \
+                N_PREFIX="$N_PREFIX" \
                 N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
                 bash /dev/stdin -n -y
 )
 
-# ghcup
-update_path "$HOME/.ghcup/bin"
+install_if_not_found rustup || (
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain nightly
+)
+install_if_not_found cargo-binstall || (
+        cargo install cargo-binstall
+)
+install_if_not_found rg || (
+        cargo-binstall ripgrep
+)
 
-# rustup
-cargo &> /dev/null || rustup install nightly
+unset cmds
 
-[ ! -f "$HOME/.cargo/env" ] || . "$HOME/.cargo/env"
-
-unset update_path
+function add_windows_path() {
+        path=($path $windows_path)
+        unset windows_path
+}
+add_windows_path
