@@ -15,14 +15,10 @@
 [gc]
 	writeCommitGraph = true
 [commit]
-	gpgsign = true
-[includeIf "hasconfig:remote.*.url:https://gitlabwh.uniontech.com/**"]
+        gpgsign = true
+[includeIf "hasconfig:remote.*.url:**/gerrit.uniontech.com/**"]
         path = ~/.config/git/uniontech.gitconfig
-[includeIf "hasconfig:remote.*.url:http://{{ .ut_id }}@gerrit.uniontech.com/**"]
-        path = ~/.config/git/uniontech.gitconfig
-[includeIf "hasconfig:remote.*.url:http://gerrit.uniontech.com/**"]
-        path = ~/.config/git/uniontech.gitconfig
-[includeIf "gitdir:~/workspace/repo/uniontech/"]
+[includeIf "gitdir:**/uniontech/**"]
         path = ~/.config/git/uniontech.gitconfig
 [includeIf "gitdir:~/workspace/kernel/"]
         path = ~/.config/git/kernel.gitconfig
