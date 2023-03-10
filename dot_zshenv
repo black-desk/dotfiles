@@ -47,15 +47,17 @@ update_path "$GOENV_ROOT/shims"
 goenv(){
         unset -f goenv
         eval "$(goenv init -)"
-        command -v lazygit &>/dev/null || go install github.com/jesseduffield/lazygit@latest
-        command -v chezmoi &>/dev/null || go install github.com/twpayne/chezmoi@latest
-        command -v gh &>/dev/null || go install github.com/cli/cli@latest
         goenv $@
 }
 
-command -v go &>/dev/null || (
-        goenv install latest
-)
+(( $+commands[go] )) || goenv install latest
+(( $+commands[chezmoi] )) || go install github.com/twpayne/chezmoi@latest
+(( $+commands[chezmoi] )) || go install github.com/twpayne/chezmoi@latest
+(( $+commands[croba-cli] )) || go install github.com/spf13/cobra-cli@latest
+(( $+commands[dlv] )) || go install github.com/go-delve/delve/cmd/dlv@latest
+(( $+commands[gh] )) || go install github.com/cli/cli@latest
+(( $+commands[lazygit] )) || go install github.com/jesseduffield/lazygit@latest
+(( $+commands[stringer] )) || go install golang.org/x/tools/cmd/stringer@latest
 
 # pyenv
 
