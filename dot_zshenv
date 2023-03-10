@@ -3,8 +3,6 @@
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
-fcitx5 --keep -d >/dev/null 2>&1
-
 export VISUAL=nvim
 export EDITOR=nvim
 export PAGER="less -r"
