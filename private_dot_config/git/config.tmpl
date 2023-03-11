@@ -2,6 +2,12 @@
         email = {{ .email }}
         name = {{ .github_id }}
         signingkey = D818ACDD385CAE92D4BAC01A6269794D24791D21
+[sendemail]
+        smtpServer = smtp.gmail.com
+        smtpServerPort = 465
+        smtpEncryption = ssl
+        smtpUser = {{ .gmail }}
+        from = {{ .email }}
 [credential]
         helper = store
 [pull]
@@ -14,19 +20,18 @@
 	procReceiveRefs = refs/for
 [gc]
 	writeCommitGraph = true
-[commit]
-        gpgsign = true
-[includeIf "hasconfig:remote.*.url:**/gerrit.uniontech.com/**"]
+[includeIf "hasconfig:remote.*.url:*uniontech*"]
         path = ~/.config/git/uniontech.gitconfig
-[includeIf "gitdir:**/uniontech/**"]
+[includeIf "gitdir:*uniontech*"]
         path = ~/.config/git/uniontech.gitconfig
-[includeIf "gitdir:~/workspace/kernel/"]
+[includeIf "hasconfig:remote.*.url:*kernel*"]
         path = ~/.config/git/kernel.gitconfig
-[includeIf "hasconfig:remote.*.url:https://git.kernel.org/**"]
+[includeIf "gitdir:*kernel*"]
         path = ~/.config/git/kernel.gitconfig
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/usr/bin/gh auth git-credential
+        helper = !/usr/bin/gh auth git-credential
+

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -n "$SKIP_GIT_HOOK" ]; then
+	exit
+fi
+
+remote="$1"
+
+( git remote | grep "origin" ) && remote="origin"
+( git remote | grep "upstream" ) && remote="upstream"
+
+git rev-parse "$remote/main" && ref=main
+git rev-parse "$remote/master" && ref=master
+git rev-parse "$remote/HEAD" && ref=HEAD
+
+git rebase "$remote/$ref" --autosquash --exec \
+	"git verify-commit HEAD &>/dev/null || git commit --amend --no-edit -S --signoff"
+
+git push -f
