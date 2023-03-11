@@ -4,5 +4,5 @@ if [ -n "$SKIP_GIT_HOOK" ]; then
 	exit
 fi
 
-git rebase "$1/HEAD" --reapply-cherry-picks --exec \
+git rebase "$1/HEAD" --autosquash --exec \
 	"git verify-commit HEAD &>/dev/null || git commit --amend --no-edit -S --signoff"
