@@ -5,27 +5,63 @@ if [[ $SCRIPT_DEBUG ]]; then
 fi
 
 function setup() {
+
+	command -v clang++ && command -v clang || (
+		echo "need clang and clang++"
+		exit 255
+	)
+
 	export CC="clang"
 	export CXX="clang++"
 
-        export CC_LD="mold"
-        export CXX_LD="$CC_LD"
+	command -v mold || (
+		echo "need mold"
+		exit 255
+	)
 
-        export CMAKE_C_FLAGS="-fuse-ld=$CC_LD"
-        export CMAKE_CXX_FLAGS="-fuse-ld=$CC_LD"
+	export CC_LD="mold"
+	export CXX_LD="$CC_LD"
 
-	export CFLAGS="-Wall -Wextra -Werror -fsanitize=undefined $CFLAGS"
+	export CMAKE_C_FLAGS="-fuse-ld=$CC_LD"
+	export CMAKE_CXX_FLAGS="-fuse-ld=$CC_LD"
+
+	export CFLAGS="-Wall -Wextra -fsanitize=undefined $CFLAGS"
 	export CXXFLAGS="$CFLAGS"
+
+	command -v ccache || (
+		echo "need ccache"
+		exit 255
+	)
+
+        command -v clang-tidy || (
+                echo "need clang-tidy"
+		exit 255
+        )
 
 	if [[ -f ../meson.build ]]; then
 		if [[ ! -f ../.clang-tidy ]]; then
-                        touch ../.clang-tidy
+			touch ../.clang-tidy
 		fi
+
+		export CC="ccahce $CC"
+		export CXX="ccahce $CXX"
+
+		command -v meson || (
+			echo "need meson"
+			exit 255
+		)
 
 		meson setup . .. || exit 255
 		meson compile || exit 255
 	elif [[ -f ../CMakeLists.txt ]]; then
+		command -v cmake || (
+			echo "need cmake"
+			exit 255
+		)
+
 		cmake .. --fresh -DCMAKE_GENERATOR=Ninja \
+			-DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+			-DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
 			-DCMAKE_BUILD_TYPE=Debug \
 			-DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
 			-DCMAKE_INSTALL_SYSCONFDIR=/etc \
@@ -33,6 +69,12 @@ function setup() {
 			exit 255
 		cmake --build . || exit 255
 	else
+		command -v make || (
+			echo "need make"
+			exit 255
+		)
+		export CC="ccahce $CC"
+		export CXX="ccahce $CXX"
 		if [[ -f ../autogen.sh ]]; then
 			pushd ..
 			./autogen.sh || exit 255
@@ -75,9 +117,6 @@ BUILD_ROOT=$(realpath "$BUILD_ROOT")
 echo project dir : "$PROJECT_ROOT"
 echo build dir : "$BUILD_ROOT"
 
-read -p "sure? " -n 1 -r
-echo
-
 pushd "$PROJECT_ROOT" || exit 255
 
 workspace=$(realpath ~/workspace)
@@ -93,10 +132,7 @@ if [[ -d ./.git ]]; then
 	retry -t 5 -- git submodule update --init --recursive
 fi
 
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	pushd "$BUILD_ROOT" || exit 255
-	setup
-	popd || exit 255
-fi
-
+pushd "$BUILD_ROOT" || exit 255
+setup
+popd || exit 255
 popd || exit 255
