@@ -1,11 +1,6 @@
-#!/usr/bin/env zsh
+#!/bin/env zsh
 
-if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
-        [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-        tmux attach-session -t ssh || tmux new-session -s ssh
-        exit
-fi
-
+# handle tty
 if [[ $(tty) == \/dev\/tty[0-6]* ]]; then
         fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt
         if [[ $(cat ~/.cache/fbterm-log.txt) ]]; then
@@ -15,30 +10,38 @@ if [[ $(tty) == \/dev\/tty[0-6]* ]]; then
         fi
 fi
 
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+# handle tmux
+if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
+        [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+        tmux attach-session -t ssh || tmux new-session -s ssh
+        exit
 fi
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit wait lucid light-mode for \
-atinit"zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
-atload"_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
-blockf atpull'zinit creinstall -q .' \
-    zsh-users/zsh-completions \
-atload"[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && compdef dial=ssh" \
-    agkozak/zsh-z \
-    esc/conda-zsh-completion \
+# === Start ===
 
-zinit ice depth=1 atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh"
-zinit light romkatv/powerlevel10k
+# setup zinit
+# NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+zinit depth=1 light-mode for \
+        atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh" \
+                romkatv/powerlevel10k
+
+# NOTE: copy from https://zdharma-continuum.github.io/zinit/wiki/Example-Minimal-Setup/
+zinit wait lucid depth=1 light-mode for \
+                agkozak/zsh-z \
+        atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
+                3v1n0/zsh-bash-completions-fallback \
+        atinit"zicompinit; zicdreplay" \
+                zdharma-continuum/fast-syntax-highlighting \
+        atload"_zsh_autosuggest_start" \
+                zsh-users/zsh-autosuggestions \
+        blockf atpull'zinit creinstall -q .' \
+                zsh-users/zsh-completions \
+                esc/conda-zsh-completion
 
 bindkey -v
 
@@ -59,7 +62,6 @@ alias pkg_source="asp export"
 alias yay="CC= CXX= CMAKE_C_COMPILER= CMAKE_CXX_COMPILER= CMAKE_GENERATOR= CMAKE_C_FLAGS= CMAKE_CXX_FLAGS= yay"
 
 alias gst="git status"
-alias lazygit="LANG=en_US lazygit"
 
 alias cfg="chezmoi"
 
