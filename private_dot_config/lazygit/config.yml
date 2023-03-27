@@ -1,6 +1,6 @@
 gui:
   language: 'en'
 customCommands:
-  - key: 'P'
-    command: 'git-sign-and-push'
+  - key: 'S'
     context: 'localBranches'
+    command: 'git-sign'
