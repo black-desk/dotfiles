@@ -99,12 +99,12 @@ install_if_not_found() {
         false
 }
 
+install_if_not_found chezmoi || (
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
+)
 install_if_not_found go || (
         goenv install latest
         goenv global `goenv install -l | tail -1`
-)
-install_if_not_found chezmoi || (
-        go install github.com/twpayne/chezmoi@latest
 )
 install_if_not_found cobra-cli || (
         go install github.com/spf13/cobra-cli@latest
@@ -154,4 +154,5 @@ function add_windows_path() {
         path=($path $windows_path)
         unset windows_path
 }
+
 add_windows_path
