@@ -1,3 +1,5 @@
+-- vim: filetype=lua
+
 local wezterm = require 'wezterm';
 
 -- this file provid a tmux-like keymapping
@@ -95,11 +97,11 @@ local keys = {
   },
   {
     key="v", mods="SHIFT|CTRL",
-    action="Paste"
+    action=wezterm.action.PasteFrom 'Clipboard'
   },
   {
     key="c", mods="SHIFT|CTRL",
-    action="Copy"
+    action=wezterm.action.CopyTo 'ClipboardAndPrimarySelection'
   },
   {
     key="Enter", mods="ALT",
