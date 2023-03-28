@@ -96,6 +96,9 @@
                                                 "url": "https://salsa.debian.org/apt-team/apt.git"
                                         }
                                 ]
+                        },
+                        {
+                                "url": "https://code.qt.io/cgit/qt/qt5.git"
                         }
                 ],
                 "kernel": [
@@ -142,6 +145,11 @@
                         },
                         {
                                 "github": "linuxdeepin/warm-sched"
+                        }
+                ],
+                "salsa": [
+                        {
+                                "url": "https://salsa.debian.org/black_desk/yubioath-desktop"
                         }
                 ]
         }
