@@ -80,6 +80,8 @@ alias s="dirs -v"
 
 alias ghdash="LANG=en_US gh dash"
 
+alias dbox="distrobox"
+
 export GPG_TTY=$(tty)
 
 R
