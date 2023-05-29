@@ -33,13 +33,13 @@ function update_path() {
 }
 
 # BASIC
+update_path "/usr/local/sbin"
+update_path "/usr/local/bin"
 update_path "$HOME/.local/bin"
 update_path "/sbin" append
 update_path "/bin" append
 update_path "/usr/sbin" append
 update_path "/usr/bin" append
-update_path "/usr/local/sbin" append
-update_path "/usr/local/bin" append
 
 # GOENV
 export GOENV_ROOT="$HOME/.goenv"
