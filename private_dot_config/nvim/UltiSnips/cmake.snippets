@@ -14,7 +14,7 @@ snippet cpm "setup CPM.cmake" b
 set(CPM_LOCAL_PACKAGES ON)
 
 if(NOT DEFINED CPM_USE_LOCAL_PACKAGES)
-  set(CPM_USE_LOCAL_PACKAGES ON)
+	set(CPM_USE_LOCAL_PACKAGES ON)
 endif()
 
 include(cmake/CPM.cmake)
@@ -22,39 +22,39 @@ endsnippet
 
 snippet cpm_nlohmann_json "setup nlohmann_json using CPM.cmake" b
 CPMAddPackage(
-  GITHUB_REPOSITORY nlohmann/json
-  NAME nlohmann_json
-  VERSION 3.11.2
-  GIT_SHALLOW ON
+	GITHUB_REPOSITORY nlohmann/json
+	NAME nlohmann_json
+	VERSION 3.11.2
+	GIT_SHALLOW ON
 )
 endsnippet
 
 snippet cpm_libfmt "setup libfmt using CPM.cmake" b
 CPMAddPackage(
-  GITHUB_REPOSITORY fmtlib/fmt
-  VERSION 9.1.0
-  GIT_TAG 9.1.0
-  GIT_SHALLOW ON
+	GITHUB_REPOSITORY fmtlib/fmt
+	VERSION 9.1.0
+	GIT_TAG 9.1.0
+	GIT_SHALLOW ON
 )
 endsnippet
 
 snippet cpm_docopt "setup docopt using CPM.cmake" b
 CPMAddPackage(
-  GITHUB_REPOSITORY docopt/docopt.cpp
-  NAME docopt
-  VERSION 0.6.2
-  GIT_TAG master
-  GIT_SHALLOW ON
+	GITHUB_REPOSITORY docopt/docopt.cpp
+	NAME docopt
+	VERSION 0.6.2
+	GIT_TAG master
+	GIT_SHALLOW ON
 )
 endsnippet
 
 snippet cpm_gtest "setup googletest using CPM.cmake" b
 CPMAddPackage(
-  GITHUB_REPOSITORY google/googletest
-  NAME GTest
-  VERSION 1.12.1
-  GIT_TAG release-1.12.1
-  GIT_SHALLOW ON
+	GITHUB_REPOSITORY google/googletest
+	NAME GTest
+	VERSION 1.12.1
+	GIT_TAG release-1.12.1
+	GIT_SHALLOW ON
 )
 endsnippet
 
