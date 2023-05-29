@@ -103,6 +103,9 @@
                 ],
                 "kernel": [
                         {
+                                "url":"git://git.netfilter.org/nftables.git"
+                        },
+                        {
                                 "url": "https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git"
                         },
                         {
