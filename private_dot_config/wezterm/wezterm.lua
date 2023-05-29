@@ -62,6 +62,7 @@ wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
 end)
 
 return {
+        use_fancy_tab_bar = false,
         use_ime = true,
         colors = colors,
         font = wezterm.font_with_fallback({
