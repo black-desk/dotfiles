@@ -1,4 +1,4 @@
-#!/bin/env bash
+# vim: filetype=zsh
 
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
@@ -10,6 +10,14 @@ export PAGER="less -r"
 export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=100000
 export HISTSIZE=100000
+
+
+if [[
+        $(systemctl show --user gpg-agent-ssh.socket --property ActiveState) ==
+        "ActiveState=active"
+   ]]; then
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
+fi
 
 function remove_windows_path() {
         setopt EXTENDED_GLOB
