@@ -1,25 +1,25 @@
 [Hotkey]
-# Enumerate when press trigger key repeatedly
+# 反复按切换键时进行轮换
 EnumerateWithTriggerKeys=True
-# Temporally switch between first and current Input Method
+# 临时在当前和第一个输入法之间切换
 AltTriggerKeys=
-# Enumerate Input Method Forward
+# 向前切换输入法
 EnumerateForwardKeys=
-# Enumerate Input Method Backward
+# 向后切换输入法
 EnumerateBackwardKeys=
-# Skip first input method while enumerating
+# 轮换输入法时跳过第一个输入法
 EnumerateSkipFirst=False
-# Enumerate Input Method Group Forward
+# 向前切换输入分组
 EnumerateGroupForwardKeys=
-# Enumerate Input Method Group Backward
+# 向后切换输入法分组
 EnumerateGroupBackwardKeys=
-# Activate Input Method
+# 激活输入法
 ActivateKeys=
-# Deactivate Input Method
+# 取消激活输入法
 DeactivateKeys=
 
 [Hotkey/TriggerKeys]
-0=Control+space
+0=Super+space
 
 [Hotkey/PrevPage]
 0=Up
@@ -37,25 +37,25 @@ DeactivateKeys=
 0=Control+Alt+P
 
 [Behavior]
-# Active By Default
+# 默认状态为激活
 ActiveByDefault=False
-# Share Input State
+# 共享输入状态
 ShareInputState=No
-# Show preedit in application
+# 在程序中显示预编辑文本
 PreeditEnabledByDefault=True
-# Show Input Method Information when switch input method
+# 切换输入法时显示输入法信息
 ShowInputMethodInformation=True
-# Show Input Method Information when changing focus
+# 在焦点更改时显示输入法信息
 showInputMethodInformationWhenFocusIn=False
-# Show compact input method information
+# 显示紧凑的输入法信息
 CompactInputMethodInformation=True
-# Show first input method information
+# 显示第一个输入法的信息
 ShowFirstInputMethodInformation=True
-# Default page size
+# 默认页大小
 DefaultPageSize=5
-# Override Xkb Option
+# 覆盖 Xkb 选项
 OverrideXkbOption=False
-# Custom Xkb Option
+# 自定义 Xkb 选项
 CustomXkbOption=
 # Force Enabled Addons
 EnabledAddons=
