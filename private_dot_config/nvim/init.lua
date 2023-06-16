@@ -14,6 +14,7 @@ vim.cmd([[
         set hlsearch   " searched key word
         set colorcolumn=81
         set signcolumn=yes
+        au Filetype go setlocal noexpandtab
         au Filetype gitcommit setlocal colorcolumn=51,72 tabstop=2 shiftwidth=2 softtabstop=2
         au Filetype markdown setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
         au BufNewFile,BufRead *_test.go setlocal colorcolumn= tabstop=2 shiftwidth=2 softtabstop=2
