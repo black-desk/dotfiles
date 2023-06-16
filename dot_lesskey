@@ -1,0 +1,5 @@
+#env
+LESS=-i -r
+#commands
+G goto-end-buffered
+\eG goto-end
