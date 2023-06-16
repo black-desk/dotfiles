@@ -19,6 +19,8 @@ fi
 
 # === Start ===
 
+command -v fcitx5 &>/dev/null && (nohup fcitx5 --keep &>/dev/null &)
+
 # setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
