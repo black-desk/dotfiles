@@ -1,0 +1,85 @@
+{{- /*
+        This file is an example for customize journalfmt.
+
+        And this file configure journalfmt to
+        show journal entry in one line mode.
+
+        The config file of journalfmt is a file contains only golang template.
+
+        Go check the golang template syntax first:
+        https://pkg.go.dev/text/template
+*/ -}}
+{{- /*
+        .timestamp contains a string formatted from `__REALTIME_TIMESTAMP`
+        by `time.UnixMicro(...).String()`
+*/ -}}
+{{- printf "%-38s " .timestamp -}}
+
+{{- if eq .PRIORITY "0" -}}
+        [1;31mEMERGENCY[0m
+{{- else if eq .PRIORITY "1" -}}
+        [1;31mALERT    [0m
+{{- else if eq .PRIORITY "2" -}}
+        [1;31mCRITICAL [0m
+{{- else if eq .PRIORITY "3" -}}
+        [1;31mERROR    [0m
+{{- else if eq .PRIORITY "4" -}}
+        [1;33mWARNING  [0m
+{{- else if eq .PRIORITY "5" -}}
+        [1;34mNOTICE   [0m
+{{- else if eq .PRIORITY "6" -}}
+        [1;34mINFO     [0m
+{{- else if eq .PRIORITY "7" -}}
+        [1;90mDEBUG    [0m
+{{- end -}}
+
+{{- print " " -}}
+
+{{- if ne .SYSLOG_IDENTIFIER nil -}}
+        {{printf "%-8s " .SYSLOG_IDENTIFIER}}
+{{- else -}}
+        {{printf "%-8s " ._COMM}}
+{{- end -}}
+
+{{- if ne ._PID nil -}}
+        {{- $pid := printf "[%s]" ._PID -}}
+        {{- printf "%-6s " $pid -}}
+{{- end -}}
+{{- if eq .PRIORITY "0" -}}
+        [1;31m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "1" -}}
+        [1;31m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "2" -}}
+        [1;31m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "3" -}}
+        [1;31m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "4" -}}
+        [1;33m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "5" -}}
+        [1;34m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "6" -}}
+        [1;34m {{- .MESSAGE -}} [0m
+{{- else if eq .PRIORITY "7" -}}
+        [1;90m {{- .MESSAGE -}} [0m
+{{- else -}}
+        {{- .MESSAGE -}}" +
+{{- end -}}
+
+{{- print " " -}}
+
+{{- if ne .extra nil -}}
+        {{- range $k, $v := .extra -}}
+                {{$k}}={{$v}} {{- print " " -}}
+        {{- end -}}
+{{- end -}}
+
+{{- if ne .CODE_FILE nil -}}
+        {{- .CODE_FILE -}}
+        {{- if ne .CODE_LINE nil -}}
+                :{{- .CODE_LINE -}}
+                {{- if ne .CODE_FUNC nil -}}
+                        ({{- .CODE_FUNC -}})
+                {{- end -}}
+        {{- end -}}
+{{- end -}}
+{{- print "\n" -}}
