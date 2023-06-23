@@ -1,21 +1,24 @@
 #!/bin/env zsh
 
 # handle tty
-if [[ $(tty) == \/dev\/tty[0-6]* ]]; then
-        fbterm -s 18 -n "MesloLGS NF" &> ~/.cache/fbterm-log.txt
-        if [[ $(cat ~/.cache/fbterm-log.txt) ]]; then
-                echo "failed to start fbterm, check ~/.cache/fbterm-log.txt"
-        else
-                exit
-        fi
-fi
+[[ $(tty) == \/dev\/tty[0-6]* ]] &&
+command -v fbterm &>/dev/null &&
+fbterm -s 18 -n "MesloLGS NF" &&
+exit
 
 # handle tmux
-if [[ "$TERM_PROGRAM" != "WezTerm" ]] && [[ -n "$PS1" ]] &&
-        [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-        tmux attach-session -t ssh || tmux new-session -s ssh
-        exit
-fi
+[[ "$TERM_PROGRAM" != "WezTerm" ]] &&
+[[ -n "$PS1" ]] &&
+[[ -z "$TMUX" ]] &&
+[[ -n "$SSH_CONNECTION" ]] && (
+        ( tmux list-session 2>&1 | grep ssh ) && exec tmux attach-session -t ssh
+        exec tmux new-session -s ssh
+)
+
+[[ -n "$WSL_DISTRO_NAME" ]] &&
+[[ -z "$TMUX" ]] && (
+        exec tmux new-session
+)
 
 # === Start ===
 
