@@ -7,18 +7,19 @@ fbterm -s 18 -n "MesloLGS NF" &&
 exit
 
 # handle tmux
-[[ "$TERM_PROGRAM" != "WezTerm" ]] &&
-[[ -n "$PS1" ]] &&
-[[ -z "$TMUX" ]] &&
-[[ -n "$SSH_CONNECTION" ]] && (
+if [[ "$TERM_PROGRAM" != "WezTerm" ]] &&
+        [[ -n "$PS1" ]] &&
+        [[ -z "$TMUX" ]] &&
+        [[ -n "$SSH_CONNECTION" ]]; then
+
         ( tmux list-session 2>&1 | grep ssh ) && exec tmux attach-session -t ssh
         exec tmux new-session -s ssh
-)
+fi
 
 [[ -n "$WSL_DISTRO_NAME" ]] &&
-[[ -z "$TMUX" ]] && (
+[[ -z "$TMUX" ]] &&
         exec tmux new-session
-)
+
 
 # === Start ===
 
