@@ -39,15 +39,16 @@ zinit depth=1 light-mode for \
 # NOTE: copy from https://zdharma-continuum.github.io/zinit/wiki/Example-Minimal-Setup/
 zinit wait lucid depth=1 light-mode for \
                 agkozak/zsh-z \
-        atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-                3v1n0/zsh-bash-completions-fallback \
         atinit"zicompinit; zicdreplay" \
                 zdharma-continuum/fast-syntax-highlighting \
+        atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
+                3v1n0/zsh-bash-completions-fallback \
         atload"_zsh_autosuggest_start" \
                 zsh-users/zsh-autosuggestions \
         blockf atpull'zinit creinstall -q .' \
                 zsh-users/zsh-completions \
                 esc/conda-zsh-completion
+
 
 bindkey -v
 
