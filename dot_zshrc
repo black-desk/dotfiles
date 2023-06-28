@@ -2,9 +2,9 @@
 
 # handle tty
 [[ $(tty) == \/dev\/tty[0-6]* ]] &&
-command -v fbterm &>/dev/null &&
-fbterm -s 18 -n "MesloLGS NF" &&
-exit
+        command -v fbterm &>/dev/null &&
+                fbterm -s 18 -n "MesloLGS NF" &&
+                        exit
 
 # handle tmux
 if [[ "$TERM_PROGRAM" != "WezTerm" ]] &&
@@ -15,10 +15,6 @@ if [[ "$TERM_PROGRAM" != "WezTerm" ]] &&
         ( tmux list-session 2>&1 | grep ssh ) && exec tmux attach-session -t ssh
         exec tmux new-session -s ssh
 fi
-
-[[ -n "$WSL_DISTRO_NAME" ]] &&
-[[ -z "$TMUX" ]] &&
-        exec tmux new-session
 
 
 # === Start ===
