@@ -2,12 +2,18 @@
 
 remote="$1"
 
-( git remote | grep "origin" ) && remote="origin"
-( git remote | grep "upstream" ) && remote="upstream"
+(git remote | grep "origin") && remote="origin"
+(git remote | grep "upstream") && remote="upstream"
 
 git rev-parse "$remote/main" &>/dev/null && ref=main
 git rev-parse "$remote/master" &>/dev/null && ref=master
 git rev-parse "$remote/HEAD" &>/dev/null && ref=HEAD
+
+tmp=$(
+	gh pr status --json baseRefName,state |
+		jq -e '.currentBranch | select( .state != "MERGED" ) | .baseRefName'
+)
+[ $? -eq 0 ] && ref="$tmp"
 
 git rebase "$remote/$ref" --autosquash --exec \
 	"git verify-commit HEAD &>/dev/null || git commit --amend --no-edit -S --signoff"
