@@ -11,7 +11,7 @@ git rev-parse "$remote/HEAD" &>/dev/null && ref=HEAD
 
 tmp=$(
 	gh pr status --json baseRefName,state |
-		jq -e '.currentBranch | select( .state != "MERGED" ) | .baseRefName'
+		jq -r -e '.currentBranch | select( .state != "MERGED" ) | .baseRefName'
 )
 [ $? -eq 0 ] && ref="$tmp"
 
