@@ -19,14 +19,6 @@ function setup() {
 
 	export CXX="clang++"
 
-	command -v ccache || (
-		echo "need ccache"
-		exit 255
-	)
-
-	export CXX="ccache $CXX"
-	export CC="ccache $CC"
-
 	export CFLAGS="$CFLAGS -Wall"
 	export CFLAGS="$CFLAGS -Wextra"
 	export CFLAGS="$CFLAGS -Wno-unused-command-line-argument"
@@ -66,6 +58,11 @@ function setup() {
 		export CFLAGS="$CFLAGS -fuse-ld=mold"
 		export CXXFLAGS="$CXXFLAGS -fuse-ld=mold"
 
+		command -v ccache || (
+			echo "need ccache"
+			exit 255
+		)
+
 		command -v include-what-you-use || (
 			echo "need iwyu"
 			exit 255
@@ -73,9 +70,10 @@ function setup() {
 
 		cmake -S .. -B . --fresh \
 			-DCMAKE_GENERATOR="Ninja Multi-Config" \
+			-DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
 			-DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
 			-DCMAKE_INSTALL_SYSCONFDIR=/etc \
-                        -DCMAKE_COLOR_DIAGNOSTICS=1 \
+			-DCMAKE_COLOR_DIAGNOSTICS=1 \
 			-DCMAKE_CXX_CLANG_TIDY=clang-tidy ||
 			exit 255
 		cmake --build . || exit 255
