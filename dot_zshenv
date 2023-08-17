@@ -52,6 +52,8 @@ update_path "/bin" append
 update_path "/usr/sbin" append
 update_path "/usr/bin" append
 
+update_path "/usr/lib/ccache"
+
 # GOENV
 export GOENV_ROOT="$HOME/.goenv"
 export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
