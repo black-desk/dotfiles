@@ -15,7 +15,6 @@ export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=100000
 export HISTSIZE=100000
 
-
 if [[
         $(systemctl show --user gpg-agent-ssh.socket --property ActiveState) ==
         "ActiveState=active"
