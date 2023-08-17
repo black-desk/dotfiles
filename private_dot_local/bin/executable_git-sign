@@ -2,8 +2,8 @@
 
 remote="$1"
 
-(git remote | grep "origin") && remote="origin"
-(git remote | grep "upstream") && remote="upstream"
+(git remote | grep "origin" -q) && remote="origin"
+(git remote | grep "upstream" -q) && remote="upstream"
 
 git rev-parse "$remote/main" &>/dev/null && ref=main
 git rev-parse "$remote/master" &>/dev/null && ref=master
@@ -15,5 +15,18 @@ tmp=$(
 )
 [ $? -eq 0 ] && ref="$tmp"
 
+echo rebase to "$remote/$ref"
+
 git rebase "$remote/$ref" --autosquash --exec \
-	"git verify-commit HEAD &>/dev/null || git commit --amend --no-edit -S --signoff"
+        "bash -c \" \
+                if git log --format=%B -n 1 HEAD | grep Signed-off-by: -q; then \
+                        echo no need to add signoff; \
+                else \
+                        git commit --amend --no-edit --signoff; \
+                fi; \
+                if git verify-commit HEAD; then \
+                        echo no need to sign commit; \
+                else \
+                        git commit --amend --no-edit -S; \
+                fi; \
+        \""
