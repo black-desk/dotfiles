@@ -38,30 +38,6 @@ local config = function()
                 fold_virt_text_handler = handler
         })
 
-        local function applyFoldsAndThenCloseAllFolds(bufnr, providerName)
-                require('async')(function()
-                        bufnr = bufnr or vim.api.nvim_get_current_buf()
-                        -- make sure buffer is attached
-                        require('ufo').attach(bufnr)
-                        -- getFolds return Promise if providerName == 'lsp'
-                        local ok, ranges = pcall(await, require('ufo').getFolds(bufnr, providerName))
-                        if not ok or not ranges then
-                                return
-                        end
-                        ok = require('ufo').applyFolds(bufnr, ranges)
-                        if ok then
-                                require('ufo').closeAllFolds()
-                        end
-                end)
-        end
-
-        vim.api.nvim_create_autocmd('BufRead', {
-                pattern = '*',
-                callback = function(e)
-                        applyFoldsAndThenCloseAllFolds(e.buf, 'lsp')
-                end
-        })
-
 end
 
 return {
