@@ -101,7 +101,7 @@ local function config()
                 'cmake',
                 'eslint',
                 'gopls',
-                'hls',
+                -- 'hls',
                 'jsonls',
                 'pyright',
                 'rust_analyzer',
