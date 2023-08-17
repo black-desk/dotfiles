@@ -141,7 +141,7 @@ install_if_not_found python || (
         pip install --user neovim
 )
 install_if_not_found ranger || (
-        pip install --user ranger-fm
+        pipx install ranger-fm
 )
 
 install_if_not_found n || (
