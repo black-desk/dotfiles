@@ -41,8 +41,8 @@ end
 return {
         "black-desk/fcitx5-ui.nvim",
         build = "" ..
-            "pip3 install --user hererocks && " ..
-            "python3 -mhererocks ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/fcitx5-ui/ -l5.1 -r3.0.0 && " ..
+            "pipx install hererocks && " ..
+            "hererocks ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/fcitx5-ui/ -l5.1 -r3.0.0 && " ..
             "source ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/fcitx5-ui/bin/activate && " ..
             "luarocks install lgi && " ..
             "luarocks install dbus_proxy",
