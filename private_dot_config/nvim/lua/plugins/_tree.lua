@@ -38,7 +38,7 @@ return {
         branch = "v2.x",
         dependencies = {
                 -- https://github.com/kyazdani42/nvim-web-devicons
-                'kyazdani42/nvim-web-devicons', -- icon
+                'nvim-tree/nvim-web-devicons', -- icon
                 'nvim-lua/plenary.nvim',
                 'MunifTanjim/nui.nvim',
         },

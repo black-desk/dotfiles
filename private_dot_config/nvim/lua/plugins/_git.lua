@@ -20,8 +20,7 @@ local function config()
                         virt_text_pos = 'eol',
                         delay = 300,
                         ignore_whitespace = false,
-                },
-                keymaps = {},
+                }
         })
 
         local wk = require("which-key")

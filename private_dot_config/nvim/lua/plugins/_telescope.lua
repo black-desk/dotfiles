@@ -44,9 +44,6 @@ local function config()
                         ["gy"] = {
                                 builtin .. "lsp_type_definitions()<cr>",
                                 lsp_prefix .. "type definition" },
-                        ["<space>e"] = {
-                                builtin .. "diagnostics()<cr>",
-                                lsp_prefix .. "diagnostics" },
                         ["<space>s"] = {
                                 builtin .. "lsp_document_symbols()<cr>",
                                 lsp_prefix .. "document symbol" },
