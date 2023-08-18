@@ -4,18 +4,19 @@ if [[ $SCRIPT_DEBUG ]]; then
 	set -x
 fi
 
-function setup() {
-	command -v clang || (
-		echo "need clang"
+function check_command() {
+	command -v "$1" &>/dev/null || {
+		echo "need $1"
 		exit 255
-	)
+	}
+}
+
+function setup() {
+	check_command clang
 
 	export CC="clang"
 
-	command -v clang++ || (
-		echo "need clang++"
-		exit 255
-	)
+	check_command clang++
 
 	export CXX="clang++"
 
@@ -26,47 +27,26 @@ function setup() {
 
 	export CXXFLAGS="$CFLAGS"
 
-	command -v clang-tidy || (
-		echo "need clang-tidy"
-		exit 255
-	)
+	check_command clang-tidy
 
 	if [[ -f ../meson.build ]]; then
 		if [[ ! -f ../.clang-tidy ]]; then
 			touch ../.clang-tidy
 		fi
 
-		command -v meson || (
-			echo "need meson"
-			exit 255
-		)
+		check_command meson
 
 		meson setup . .. || exit 255
 		meson compile || exit 255
 
 	elif [[ -f ../CMakeLists.txt ]]; then
-		command -v cmake || (
-			echo "need cmake"
-			exit 255
-		)
-
-		command -v mold || (
-			echo "need mold"
-			exit 255
-		)
+		check_command cmake
+		check_command mold
 
 		export CFLAGS="$CFLAGS -fuse-ld=mold"
 		export CXXFLAGS="$CXXFLAGS -fuse-ld=mold"
 
-		command -v ccache || (
-			echo "need ccache"
-			exit 255
-		)
-
-		command -v include-what-you-use || (
-			echo "need iwyu"
-			exit 255
-		)
+		check_command ccache
 
 		cmake -S .. -B . --fresh \
 			-DCMAKE_GENERATOR="Ninja Multi-Config" \
@@ -79,10 +59,8 @@ function setup() {
 		cmake --build . || exit 255
 
 	else
-		command -v make || (
-			echo "need make"
-			exit 255
-		)
+		check_command make
+		check_command bear
 
 		if [[ -f ../autogen.sh ]]; then
 			pushd ..
