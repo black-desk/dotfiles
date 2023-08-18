@@ -23,32 +23,21 @@ local function config()
                 }
         })
 
-        local wk = require("which-key")
-        local key_opts = {
-                mode    = "n",
-                prefix  = "<space>g",
-                buffer  = nil, -- Global mappings.
-                silent  = true,
-                noremap = true,
-        }
+        local set_keymap = function(lhs, rhs, desc)
+                local desc_prefix = "[gitsigns] "
+                local lhs_prefix = "<space>g"
+                vim.keymap.set(
+                        "n", lhs_prefix .. lhs, rhs,
+                        { ["desc"] = desc_prefix .. desc }
+                )
+        end
 
-        wk.register({
-                ["w"] = {
-                        "<cmd>Gitsigns toggle_word_diff<cr>",
-                        "GITS:: word diff mode" },
-                ["j"] = {
-                        "<cmd>Gitsigns next_hunk<cr>",
-                        "GITS:: next hunk" },
-                ["k"] = {
-                        "<cmd>Gitsigns prev_hunk<cr>",
-                        "GITS:: previous hunk" },
-                ["u"] = {
-                        "<cmd>Gitsigns undo_stage_hunk<cr>",
-                        "GITS:: undo stage hunk" },
-                ["s"] = {
-                        "<cmd>Gitsigns stage_hunk<cr>",
-                        "GITS:: stage hunk" },
-        }, key_opts)
+        set_keymap("w", "<cmd>Gitsigns toggle_word_diff<cr>", "toggle word diff mode")
+        set_keymap("j", "<cmd>Gitsigns next_hunk<cr>", "next hunk")
+        set_keymap("k", "<cmd>Gitsigns previous_hunk<cr>", "previous hunk")
+        set_keymap("u", "<cmd>Gitsigns undo_stage_hunk<cr>", "undo stage hunk")
+        set_keymap("s", "<cmd>Gitsigns stage_hunk<cr>","stage hunk")
+        set_keymap("r", "<cmd>Gitsigns reset_hunk<cr>","reset hunk")
 end
 
 return {
@@ -57,9 +46,9 @@ return {
                 -- GBrowser handlers
                 {
                         -- https://github.com/tpope/vim-rhubarb
-                        'tpope/vim-rhubarb', -- github
+                        'tpope/vim-rhubarb',             -- github
                         -- https://github.com/borissov/fugitive-gitea
-                        'borissov/fugitive-gitea', -- gitea
+                        'borissov/fugitive-gitea',       -- gitea
                         -- https://github.com/shumphrey/fugitive-gitlab.vim
                         'shumphrey/fugitive-gitlab.vim', -- gitlab
                 },
