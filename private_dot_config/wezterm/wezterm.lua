@@ -67,7 +67,7 @@ return {
         colors = colors,
         font = wezterm.font_with_fallback({
                 "FiraCode Nerd Font",
-                "Source Han Sans CN"
+                "Noto Sans Mono CJK SC"
         }),
         font_size = 13,
         leader = keys.leader,
