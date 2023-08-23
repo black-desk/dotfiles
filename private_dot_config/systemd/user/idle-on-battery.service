@@ -1,0 +1,10 @@
+[Unit]
+Description=This service runs a script to watch battery status, update gsettings to let this system idle only when using battery.
+
+[Service]
+Environment="BUSCTL=/opt/build/systemd/build/busctl"
+Type=simple
+ExecStart=%h/.local/bin/idle-only-using-battery
+
+[Install]
+WantedBy=default.target
