@@ -7,9 +7,11 @@ local function config()
         vim.cmd([[
                 augroup illuminate_augroup
                         autocmd!
-                        autocmd VimEnter * hi illuminatedWord 
+                        autocmd VimEnter * hi illuminatedWord
                         \ cterm=bold gui=bold
                 augroup END]])
+
+        require('illuminate').configure({ providers = { 'lsp' }, delay = 500 })
 end
 
 return {
