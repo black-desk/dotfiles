@@ -37,7 +37,15 @@ local config = function()
                                         loud = true
                                 }
                         }
-                })
+                }),
+                enabled = function()
+                        local ret, fcitx5ui = pcall(require, 'fcitx5-ui')
+                        if not ret then
+                                return true
+                        end
+
+                        return fcitx5ui.getCurrentIM() == ""
+                end
         })
 
         -- Use buffer source for `/` (if you enabled `native_menu`, this won't
@@ -62,7 +70,6 @@ local config = function()
                 cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
         Capabilities = require('cmp_nvim_lsp').default_capabilities(Capabilities)
-
 end
 
 return {
