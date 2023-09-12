@@ -117,6 +117,8 @@ alias ghdash="LANG=en_US gh dash"
 
 alias dbox="distrobox"
 
+command -v thefuck &>/dev/null || eval $(thefuck --alias)
+
 export GPG_TTY=$(tty)
 
 R
