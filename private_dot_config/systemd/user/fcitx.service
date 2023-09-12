@@ -1,0 +1,12 @@
+[Unit]
+Description=Fcitx5 service
+
+[Service]
+Type=dbus
+Environment="LANG=zh_CN.UTF-8"
+ExecStart=/usr/bin/fcitx5 --keep -r
+Restart=always
+BusName=org.fcitx.Fcitx5
+
+[Install]
+WantedBy=default.target
