@@ -1,7 +1,6 @@
 # vim: filetype=zsh
 
-export LANG=zh_CN.UTF-8
-export LANGUAGE=zh_CN:en_US
+export QT_QPA_PLATFORM=xcb
 
 export VISUAL=nvim
 export EDITOR=nvim

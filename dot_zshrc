@@ -48,10 +48,8 @@ if [[ -f $CMD_EXE ]]; then
         done
 fi
 
-# I use fcitx5 to input chinese in vim by my plugin fcitx5-ui.nvim.
-pidof fcitx5 &>/dev/null ||
-        command -v fcitx5 &>/dev/null &&
-                ( nohup fcitx5 --keep &>/dev/null & )
+export LANG=zh_CN.UTF-8
+export LANGUAGE=zh_CN:en_US
 
 # Setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
