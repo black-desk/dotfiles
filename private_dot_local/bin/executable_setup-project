@@ -13,45 +13,48 @@ function check_command() {
 
 function setup() {
 	check_command clang
-
 	export CC="clang"
 
 	check_command clang++
-
 	export CXX="clang++"
 
 	export CFLAGS="$CFLAGS -Wall"
 	export CFLAGS="$CFLAGS -Wextra"
+	export CFLAGS="$CFLAGS -Wpedantic"
 	export CFLAGS="$CFLAGS -Wno-unused-command-line-argument"
-	export CFLAGS="$CFLAGS -fsanitize=undefined"
+	export CFLAGS="$CFLAGS -fsanitize=address,undefined"
 
 	export CXXFLAGS="$CFLAGS"
 
 	check_command clang-tidy
 
 	if [[ -f ../meson.build ]]; then
-		if [[ ! -f ../.clang-tidy ]]; then
-			touch ../.clang-tidy
-		fi
-
 		check_command meson
+
+		# NOTE: meson will auto detect if ccache is available or not.
+		check_command ccache
+
+		check_command mold
+		export CC_LD=mold
+		export CXX_LD=mold
 
 		meson setup . .. || exit 255
 		meson compile || exit 255
 
 	elif [[ -f ../CMakeLists.txt ]]; then
 		check_command cmake
-		check_command mold
 
+		check_command mold
 		export CFLAGS="$CFLAGS -fuse-ld=mold"
 		export CXXFLAGS="$CXXFLAGS -fuse-ld=mold"
 
 		check_command ccache
+		export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+		export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 		cmake -S .. -B . --fresh \
 			-DCMAKE_GENERATOR="Ninja Multi-Config" \
-			-DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-			-DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
 			-DFETCHCONTENT_QUIET=OFF \
 			-DCMAKE_INSTALL_SYSCONFDIR=/etc \
 			-DCMAKE_COLOR_DIAGNOSTICS=1 \
@@ -61,16 +64,24 @@ function setup() {
 
 	else
 		check_command make
-		check_command bear
 
-		if [[ -f ../autogen.sh ]]; then
-			pushd ..
+		check_command mold
+		export CFLAGS="$CFLAGS -fuse-ld=mold"
+		export CXXFLAGS="$CXXFLAGS -fuse-ld=mold"
+
+		pushd .. || exit 255
+
+		check_command ccache
+
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
+
+		if [[ -f autogen.sh ]]; then
 			./autogen.sh || exit 255
-			popd || exit 255
 		fi
 
-		if [[ -f ../configure ]]; then
-			../configure
+		if [[ -f configure ]]; then
+			./configure
 		fi
 
 		cores=$(nproc)
@@ -81,8 +92,12 @@ function setup() {
 			[[ -f Makefile ]]; then
 
 			make clean
+
+			check_command bear
 			bear -- make -j $cores
 		fi
+
+		popd || exit 255
 	fi
 }
 
