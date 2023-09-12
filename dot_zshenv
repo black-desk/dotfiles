@@ -149,11 +149,6 @@ install_if_not_found stringer || (
         go install golang.org/x/tools/cmd/stringer@latest
 )
 
-install_if_not_found python || (
-        pyenv install 3.10
-        pyenv global 3.10
-        pip install --user neovim
-)
 install_if_not_found ranger || (
         pipx install ranger-fm
 )
