@@ -4,6 +4,7 @@ vim.opt.clipboard = vim.opt.clipboard + { 'unnamedplus' }
 -- tab size
 -- FIXME use lua here
 vim.cmd([[
+        let g:python3_host_prog = '/usr/bin/python3'
         set updatetime=100
         set number
         set relativenumber
