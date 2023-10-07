@@ -21,8 +21,8 @@ function On_Attach(client, bufnr)
         set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
         set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
         set_keymap("<space>f", vim.lsp.buf.format, "format document")
-        set_keymap("<space>E", vim.diagnostic.open_float,"show float diagnostic")
-        set_keymap("<space>a", vim.lsp.buf.code_action,"show code action")
+        set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
+        set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
 
         for _, hook in ipairs(On_Attach_hooks) do
                 if hook ~= nil then
@@ -48,12 +48,11 @@ local function config()
                         return {}
                 end
                 for lsp_config in lsp_configs:lines() do
-                        local part1, part2 = string.match(
+                        local name = string.match(
                                 lsp_config,
-                                home .. "/[.]config/nvim/lua/(.*)_(.*)[.]lua")
-                        if part1 ~= nil and part2 ~= nil then
-                                lsp_config = part1 .. '_' .. part2
-                                ret[part2] = require(lsp_config)
+                                home .. "/[.]config/nvim/lua/lsp_configs/(.*)[.]lua")
+                        if name ~= nil then
+                                ret[name] = require("lsp_configs." .. name)
                         end
                 end
                 return ret
@@ -65,8 +64,11 @@ local function config()
                 'bashls',
                 'clangd',
                 'cmake',
+                'efm',
                 'eslint',
                 'gopls',
+                'lemminx',
+                'taplo',
                 -- 'hls',
                 'jsonls',
                 'pyright',
@@ -81,22 +83,6 @@ local function config()
         require("mason-lspconfig").setup({
                 automatic_installation = true,
         })
-
-        -- my own lsp config
-
-        -- NOTE: This only work if `table.unpack` is the last argument.
-        -- https://stackoverflow.com/questions/1410862/concatenation-of-tables-in-lua#comment123687523_54352037
-        -- https://stackoverflow.com/questions/37372182/what-is-happening-when-i-call-unpack-as-luas-function-arguments
-        table.insert(server_list, 1, "mdlsp")
-
-        require("lspconfig.configs")["mdlsp"] = {
-                default_config = {
-                        cmd = { 'mdlsp' },
-                        filetypes = { 'markdown' },
-                        root_dir = require('lspconfig.util').find_git_ancestor,
-                        single_file_support = true,
-                },
-        }
 
         local default_lsp_config = {
                 flags = {
@@ -117,36 +103,6 @@ local function config()
                         'force', default_lsp_config, my_cfg)
                 require('lspconfig')[lsp].setup(cfg)
         end
-
-
-
-        local h = require("null-ls.helpers")
-        local methods = require("null-ls.methods")
-
-        local FORMATTING = methods.internal.FORMATTING
-
-
-        local get_lines = function(diff)
-                local lines = {}
-                for begin, length in string.gmatch(diff, '@@ [^+]++(%d+),?([^ @]*) @@') do
-                        if #length == 0 then
-                                length = 0
-                        end
-                        table.insert(lines, "--lines=" .. begin .. ":" .. begin + length)
-                end
-                return lines
-        end
-
-        require("null-ls").setup({
-                debug = true,
-                on_init = function(new_client, _)
-                        new_client.offset_encoding = 'utf-8'
-                end,
-                on_attach = On_Attach,
-                sources = {
-                        require("null-ls").builtins.formatting.shfmt,
-                }
-        })
 end
 
 return {
