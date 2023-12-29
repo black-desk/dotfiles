@@ -12,21 +12,24 @@ function check_command() {
 }
 
 function setup() {
-	check_command clang
-	export CC="clang"
+	if [[ -z "${VALGIRND}" ]]; then
+		check_command clang
+		CC="${CC:=clang}"
+		export CC
 
-	check_command clang++
-	export CXX="clang++"
+		check_command clang++
+		CXX="${CXX:=clang++}"
+		export CXX
+	fi
 
-	export CFLAGS="$CFLAGS -Wall"
-	export CFLAGS="$CFLAGS -Wextra"
-	export CFLAGS="$CFLAGS -Wpedantic"
-	export CFLAGS="$CFLAGS -Wno-unused-command-line-argument"
-	export CFLAGS="$CFLAGS -fsanitize=address,undefined"
+	export CFLAGS="-Wall -Wextra -Wpedantic -Wno-extra-semi $CFLAGS"
+	export CFLAGS="-fno-omit-frame-pointer -fno-optimize-sibling-calls $CFLAGS"
+
+	if [[ "$CXX" == "clang++" && "$CC" == "clang" ]]; then
+		export CFLAGS="-Wno-unused-command-line-argument -Wno-gnu-zero-variadic-macro-arguments $CFLAGS"
+	fi
 
 	export CXXFLAGS="$CFLAGS"
-
-	check_command clang-tidy
 
 	if [[ -f ../meson.build ]]; then
 		check_command meson
@@ -48,19 +51,30 @@ function setup() {
 		export CFLAGS="$CFLAGS -fuse-ld=mold"
 		export CXXFLAGS="$CXXFLAGS -fuse-ld=mold"
 
-		check_command ccache
-		export CMAKE_CXX_COMPILER_LAUNCHER=ccache
-
 		export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
+		CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX:=/usr/local}
+
+		check_command ccache
 		cmake -S .. -B . --fresh \
-			-DCMAKE_GENERATOR="Ninja Multi-Config" \
+			-G "Ninja Multi-Config" \
 			-DFETCHCONTENT_QUIET=OFF \
 			-DCMAKE_INSTALL_SYSCONFDIR=/etc \
-			-DCMAKE_COLOR_DIAGNOSTICS=1 \
-			-DCMAKE_CXX_CLANG_TIDY=clang-tidy ||
+			-DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+			-DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+			-DCMAKE_COLOR_DIAGNOSTICS=1 ||
 			exit 255
 		cmake --build . || exit 255
+		if [ -n "${TEST}" ] && cmake --build . --target help | grep "test: phony" -q; then
+			export CTEST_OUTPUT_ON_FAILURE=1
+			export GTEST_COLOR=1
+			export ASAN_OPTIONS=color=always
+			if [[ -z "${VALGIRND}" ]]; then
+				cmake --build . -t test || exit 255
+			else
+				ctest -DCTEST_MEMORYCHECK_COMMAND="valgrind" -T memcheck --test-dir . || exit 255
+			fi
+		fi
 
 	else
 		check_command make
