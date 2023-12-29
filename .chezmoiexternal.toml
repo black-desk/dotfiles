@@ -3,10 +3,6 @@
         type = "file"
         url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
         refreshPeriod = "24h"
-# latex
-["texmf/tex/latex/uniontech"]
-        type = "git-repo"
-        url = "https://github.com/black-desk/uniontech-latex"
 # goenv
 [".goenv"]
         type = "git-repo"
@@ -15,8 +11,3 @@
 [".pyenv"]
         type = "git-repo"
         url = "https://github.com/pyenv/pyenv"
-# neovim
-[".local/bin/nvim"]
-    type = "file"
-    url = "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
-    executable = true
