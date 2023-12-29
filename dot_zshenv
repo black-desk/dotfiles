@@ -113,6 +113,14 @@ update_path "$HOME/.cargo/bin"
 
 unset update_path
 
+# CPM
+
+export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
+
+# LATEX
+
+export TEXMFHOME="$HOME/.config/texmf"
+
 setopt EXTENDED_GLOB
 cmds=(${(M)commands%%[^/]##})
 unsetopt EXTENDED_GLOB
