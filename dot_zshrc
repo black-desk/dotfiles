@@ -119,6 +119,10 @@ alias dbox="distrobox"
 
 alias gh="LANG=en_US.UTF-8 gh"
 
+if command -v wt.exe &>/dev/null; then
+        alias PS='wt.exe nt -p "Windows PowerShell"'
+fi
+
 command -v thefuck &>/dev/null || eval $(thefuck --alias)
 
 export GPG_TTY=$(tty)
