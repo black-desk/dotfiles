@@ -20,7 +20,13 @@ function On_Attach(client, bufnr)
         set_keymap("K", vim.lsp.buf.hover, "do hover")
         set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
         set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
-        set_keymap("<space>f", vim.lsp.buf.format, "format document")
+        set_keymap("<space>f", function()
+                vim.lsp.buf.format({
+                        filter = function(client)
+                                return client.name ~= "tsserver"
+                        end
+                })
+        end, "format document")
         set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
         set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
 
