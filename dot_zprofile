@@ -1,0 +1,108 @@
+export QT_QPA_PLATFORM=xcb
+
+export VISUAL=nvim
+export EDITOR=nvim
+export PAGER="less -r"
+
+if $(cat /etc/os-release | grep Debian --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+fi
+
+export HISTFILE="$HOME/.zsh_history"
+export SAVEHIST=100000
+export HISTSIZE=100000
+
+function remove_windows_path() {
+        setopt EXTENDED_GLOB
+        export windows_path=(${(M)path:#/mnt/c/*})
+        path=(${(M)path:#^/mnt/c/*})
+        unsetopt EXTENDED_GLOB
+}
+
+remove_windows_path
+
+function update_path() {
+        local dir=$1
+        local append=$2
+        if [[ ${path[(ie)$dir]} -gt ${#path} ]]; then 
+                if [[ -n $append ]]; then
+                        path+=($dir)
+                else
+                        path=($dir $path)
+                fi
+        fi
+}
+
+# BASIC
+update_path "/usr/local/sbin"
+update_path "/usr/local/bin"
+update_path "$HOME/.local/bin"
+update_path "/sbin" append
+update_path "/bin" append
+update_path "/usr/sbin" append
+update_path "/usr/bin" append
+
+update_path "/usr/lib/ccache"
+
+# GOENV
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+export GOENV_APPEND_GOPATH=
+export GOENV_PREPEND_GOPATH=1
+export GOPATH="$HOME/Documents/go"
+export GOENV_GOPATH_PREFIX="$GOPATH"
+
+update_path "$GOPATH/bin"
+update_path "$GOENV_ROOT/bin"
+update_path "$GOENV_ROOT/shims"
+
+# GOENV
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+export GOENV_APPEND_GOPATH=
+export GOENV_PREPEND_GOPATH=1
+export GOPATH="$HOME/Documents/go"
+export GOENV_GOPATH_PREFIX="$GOPATH"
+
+update_path "$GOPATH/bin"
+update_path "$GOENV_ROOT/bin"
+update_path "$GOENV_ROOT/shims"
+
+# PYENV
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
+
+update_path "$PYENV_ROOT/bin"
+update_path "$PYENV_ROOT/shims"
+
+# RBENV
+export RBENV_ROOT="$HOME/.rbenv"
+
+update_path "$RBENV_ROOT/bin"
+update_path "$RBENV_ROOT/shims"
+
+# N
+export N_PREFIX="$HOME/.n"
+
+update_path "$N_PREFIX/bin"
+
+# RUSTUP
+
+update_path "$HOME/.cargo/bin"
+
+unset update_path
+
+# CPM
+
+export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
+
+# LATEX
+
+export TEXMFHOME="$HOME/.config/texmf"
+
+function add_windows_path() {
+        path=($path $windows_path)
+        unset windows_path
+}
+
+add_windows_path

@@ -51,6 +51,158 @@ fi
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
+
+if [[
+        $(systemctl show --user gpg-agent-ssh.socket --property ActiveState) ==
+        "ActiveState=active"
+   ]]; then
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
+fi
+
+_go(){
+        unset -f _go
+        unset -f go
+        unset -f goenv
+        [ -d "$GOENV_ROOT" ] || (
+                git clone https://github.com/syndbg/goenv.git "$GOENV_ROOT"
+                goenv install latest
+                goenv global `goenv install -l | tail -1`
+        )
+        eval "$(goenv init -)"
+}
+
+goenv(){
+        _go
+        goenv "$@"
+}
+
+go(){
+        _go
+        go "$@"
+
+}
+
+_python(){
+        unset -f _python
+        unset -f pyenv
+        unset -f python
+        [ -d "$PYENV_ROOT" ] || git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+        eval "$(pyenv init -)"
+}
+
+python(){
+        _python
+        python "$@"
+}
+
+pyenv(){
+        _python
+        pyenv $@
+}
+
+_ruby(){
+        unset -f _ruby
+        unset -f rbenv
+        [ -d "$RBENV_ROOT" ] || git clone https://github.com/rbenv/rbenv.git "$RBENV_ROOT"
+        eval "$(rbenv init -)"
+
+}
+
+rbenv(){
+        _ruby
+        rbenv $@
+}
+
+install_if_not_found() {
+        if command -v "$1" &>/dev/null; then
+                return
+        fi
+        echo "\033[0;31mInstall $1\033[0m"
+        false
+}
+
+install_if_not_found chezmoi || (
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
+)
+
+cobra-cli(){
+        unset -f cobra-cli
+        install_if_not_found cobra-cli ||
+                go install github.com/spf13/cobra-cli@latest
+        cobra-cli "$@"
+}
+
+dlv(){
+        unset -f dlv
+        install_if_not_found dlv || 
+                go install github.com/go-delve/delve/cmd/dlv@latest
+        dlv "$@"
+}
+
+gh(){
+        unset -f gh
+        install_if_not_found gh || 
+                go install github.com/cli/cli/cmd/gh@latest
+        gh "$@"
+}
+
+lazygit(){
+        unset -f lazygit
+        install_if_not_found lazygit || 
+                go install github.com/jesseduffield/lazygit@latest
+        lazygit "$@"
+}
+
+stringer(){
+        unset -f stringer
+        install_if_not_found stringer || 
+                go install golang.org/x/tools/cmd/stringer@latest
+        stringer "$@"
+}
+
+ranger(){
+        unset -f ranager
+        install_if_not_found ranger ||
+                pipx install ranger-fm
+        ranger "$@"
+}
+
+n(){
+        unset -f n
+        install_if_not_found n || 
+                curl -L https://bit.ly/n-install | \
+                N_PREFIX="$N_PREFIX" \
+                N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
+                bash /dev/stdin -n -y
+        n "$@"
+}
+
+_rust(){
+        unset -f _rust
+        unset -f rustup
+        unset -f cargo
+        install_if_not_found rustup ||
+                curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
+                sh -s -- --no-modify-path --default-toolchain nightly
+}
+
+cargo(){
+        _rust
+        cargo "$@"
+}
+
+cargo-binstall(){
+        unset -f cargo-binstall
+        install_if_not_found cargo-binstall || cargo install cargo-binstall
+        cargo-binstall "$@"
+}
+
+rg(){
+        unset -f rg
+        install_if_not_found rg || cargo-binstall ripgrep
+        rg "$@"
+}
+
 # Setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
