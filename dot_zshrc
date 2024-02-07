@@ -161,7 +161,7 @@ stringer(){
 }
 
 ranger(){
-        unset -f ranager
+        unset -f ranger
         install_if_not_found ranger ||
                 pipx install ranger-fm
         ranger "$@"
