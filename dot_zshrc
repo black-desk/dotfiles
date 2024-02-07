@@ -86,7 +86,10 @@ _python(){
         unset -f _python
         unset -f pyenv
         unset -f python
-        [ -d "$PYENV_ROOT" ] || git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+        [ -d "$PYENV_ROOT" ] ||
+                git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+        [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ] ||
+                git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
         eval "$(pyenv init -)"
 }
 
@@ -202,6 +205,23 @@ rg(){
         install_if_not_found rg || cargo-binstall ripgrep
         rg "$@"
 }
+
+if command -v nvim &>/dev/null; then
+nvim(){
+        unset -f nvim
+        [ -d "$PYENV_ROOT/versions/neovim" ] || (
+                [ -d "$PYENV_ROOT/versions/miniconda3-latest" ] ||
+                        pyenv install miniconda3-latest
+                pyenv virtualenv miniconda3-latest neovim
+        )
+        [ -d "$PYENV_ROOT/versions/neovim/lib/python3.12/site-packages/neovim" ] || (
+                pyenv activate neovim
+                pip install neovim
+                pyenv deactivate
+        )
+        nvim "$@"
+}
+fi
 
 # Setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
