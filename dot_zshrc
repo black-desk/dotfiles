@@ -51,7 +51,6 @@ fi
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
-
 if [[
         $(systemctl show --user gpg-agent-ssh.socket --property ActiveState) ==
         "ActiveState=active"
@@ -223,6 +222,8 @@ nvim(){
 }
 fi
 
+setopt share_history
+
 # Setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -233,6 +234,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit depth=1 light-mode for \
         atinit"[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh" \
                 romkatv/powerlevel10k
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # NOTE: copy from https://zdharma-continuum.github.io/zinit/wiki/Example-Minimal-Setup/
 zinit wait lucid depth=1 light-mode for \
