@@ -20,6 +20,7 @@ vim.cmd([[
         au Filetype markdown setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
         au Filetype cmake setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
         au BufNewFile,BufRead *_test.go setlocal colorcolumn= tabstop=2 shiftwidth=2 softtabstop=2
+        au BufNewFile,BufRead *.dj set filetype=djot
         au Filetype djot setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
         set foldlevel=99
 ]])
