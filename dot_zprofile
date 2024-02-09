@@ -1,3 +1,7 @@
+emulate sh
+source /etc/profile
+emulate zsh
+
 export QT_QPA_PLATFORM=xcb
 
 export VISUAL=nvim
