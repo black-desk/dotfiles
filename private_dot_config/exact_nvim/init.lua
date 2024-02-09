@@ -1,10 +1,10 @@
+vim.g.python3_host_prog = vim.env.PYENV_ROOT..'/versions/neovim/bin/python'
 vim.api.nvim_set_option('ignorecase', true)
 vim.opt.clipboard = vim.opt.clipboard + { 'unnamedplus' }
 
 -- tab size
 -- FIXME use lua here
 vim.cmd([[
-        let g:python3_host_prog = os.getenv("PYENV_ROOT")+'/versions/neovim/bin/python'
         set updatetime=100
         set number
         set relativenumber
