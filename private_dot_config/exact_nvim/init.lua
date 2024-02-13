@@ -1,54 +1,87 @@
-vim.g.python3_host_prog = vim.env.PYENV_ROOT..'/versions/neovim/bin/python'
-vim.api.nvim_set_option_value('ignorecase', true, {})
+vim.g.python3_host_prog = vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
+vim.g.mapleader = ';'
+
 vim.opt.clipboard = vim.opt.clipboard + { 'unnamedplus' }
+vim.opt.ignorecase = true
+vim.opt.updatetime = 100
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.mouse = 'nv'
+vim.opt.wrap = false
+vim.opt.expandtab = true
+vim.opt.tabstop = 8
+vim.opt.shiftwidth = 8
+vim.opt.softtabstop = 8
+vim.opt.cursorline = true
+vim.opt.hlsearch = true
+vim.opt.colorcolumn = '81'
+vim.opt.signcolumn = 'yes'
+vim.opt.foldlevel = 99
 
--- tab size
--- FIXME use lua here
-vim.cmd([[
-        set updatetime=100
-        set number
-        set relativenumber
-        set mouse=nv
-        set nowrap
-        set expandtab tabstop=8 shiftwidth=8 softtabstop=8
-        set cursorline " current line
-        set hlsearch   " searched key word
-        set colorcolumn=81
-        set signcolumn=yes
-        au Filetype go setlocal noexpandtab
-        au Filetype gitcommit setlocal colorcolumn=51,72 tabstop=2 shiftwidth=2 softtabstop=2
-        au Filetype markdown setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
-        au Filetype cmake setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
-        au BufNewFile,BufRead *_test.go setlocal colorcolumn= tabstop=2 shiftwidth=2 softtabstop=2
-        au BufNewFile,BufRead *.dj set filetype=djot
-        au Filetype djot setlocal colorcolumn=81 tabstop=2 shiftwidth=2 softtabstop=2
-        set foldlevel=99
-]])
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+        pattern = '*.dj',
+        callback = function() vim.opt_local.filetype = "djot" end
+})
 
--- FIXME: use lua here
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = 'go',
+        callback = function() vim.opt_local.expandtab = false end
+})
 
-vim.cmd([[
-        let g:mapleader=";"
-        " align to right                       https://unix.stackexchange.com/a/260277
-        nnoremap <leader>r<tab> mc80A <esc>080lDgelD`cP
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = 'gitcommit',
+        callback = function() vim.opt_local.colorcolumn = '51,72' end
+})
 
-        " exit insert mode in terminal
-        tnoremap <c-q><c-q> <c-\><c-n>
+local set_local_tabsize = function(size)
+        return function()
+                vim.opt_local.tabstop = size
+                vim.opt_local.shiftwidth = size
+                vim.opt_local.softtabstop = size
+        end
+end
 
-        " open terminal in new buffer
-        noremap <silent> <leader>T :e term://.//zsh<cr>|
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { 'gitcommit', 'markdown', 'cmake', 'djot' },
+        callback = set_local_tabsize(2)
+})
 
-        " open global config file in new tab
-        noremap <silent> <leader>vimrc :e ~/.config/nvim/init.lua<cr>
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { 'gitcommit', 'markdown', 'cmake', 'djot' },
+        callback = set_local_tabsize(2)
+})
 
-        " move cursor up-and-down when line warpped
-        "    https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/clhv03p
-        nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
-        nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+        pattern = '*_test.go',
+        callback = function()
+                vim.opt_local.colorcolumn = ''
+                set_local_tabsize(2)()
+        end
+})
 
-        " mark
-        nnoremap <silent> <leader>lm :marks<cr>
-]])
+-- https://unix.stackexchange.com/a/260277
+vim.keymap.set(
+        'n', '<leader><tab><tab>', 'mc80A <esc>080lDgelD`cP',
+        { desc = "align to right" })
+
+vim.keymap.set(
+        't', '<c-q><c-q>', '<c-\\><c-n>',
+        { desc = "exit insert mode in terminal" })
+vim.keymap.set(
+        '', '<leader>T', ':e term://.//zsh<cr>i',
+        {
+                desc = "open terminal in new buffer",
+                silent = true
+        })
+vim.keymap.set(
+        '', '<leader>vimrc', ':e ~/.config/nvim/init.lua<cr>',
+        {
+                desc = "open global config file in new tab",
+                silent = true
+        })
+vim.keymap.set(
+        'n', '<leader>lm', ':marks<cr>', { silent = true }
+)
 
 table.unpack = table.unpack or unpack
 table.pack = table.pack or pack
