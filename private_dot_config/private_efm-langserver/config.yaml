@@ -1,0 +1,40 @@
+version: 2
+root-markers:
+  - .git/
+lint-debounce: 1s
+
+commands:
+  - command: code
+    arguments:
+      - ${INPUT}
+
+tools:
+  black: &black
+    format-command: 'black --quiet -'
+    format-stdin: true
+  shfmt: &shfmt
+    format-command: 'shfmt -'
+    format-stdin: true
+  prettierd: &prettierd
+    format-command: >
+      prettierd ${INPUT} ${--range-start=charStart} ${--range-end=charEnd} \
+        ${--tab-width=tabSize}
+    format-stdin: true
+    root-markers:
+      - .prettierrc
+      - .prettierrc.json
+      - .prettierrc.js
+      - .prettierrc.yml
+      - .prettierrc.yaml
+      - .prettierrc.json5
+      - .prettierrc.mjs
+      - .prettierrc.cjs
+      - .prettierrc.toml
+
+languages:
+  python:
+    - <<: *black
+  sh:
+    - <<: *shfmt
+  javascript:
+    - <<: *prettierd
