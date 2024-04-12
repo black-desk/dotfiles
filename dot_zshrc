@@ -1,4 +1,4 @@
-#!/bin/env zsh
+# vim: ft=zsh
 
 # If this shell is launching in a tty,
 # I use fbterm to get UTF-8 character work.
@@ -137,28 +137,28 @@ cobra-cli(){
 
 dlv(){
         unset -f dlv
-        install_if_not_found dlv || 
+        install_if_not_found dlv ||
                 go install github.com/go-delve/delve/cmd/dlv@latest
         dlv "$@"
 }
 
 gh(){
         unset -f gh
-        install_if_not_found gh || 
+        install_if_not_found gh ||
                 go install github.com/cli/cli/cmd/gh@latest
         gh "$@"
 }
 
 lazygit(){
         unset -f lazygit
-        install_if_not_found lazygit || 
+        install_if_not_found lazygit ||
                 go install github.com/jesseduffield/lazygit@latest
         lazygit "$@"
 }
 
 stringer(){
         unset -f stringer
-        install_if_not_found stringer || 
+        install_if_not_found stringer ||
                 go install golang.org/x/tools/cmd/stringer@latest
         stringer "$@"
 }
@@ -172,7 +172,7 @@ ranger(){
 
 n(){
         unset -f n
-        install_if_not_found n || 
+        install_if_not_found n ||
                 curl -L https://bit.ly/n-install | \
                 N_PREFIX="$N_PREFIX" \
                 N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
@@ -210,10 +210,11 @@ if command -v nvim &>/dev/null; then
 nvim(){
         unset -f nvim
         [ -d "$PYENV_ROOT/versions/neovim" ] || (
-                [ -d "$PYENV_ROOT/versions/miniconda3-latest" ] ||
-                        pyenv install miniconda3-latest
-                pyenv virtualenv miniconda3-latest neovim
+                [ -d "$PYENV_ROOT/versions/miniforge3-latest" ] ||
+                        pyenv install miniforge3-latest
+                pyenv virtualenv miniforge3-latest neovim
         )
+
         [ -d "$PYENV_ROOT/versions/neovim/lib/python3.12/site-packages/neovim" ] || (
                 pyenv activate neovim
                 pip install neovim
