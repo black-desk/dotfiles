@@ -222,7 +222,12 @@ nvim(){
         )
         nvim "$@"
 }
+
+export VISUAL=nvim
+export EDITOR=nvim
 fi
+
+export PAGER=less
 
 setopt share_history
 

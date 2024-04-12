@@ -6,10 +6,6 @@ emulate zsh
 
 export QT_QPA_PLATFORM=xcb
 
-export VISUAL=nvim
-export EDITOR=nvim
-export PAGER="less -r"
-
 if $(cat /etc/os-release | grep Debian --quiet); then
         export DEBUGINFOD_URLS="https://debuginfod.debian.net"
 fi
