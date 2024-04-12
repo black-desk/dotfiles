@@ -38,3 +38,5 @@ languages:
     - <<: *shfmt
   javascript:
     - <<: *prettierd
+  typescript:
+    - <<: *prettierd
