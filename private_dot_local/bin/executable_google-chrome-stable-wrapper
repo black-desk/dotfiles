@@ -1,0 +1,6 @@
+#!/bin/bash
+while ! grep 'app-gnome-google\\x2dchrome' < /proc/self/cgroup
+do
+        sleep 0.1
+done
+exec /usr/bin/google-chrome-stable "$@"
