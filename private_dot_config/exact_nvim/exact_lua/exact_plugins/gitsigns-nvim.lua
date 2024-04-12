@@ -22,7 +22,7 @@ local function config ()
 
         set_keymap("w", "<cmd>Gitsigns toggle_word_diff<cr>", "toggle word diff mode")
         set_keymap("j", "<cmd>Gitsigns next_hunk<cr>", "next hunk")
-        set_keymap("k", "<cmd>Gitsigns previous_hunk<cr>", "previous hunk")
+        set_keymap("k", "<cmd>Gitsigns prev_hunk<cr>", "previous hunk")
         set_keymap("u", "<cmd>Gitsigns undo_stage_hunk<cr>", "undo stage hunk")
         set_keymap("s", "<cmd>Gitsigns stage_hunk<cr>","stage hunk")
         set_keymap("r", "<cmd>Gitsigns reset_hunk<cr>","reset hunk")
