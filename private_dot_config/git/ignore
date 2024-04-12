@@ -3,7 +3,8 @@
 **/.gdb_history
 **/.python-version
 **/.vimrc
-/build*/
+**/build/
+**/build-*/
 /.ll-builder
 /.linglong-target
 **/compile_commands.json
