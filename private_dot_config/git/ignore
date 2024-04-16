@@ -11,3 +11,4 @@
 **/m4
 /.worktrees
 /node_modules
+go.work
