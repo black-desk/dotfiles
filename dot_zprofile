@@ -50,6 +50,8 @@ if command -v ninja &>/dev/null; then
         export CMAKE_GENERATOR="Ninja"
 fi
 
+update_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
+
 # GOENV
 export GOENV_ROOT="$HOME/.goenv"
 export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
