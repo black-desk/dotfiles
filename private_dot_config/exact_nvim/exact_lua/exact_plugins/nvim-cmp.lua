@@ -25,6 +25,7 @@ local config = function()
                         ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 }),
                 sources = cmp.config.sources({
+                        { name = "copilot" },
                         { name = 'nvim_lsp' },
                         { name = 'ultisnips' },
                         { name = 'path' },
