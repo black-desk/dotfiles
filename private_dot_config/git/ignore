@@ -1,14 +1,21 @@
 # vim: set ft=gitignore
 
-**/.cache/clangd # clangd cache
-**/.cache/jb # jetbrains cache
-**/.gdb_history # gdb history
-**/.python-version # pyenv version
-**/.vimrc # local vim config
-**/compile_commands.json # clangd compoile database
-**/m4 # autoconf m4 files
-/.worktrees # my git worktrees
-/node_modules # node modules
+# cache
+**/.cache/*
+# gdb history
+**/.gdb_history
+# pyenv version
+**/.python-version
+# local vim config
+**/.vimrc
+# clangd compoile database
+**/compile_commands.json
+# autoconf m4 files
+**/m4
+# my git worktrees
+/.worktrees
+# node modules
+/node_modules
 
 # go work files
 go.work
