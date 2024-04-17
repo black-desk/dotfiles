@@ -13,7 +13,7 @@ local function config()
                         },
                 },
                 filesystem = {
-                        follow_current_file = true,
+                        follow_current_file = { enable = true },
                         filtered_items = {
                                 visible = true,
                                 never_show = {
@@ -35,7 +35,6 @@ end
 
 return {
         'nvim-neo-tree/neo-tree.nvim',
-        branch = "v2.x",
         dependencies = {
                 -- https://github.com/kyazdani42/nvim-web-devicons
                 'nvim-tree/nvim-web-devicons', -- icon
