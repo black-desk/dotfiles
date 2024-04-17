@@ -1,15 +1,24 @@
-**/.cache/clangd
-**/.cache/jb
-**/.gdb_history
-**/.python-version
-**/.vimrc
-**/build/
-**/build-*/
-/.ll-builder
-/.linglong-target
-**/compile_commands.json
-**/m4
-/.worktrees
-/node_modules
+# vim: set ft=gitignore
+
+**/.cache/clangd # clangd cache
+**/.cache/jb # jetbrains cache
+**/.gdb_history # gdb history
+**/.python-version # pyenv version
+**/.vimrc # local vim config
+**/compile_commands.json # clangd compoile database
+**/m4 # autoconf m4 files
+/.worktrees # my git worktrees
+/node_modules # node modules
+
+# go work files
 go.work
 go.work.sum
+
+# cmake/meson build directories
+**/build-*/
+**/build/
+**/cmake-build-*/
+
+# linglong
+/.linglong-target
+/.ll-builder
