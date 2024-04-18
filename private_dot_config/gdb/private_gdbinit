@@ -8,3 +8,4 @@ end
 set print pretty on
 set history save on
 set debuginfod enabled on
+set environment ASAN_OPTIONS detect_leaks=0
