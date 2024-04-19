@@ -29,7 +29,7 @@ local function config()
                 },
         })
         vim.cmd([[
-                nnoremap <silent> <leader>e :Neotree toggle reveal_force_cwd<CR>
+                nnoremap <silent> <leader>e :Neotree position=float reveal_force_cwd<CR>
         ]])
 end
 
