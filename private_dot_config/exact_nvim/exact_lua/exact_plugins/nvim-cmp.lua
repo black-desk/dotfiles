@@ -23,6 +23,7 @@ local config = function()
                         -- Accept currently selected item. Set `select` to
                         -- `false` to only confirm explicitly selected items.
                         ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                        ['<C-e>'] = cmp.mapping.abort(),
                 }),
                 sources = cmp.config.sources({
 
