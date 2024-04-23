@@ -74,7 +74,7 @@ vim.keymap.set(
                 silent = true
         })
 vim.keymap.set(
-        '', '<leader>vimrc', ':e ~/.config/nvim/init.lua<cr>',
+        '', '<leader>vimrc', ':cd ~/.config/nvim<cr>:e ~/.config/nvim/init.lua<cr>',
         {
                 desc = "open global config file in new tab",
                 silent = true
