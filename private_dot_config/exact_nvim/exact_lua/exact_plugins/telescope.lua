@@ -8,15 +8,25 @@
 local function config()
         local actions = require("telescope.actions")
         require('telescope').setup({
-                defaults = { mappings = {
-                        i = {
-                                ["<C-j>"] = actions.move_selection_next,
-                                ["<C-k>"] = actions.move_selection_previous, },
-                        n = {
-                                ["<C-j>"] = actions.cycle_history_next,
-                                ["<C-k>"] = actions.cycle_history_prev, } } },
-                extensions = { ["ui-select"] = {
-                        require("telescope.themes").get_dropdown {} } } })
+                defaults = {
+                        layout_strategy = "vertical",
+                        layout_config = { vertical = { width = 0.9 } },
+                        mappings = {
+                                i = {
+                                        ["<C-j>"] = actions.move_selection_next,
+                                        ["<C-k>"] = actions.move_selection_previous,
+                                },
+                                n = {
+                                        ["<C-j>"] = actions.cycle_history_next,
+                                        ["<C-k>"] = actions.cycle_history_prev,
+                                }
+                        }
+                },
+                extensions = {
+                        ["ui-select"] = {
+                                require("telescope.themes").get_dropdown {} }
+                }
+        })
 
         local builtin = "<cmd>lua require('telescope.builtin')."
         local lsp_prefix = "TELE::LSP:: "
@@ -25,7 +35,7 @@ local function config()
                 local wk = require("which-key")
                 local key_opts = {
                         mode    = "n",
-                        buffer  = 0, -- local mappings
+                        buffer  = 0,    -- local mappings
                         silent  = true, -- use `silent ` when creating keymaps
                         noremap = true, -- use `noremap` when creating keymaps
                 }
@@ -61,7 +71,7 @@ local function config()
         local wk = require("which-key")
         local key_opts = {
                 mode    = "n",
-                buffer  = nil, -- Global
+                buffer  = nil,  -- Global
                 silent  = true, -- use `silent ` when creating keymaps
                 noremap = true, -- use `noremap` when creating keymaps
         }
