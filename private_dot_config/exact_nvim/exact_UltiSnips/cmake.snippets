@@ -1,85 +1,41 @@
-snippet setup "setup some common cmake variables" b
-set(CMAKE_CXX_STANDARD 17)
+snippet project "create a template CMakeLists.txt for project using PFL.cmake and CPM.cmake" b
+cmake_minimum_required(VERSION 3.11.4)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+# wget -O cmake/PFL.cmake https://github.com/black-desk/PFL.cmake/releases/latest/download/PFL.cmake
+include(PFL)
 
-enable_testing()
-
-include_directories(BEFORE include)
-endsnippet
-
-snippet cpm "setup CPM.cmake" b
-set(CPM_LOCAL_PACKAGES ON)
-
-if(NOT DEFINED CPM_USE_LOCAL_PACKAGES)
-	set(CPM_USE_LOCAL_PACKAGES ON)
+set(ENABLE_CPM YES)
+if(CMAKE_VERSION VERSION_LESS "3.14")
+	set(ENABLE_CPM NO)
 endif()
 
-include(cmake/CPM.cmake)
-endsnippet
+if(CPM_LOCAL_PACKAGES_ONLY)
+	set(ENABLE_CPM NO)
+endif()
 
-snippet cpm_nlohmann_json "setup nlohmann_json using CPM.cmake" b
-CPMAddPackage(
-	GITHUB_REPOSITORY nlohmann/json
-	NAME nlohmann_json
-	VERSION 3.11.2
-	GIT_SHALLOW ON
-)
-endsnippet
+macro cpm_add_dependencies()
+endmacro()
 
-snippet cpm_libfmt "setup libfmt using CPM.cmake" b
-CPMAddPackage(
-	GITHUB_REPOSITORY fmtlib/fmt
-	VERSION 9.1.0
-	GIT_TAG 9.1.0
-	GIT_SHALLOW ON
-)
-endsnippet
+if(NOT ENABLE_CPM)
+	message(STATUS "CPM.cmake disabled.")
+else()
+	# wget -O cmake/CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake
+	include(CPM)
+	cpm_add_dependencies()
+endif()
 
-snippet cpm_docopt "setup docopt using CPM.cmake" b
-CPMAddPackage(
-	GITHUB_REPOSITORY docopt/docopt.cpp
-	NAME docopt
-	VERSION 0.6.2
-	GIT_TAG master
-	GIT_SHALLOW ON
-)
-endsnippet
+project(
+	helloworld
+	VERSION		0.1.0
+	DESCRIPTION	"hello world"
+	HOMEPAGE_URL	"https://github.com/black-desk/helloworld"
+	LANGUAGES	CXX)
 
-snippet cpm_gtest "setup googletest using CPM.cmake" b
-CPMAddPackage(
-	GITHUB_REPOSITORY google/googletest
-	NAME GTest
-	VERSION 1.12.1
-	GIT_TAG release-1.12.1
-	GIT_SHALLOW ON
-)
-endsnippet
+# wget -O cmake/GitSemver.cmake https://github.com/black-desk/GitSemver.cmake/releases/latest/download/GitSemver.cmake
+include(GitSemver)
+gitsemver(PROJECT_VERSION)
 
-snippet cpm_gtest "setup spdlog using CPM.cmake" b
-CPMAddPackage(
-  GITHUB_REPOSITORY gabime/spdlog
-  VERSION 1.11.0
-  OPTIONS "SPDLOG_FMT_EXTERNAL 1"
-  GIT_SHALLOW ON
-)
-
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DSPDLOG_ACTIVE_LEVEL=0")
-endsnippet
-
-snippet clang_tidy "setup clang-tidy" b
-find_program(CLANG_TIDY_EXE NAMES "clang-tidy" REQUIRE)
-set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
-endsnippet
-
-snippet git "dump git-describe version to variable GIT" b
-find_package(Git)
-execute_process(
-  COMMAND ${GIT_EXECUTABLE} describe --abbrev=6 --dirty --always --tags
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+pfl_init()
 endsnippet
