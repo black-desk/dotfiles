@@ -68,11 +68,30 @@ vim.keymap.set(
         't', '<c-q><c-q>', '<c-\\><c-n>',
         { desc = "exit insert mode in terminal" })
 vim.keymap.set(
-        '', '<leader>T', ':e term://.//zsh<cr>i',
+        '', '<leader>T', function() vim.cmd.terminal() end,
         {
                 desc = "open terminal in new buffer",
                 silent = true
         })
+if vim.fn.getregion ~= nil then
+        vim.keymap.set(
+                'v', '<leader>T', function()
+                        local get_current_selected_text = function()
+                                return vim.fn.getregion(
+                                        vim.fn.getcharpos("'<"),
+                                        vim.fn.getcharpos("'>")
+                                )
+                        end
+
+                        local strings = get_current_selected_text()
+                        local command = table.concat(strings, ' ')
+                        vim.cmd.terminal(command)
+                end,
+                {
+                        desc = "open terminal in new buffer",
+                        silent = true
+                })
+end
 vim.keymap.set(
         '', '<leader>vimrc', ':cd ~/.config/nvim<cr>:e ~/.config/nvim/init.lua<cr>',
         {
