@@ -45,7 +45,7 @@ update_path "/usr/sbin" append
 update_path "/usr/bin" append
 
 update_path "/usr/lib/ccache"
-export CMAKE_CXX_COMPILER_LAUNCHER=="$(command -v ccache 2>/dev/null)"
+export CMAKE_CXX_COMPILER_LAUNCHER="$(command -v ccache 2>/dev/null)"
 if command -v ninja &>/dev/null; then
         export CMAKE_GENERATOR="Ninja"
 fi
