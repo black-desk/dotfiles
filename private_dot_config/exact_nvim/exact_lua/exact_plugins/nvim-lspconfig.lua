@@ -76,6 +76,7 @@ local function config()
                 'lemminx',
                 'taplo',
                 -- 'hls',
+                'typst_lsp',
                 'jsonls',
                 'pyright',
                 'rust_analyzer',

@@ -51,6 +51,15 @@ vim.api.nvim_create_autocmd('Filetype', {
         callback = set_local_tabsize(2)
 })
 
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { 'typst' },
+        callback = function()
+                vim.opt_local.wrap = true
+                vim.keymap.set('n', 'j', 'gj')
+                vim.keymap.set('n', 'k', 'gk')
+        end
+})
+
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
         pattern = '*_test.go',
         callback = function()
