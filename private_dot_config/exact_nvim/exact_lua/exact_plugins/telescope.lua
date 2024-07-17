@@ -69,30 +69,14 @@ local function config()
         table.insert(On_Attach_hooks, hook)
 
         local wk = require("which-key")
-        local key_opts = {
-                mode    = "n",
-                buffer  = nil,  -- Global
-                silent  = true, -- use `silent ` when creating keymaps
-                noremap = true, -- use `noremap` when creating keymaps
-        }
 
-        wk.register({
-                ["te"] = {
-                        builtin .. "find_files()<cr>",
-                        "TELE:: search filename" },
-                ["tr"] = {
-                        builtin .. "live_grep()<cr>",
-                        "TELE:: search in files" },
-                ["tR"] = {
-                        builtin .. "grep_string()<cr>",
-                        "TELE:: search in files" },
-                ["tb"] = {
-                        builtin .. "buffers()<cr>",
-                        "TELE:: buffer list" },
-                ["t?"] = {
-                        builtin .. "help_tags()<cr>",
-                        "TELE:: helps" },
-        }, key_opts)
+        wk.add({
+                { "t?", "<cmd>lua require('telescope.builtin').help_tags()<cr>",   desc = "TELE:: helps",           remap = false },
+                { "tR", "<cmd>lua require('telescope.builtin').grep_string()<cr>", desc = "TELE:: search in files", remap = false },
+                { "tb", "<cmd>lua require('telescope.builtin').buffers()<cr>",     desc = "TELE:: buffer list",     remap = false },
+                { "te", "<cmd>lua require('telescope.builtin').find_files()<cr>",  desc = "TELE:: search filename", remap = false },
+                { "tr", "<cmd>lua require('telescope.builtin').live_grep()<cr>",   desc = "TELE:: search in files", remap = false },
+        })
 
         require("telescope").load_extension("ui-select")
 end
