@@ -33,37 +33,16 @@ local function config()
 
         local function hook()
                 local wk = require("which-key")
-                local key_opts = {
-                        mode    = "n",
-                        buffer  = 0,    -- local mappings
-                        silent  = true, -- use `silent ` when creating keymaps
-                        noremap = true, -- use `noremap` when creating keymaps
-                }
 
-
-                wk.register({
-                        ["gd"] = {
-                                builtin .. "lsp_definitions()<cr>",
-                                lsp_prefix .. "definition" },
-                        ["gr"] = {
-                                builtin .. "lsp_references()<cr>",
-                                lsp_prefix .. "reference" },
-                        ["gi"] = {
-                                builtin .. "lsp_implementations()<cr>",
-                                lsp_prefix .. "implementation" },
-                        ["gy"] = {
-                                builtin .. "lsp_type_definitions()<cr>",
-                                lsp_prefix .. "type definition" },
-                        ["<space>s"] = {
-                                builtin .. "lsp_document_symbols()<cr>",
-                                lsp_prefix .. "document symbol" },
-                        ["<space>H"] = {
-                                builtin .. "jumplist()<cr>",
-                                "TELE:: jump list" },
-                        ["<space>M"] = {
-                                builtin .. "marks()<cr>",
-                                "TELE:: mark list" },
-                }, key_opts)
+                wk.add({
+                        { "<space>H", builtin .. "jumplist()<cr>",             buffer = 11, desc = "TELE:: jump list",            remap = false },
+                        { "<space>M", builtin .. "marks()<cr>",                buffer = 11, desc = "TELE:: mark list",            remap = false },
+                        { "<space>s", builtin .. "lsp_document_symbols()<cr>", buffer = 11, desc = "TELE::LSP:: document symbol", remap = false },
+                        { "gd",       builtin .. "lsp_definitions()<cr>",      buffer = 11, desc = "TELE::LSP:: definition",      remap = false },
+                        { "gi",       builtin .. "lsp_implementations()<cr>",  buffer = 11, desc = "TELE::LSP:: implementation",  remap = false },
+                        { "gr",       builtin .. "lsp_references()<cr>",       buffer = 11, desc = "TELE::LSP:: reference",       remap = false },
+                        { "gy",       builtin .. "lsp_type_definitions()<cr>", buffer = 11, desc = "TELE::LSP:: type definition", remap = false },
+                })
         end
 
         table.insert(On_Attach_hooks, hook)
