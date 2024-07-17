@@ -3,11 +3,15 @@
 local function config()
         require 'nvim-treesitter.configs'.setup {
                 -- One of "all", or a list of languages
-                ensure_installed = "all",
+                ensure_installed = { 'c', 'cpp' },
 
                 -- Install languages synchronously (only applied to
                 -- `ensure_installed`)
-                sync_install = false,
+                sync_install = true,
+
+                -- Automatically install missing parsers when entering buffer
+                -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+                auto_install = true,
 
                 -- List of parsers to ignore installing
                 ignore_install = {},
@@ -38,7 +42,7 @@ return {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
         config = config,
-        requires = {
-                'nvim-treesitter/playground',
+        dependencies = {
+                'mason.nvim',
         }
 }

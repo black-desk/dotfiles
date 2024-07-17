@@ -86,12 +86,6 @@ local function config()
                 'tsserver',
         }
 
-        require("mason").setup()
-
-        require("mason-lspconfig").setup({
-                automatic_installation = true,
-        })
-
         local default_lsp_config = {
                 flags = {
                         debounce_text_changes = nil,
@@ -135,7 +129,6 @@ return {
                 'folke/which-key.nvim',
                 'jose-elias-alvarez/null-ls.nvim',
                 'kevinhwang91/nvim-ufo',
-                'williamboman/mason-lspconfig.nvim',
                 'williamboman/mason.nvim',
         }
 }
