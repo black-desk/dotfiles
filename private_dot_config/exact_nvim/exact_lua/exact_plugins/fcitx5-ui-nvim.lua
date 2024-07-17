@@ -24,17 +24,14 @@ local function config()
                 )
         end
 
-        set_keymap("<M-i>", require 'fcitx5-ui'.toggle, "toggle fcitx state")
+        set_keymap("<M-i>", function()
+                vim.api.nvim_command('startinsert')
+                require 'fcitx5-ui'.toggle()
+        end, "toggle fcitx state")
 end
 
 return {
         "black-desk/fcitx5-ui.nvim",
-        build = "" ..
-            "pipx install hererocks && " ..
-            "hererocks ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/fcitx5-ui/ -l5.1 -r3.0.0 && " ..
-            "source ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/fcitx5-ui/bin/activate && " ..
-            "luarocks install lgi && " ..
-            "luarocks install dbus_proxy",
         config = config,
-        branch = 'dev',
+        branch = 'master',
 }
