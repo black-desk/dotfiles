@@ -76,6 +76,7 @@ local function config()
                 'lemminx',
                 'taplo',
                 -- 'hls',
+                'perlnavigator',
                 'typst_lsp',
                 'jsonls',
                 'pyright',
