@@ -1,8 +1,10 @@
 snippet project "create a template CMakeLists.txt for project using PFL.cmake and CPM.cmake" b
-cmake_minimum_required(VERSION 3.11.4)
+cmake_minimum_required(VERSION 3.11.4) # for RHEL 8
 
+# Let's place extra cmake scripts in /cmake directory
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# Use this command to update PFL.cmake from GitHub release page:
 # wget -O cmake/PFL.cmake https://github.com/black-desk/PFL.cmake/releases/latest/download/PFL.cmake
 include(PFL)
 
@@ -16,23 +18,32 @@ if(CPM_LOCAL_PACKAGES_ONLY)
 endif()
 
 macro cpm_add_dependencies()
+	# Use CPMFindPackage from CPM.cmake add dependencies here, for example:
+	# CPMFindPackage(
+		# NAME             nlohmann_json
+		# VERSION          3.5.0
+		# URL              "https://github.com/nlohmann/json/archive/refs/tags/v3.5.0.tar.gz"
+		# EXCLUDE_FROM_ALL ON
+		# OPTIONS          "JSON_BuildTests OFF")
 endmacro()
 
+# Use this command to update CPM.cmake from GitHub release page:
+# wget -O cmake/CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake
 if(NOT ENABLE_CPM)
 	message(STATUS "CPM.cmake disabled.")
 else()
-	# wget -O cmake/CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake
 	include(CPM)
 	cpm_add_dependencies()
 endif()
 
 project(
 	helloworld
-	VERSION		0.1.0
-	DESCRIPTION	"hello world"
-	HOMEPAGE_URL	"https://github.com/black-desk/helloworld"
-	LANGUAGES	CXX)
+	VERSION      0.1.0
+	DESCRIPTION  "hello world"
+	HOMEPAGE_URL "https://github.com/black-desk/helloworld"
+	LANGUAGES    CXX)
 
+# Use this command to update GitSemver.cmake from GitHub release page:
 # wget -O cmake/GitSemver.cmake https://github.com/black-desk/GitSemver.cmake/releases/latest/download/GitSemver.cmake
 include(GitSemver)
 gitsemver(PROJECT_VERSION)
