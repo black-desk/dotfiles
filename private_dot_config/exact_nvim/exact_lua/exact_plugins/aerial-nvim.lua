@@ -1,6 +1,6 @@
-local function config()
-        require("aerial").setup()
+-- https://github.com/stevearc/aerial.nvim
 
+local function init()
         local set_keymap = function(lhs, rhs, desc)
                 local desc_prefix = "[aerial] "
                 vim.keymap.set(
@@ -12,10 +12,18 @@ local function config()
         set_keymap("t", "<cmd>AerialToggle<cr>", "toggle outline")
 end
 
+local function config()
+        require("aerial").setup()
+end
+
 return {
         'stevearc/aerial.nvim',
+        init = init,
         config = config,
+        cmd = {
+                'AerialToggle',
+        },
         dependencies = {
-                "nvim-lspconfig"
-        }
+                'neovim/nvim-lspconfig',
+        },
 }

@@ -20,6 +20,8 @@ end
 
 return {
         'romgrk/barbar.nvim',
-        dependencies = { 'nvim-web-devicons' },
+        dependencies = {
+                'nvim-web-devicons',
+        },
         config = config,
 }

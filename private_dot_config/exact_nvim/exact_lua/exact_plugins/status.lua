@@ -19,7 +19,7 @@ local function config()
                         '🌕 ', '🌖 ', '🌗 ', '🌘 ' } })
         table.insert(
                 cfg.sections.lualine_y,
-                'require("fcitx5-ui").getCurrentIM()')
+                'require("fcitx5-ui").get_current_input_method()')
         require('lualine').setup(cfg)
 
 

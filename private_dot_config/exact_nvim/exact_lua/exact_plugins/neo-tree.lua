@@ -28,9 +28,6 @@ local function config()
                         },
                 },
         })
-        vim.cmd([[
-                nnoremap <silent> <leader>e :Neotree position=float reveal_force_cwd<CR>
-        ]])
 end
 
 return {
@@ -40,6 +37,9 @@ return {
                 'nvim-tree/nvim-web-devicons', -- icon
                 'nvim-lua/plenary.nvim',
                 'MunifTanjim/nui.nvim',
+        },
+        keys = {
+                { '<leader>e', ':Neotree position=float reveal_force_cwd<CR>', silent = true }
         },
         config = config,
 }

@@ -105,27 +105,12 @@ local function config()
                         'force', default_lsp_config, my_cfg)
                 require('lspconfig')[lsp].setup(cfg)
         end
-
-        local server_config = require('lspconfig.configs')
-        local root_pattern = require('lspconfig.util').root_pattern
-
-        server_config["djot-ls"] = {
-                default_config = {
-                        cmd = { 'djot-ls', '--stdio' },
-                        name = 'djot-ls',
-                        filetypes = { 'djot' },
-                        root_dir = root_pattern('.git')
-                }
-        }
-
-        require('lspconfig')["djot-ls"].setup({})
 end
 
 return {
         'neovim/nvim-lspconfig',
         config = config,
         dependencies = {
-                'folke/neodev.nvim',
                 'folke/which-key.nvim',
                 'jose-elias-alvarez/null-ls.nvim',
                 'kevinhwang91/nvim-ufo',

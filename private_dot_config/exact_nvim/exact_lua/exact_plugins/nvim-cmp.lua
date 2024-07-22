@@ -29,7 +29,7 @@ local config = function()
 
                         { name = "copilot",  priority = 100 },
                         { name = 'nvim_lsp' },
-                        { name = 'ultisnips' },
+                        -- { name = 'ultisnips' },
                         { name = 'path' },
                         { name = 'buffer' },
                         {
@@ -47,7 +47,7 @@ local config = function()
                                 return true
                         end
 
-                        return fcitx5ui.getCurrentIM() == ""
+                        return fcitx5ui.get_current_input_method() == ""
                 end
         })
 
@@ -87,7 +87,7 @@ return {
                 -- https://github.com/hrsh7th/cmp-cmdline
                 'hrsh7th/cmp-cmdline',
                 -- https://github.com/quangnguyen30192/cmp-nvim-ultisnips
-                'quangnguyen30192/cmp-nvim-ultisnips',
+                -- 'quangnguyen30192/cmp-nvim-ultisnips',
                 -- https://github.com/octaltree/cmp-look
                 'octaltree/cmp-look',
         },

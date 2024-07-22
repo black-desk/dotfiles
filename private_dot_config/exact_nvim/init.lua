@@ -1,5 +1,68 @@
-vim.g.python3_host_prog = vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
-vim.g.mapleader = ';'
+-- My neovim configuration file.
+
+require('compatibility')
+local shell = require('shell')
+
+-- Bootstrap lazy.nvim
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+        shell.run_command(
+                { "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath },
+                "clone lazy.nvim", true
+        )
+end
+vim.opt.rtp:prepend(lazypath)
+
+local function setup_python()
+        if not vim.env.PYENV_ROOT then
+                return
+        end
+
+        local pyenv = require("pyenv")
+
+        if not pyenv.ensure_python_version('miniforge3-latest') then
+                return
+        end
+
+        local create_neovim_virtualenv = function()
+                local command = {
+                        'pyenv', 'virtualenv', 'miniforge3-latest', 'neovim',
+                }
+
+                if not shell.run_command(
+                            command,
+                            'create virtualenv "neovim" ' ..
+                            'from "miniforge3-latest"',
+                            false
+                    ) then
+                        return false
+                end
+
+                return shell.run_command(
+                        { 'env', 'PYENV_VERSION=neovim', 'pyenv', 'exec', 'pip', 'install', 'neovim' },
+                        'install neovim in virtualenv "neovim"',
+                        false)
+        end
+
+        if not pyenv.ensure_python_version(
+                    'neovim',
+                    create_neovim_virtualenv
+            ) then
+                return
+        end
+
+        vim.g.python3_host_prog =
+            vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
+end
+
+setup_python()
+
+-- Global configuration
+
+vim.g.mapleader = ";"
+vim.g.maplocalleader = "<space>"
 
 vim.opt.clipboard = vim.opt.clipboard + { 'unnamedplus' }
 vim.opt.ignorecase = true
@@ -72,7 +135,6 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 vim.keymap.set(
         'n', '<leader><tab><tab>', 'mc80A <esc>080lDgelD`cP',
         { desc = "align to right" })
-
 vim.keymap.set(
         't', '<c-q><c-q>', '<c-\\><c-n>',
         { desc = "exit insert mode in terminal" })
@@ -101,30 +163,49 @@ if vim.fn.getregion ~= nil then
                         silent = true
                 })
 end
+
 vim.keymap.set(
         '', '<leader>vimrc', ':cd ~/.config/nvim<cr>:e ~/.config/nvim/init.lua<cr>',
         {
                 desc = "open global config file in new tab",
                 silent = true
         })
+
 vim.keymap.set(
         'n', '<leader>lm', ':marks<cr>', { silent = true }
 )
 
-table.unpack = table.unpack or unpack
-table.pack = table.pack or pack
+vim.keymap.set(
+        'n', '<leader>R', function()
+                local line = vim.api.nvim_get_current_line()
+                local ok, _, command = line:find('shell: `(.+)`$')
+                if ok == nil then
+                        vim.print("No command found")
+                        return
+                end
+                vim.cmd(':r !' .. command)
+        end,
+        {
+                desc = 'Run command in current line and insert its output.',
+                silent = true
+        }
+)
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-        vim.fn.system({
-                "git",
-                "clone",
-                "--filter=blob:none",
-                "https://github.com/folke/lazy.nvim.git",
-                "--branch=stable",
-                lazypath,
-        })
-end
-vim.opt.rtp:prepend(lazypath)
+-- Setup lazy.nvim
+require("lazy").setup({
+        spec = {
+                -- import your plugins
+                { import = "plugins" },
+        },
+        -- Configure any other settings here. See the documentation for more details.
+        -- colorscheme that will be used when installing plugins.
+        install = { missing = true, colorscheme = { "habamax" } },
+        -- automatically check for plugin updates
+        checker = { enabled = true },
+        dev = {
+                path = "~/Documents/workspace/repos/source",
+                patterns = { "black-desk" },
+                fallback = true,
+        }
 
-require("lazy").setup("plugins", {})
+})

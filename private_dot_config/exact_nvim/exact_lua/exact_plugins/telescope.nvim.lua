@@ -7,26 +7,26 @@
 
 local builtin = "<cmd>lua require('telescope.builtin')."
 local lsp_prefix = "TELE::LSP:: "
-local function hook()
+local function hook(_, bufnr)
         require("which-key").add({
                 {
                         "<space>H",
                         builtin .. "jumplist()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc = "TELE:: jump list",
                         remap = false
                 },
                 {
                         "<space>M",
                         builtin .. "marks()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc = "TELE:: mark list",
                         remap = false
                 },
                 {
                         "<space>s",
                         builtin .. "lsp_document_symbols()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc =
                         "TELE::LSP:: document symbol",
                         remap = false
@@ -34,7 +34,7 @@ local function hook()
                 {
                         "gd",
                         builtin .. "lsp_definitions()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc =
                         "TELE::LSP:: definition",
                         remap = false
@@ -42,7 +42,7 @@ local function hook()
                 {
                         "gi",
                         builtin .. "lsp_implementations()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc =
                         "TELE::LSP:: implementation",
                         remap = false
@@ -50,7 +50,7 @@ local function hook()
                 {
                         "gr",
                         builtin .. "lsp_references()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc =
                         "TELE::LSP:: reference",
                         remap = false
@@ -58,7 +58,7 @@ local function hook()
                 {
                         "gy",
                         builtin .. "lsp_type_definitions()<cr>",
-                        buffer = 11,
+                        buffer = bufnr,
                         desc =
                         "TELE::LSP:: type definition",
                         remap = false
@@ -66,8 +66,9 @@ local function hook()
         })
 end
 
-table.insert(On_Attach_hooks, hook)
-
+local function init()
+        table.insert(On_Attach_hooks, hook)
+end
 
 local function config()
         local actions = require("telescope.actions")
@@ -134,6 +135,7 @@ return {
                         remap = false
                 },
         },
+        init = init,
         cmd = { 'Telescope' },
         config = config,
 }
