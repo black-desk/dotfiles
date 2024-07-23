@@ -49,5 +49,5 @@
   "vim-illuminate": { "branch": "master", "commit": "5eeb7951fc630682c322e88a9bbdae5c224ff0aa" },
   "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
   "vim-translator": { "branch": "master", "commit": "6f0639c6d471a3a90ac19db96e1e379c030f74e3" },
-  "which-key.nvim": { "branch": "main", "commit": "977fa23622425e3c8ae837b9f7c710d9c78bdeab" }
+  "which-key.nvim": { "branch": "main", "commit": "650f298f516018ad7ebce6d957e015d5db434f3c" }
 }
