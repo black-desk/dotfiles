@@ -4,9 +4,14 @@ require('compatibility')
 local shell = require('shell')
 
 -- Bootstrap lazy.nvim
+local function bootstrap_lazy_nvim()
+        local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+        vim.opt.rtp:prepend(lazypath)
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
+        if vim.uv.fs_stat(lazypath) then
+                return
+        end
+
         local lazyrepo = "https://github.com/folke/lazy.nvim.git"
         shell.run_command(
                 {
@@ -16,53 +21,62 @@ if not vim.uv.fs_stat(lazypath) then
                 "clone lazy.nvim", true
         )
 end
-vim.opt.rtp:prepend(lazypath)
+bootstrap_lazy_nvim()
 
+-- Setup python for neovim.
 local function setup_python()
+        -- If pyenv is not installed or anything goes wrong,
+        -- we will just return, which means to use system provided python.
+
         if not vim.env.PYENV_ROOT then
                 return
         end
 
         local pyenv = require("pyenv")
 
+        local python3_host_prog =
+            vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
+
+        if pyenv.check_python_version('neovim') then
+                vim.g.python3_host_prog = python3_host_prog
+                return
+        end
+
         if not pyenv.ensure_python_version('miniforge3-latest') then
                 return
         end
 
-        local create_neovim_virtualenv = function()
-                local command = {
-                        'pyenv', 'virtualenv', 'miniforge3-latest', 'neovim',
-                }
-
-                if not shell.run_command(
-                            command,
-                            'create virtualenv "neovim" ' ..
-                            'from "miniforge3-latest"',
-                            false
-                    ) then
-                        return false
-                end
-
-                return shell.run_command(
-                        {
-                                'env', 'PYENV_VERSION=neovim',
-                                'pyenv', 'exec', 'pip', 'install', 'neovim',
-                        },
-                        'install neovim in virtualenv "neovim"',
-                        false)
-        end
-
-        if not pyenv.ensure_python_version(
-                    'neovim',
-                    create_neovim_virtualenv
+        if not pyenv.ensure_plugin(
+                    'pyenv-virtualenv',
+                    'https://github.com/pyenv/pyenv-virtualenv'
             ) then
                 return
         end
 
-        vim.g.python3_host_prog =
-            vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
-end
+        if not shell.run_command(
+                    {
+                            'pyenv', 'virtualenv',
+                            'miniforge3-latest', 'neovim',
+                    },
+                    'create virtualenv "neovim" ' ..
+                    'from "miniforge3-latest"',
+                    false
+            ) then
+                return
+        end
 
+        if not shell.run_command(
+                    {
+                            'env', 'PYENV_VERSION=neovim',
+                            'pyenv', 'exec', 'pip', 'install', 'neovim',
+                    },
+                    'install neovim in virtualenv "neovim"',
+                    false) then
+                return
+        end
+
+        vim.g.python3_host_prog = python3_host_prog
+end
 setup_python()
 
 -- Global configuration
@@ -206,8 +220,6 @@ require("lazy").setup({
         -- Configure any other settings here. See the documentation for more details.
         -- colorscheme that will be used when installing plugins.
         install = { missing = true, colorscheme = { "habamax" } },
-        -- automatically check for plugin updates
-        checker = { enabled = true },
         dev = {
                 path = "~/Documents/workspace/repos/source",
                 patterns = { "black-desk" },
