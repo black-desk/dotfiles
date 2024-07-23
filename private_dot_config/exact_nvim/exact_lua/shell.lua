@@ -1,3 +1,5 @@
+-- This module provides utilities for running command and get its output.
+
 local M = {}
 
 ---

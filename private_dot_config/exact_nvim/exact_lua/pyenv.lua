@@ -1,3 +1,6 @@
+-- This module provides utilities for
+-- managing python versions and plugins with pyenv.
+
 local M = {}
 
 if not vim.env.PYENV_ROOT then
@@ -26,7 +29,7 @@ end
 M.install_python_version = function(name)
         local _, ok = shell.run_command(
                 { "pyenv", "install", name },
-                "install python version" .. name .. " with pyenv",
+                "install python version " .. name .. " with pyenv",
                 false
         )
         return ok

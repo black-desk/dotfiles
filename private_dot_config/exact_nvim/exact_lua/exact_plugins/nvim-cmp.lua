@@ -27,7 +27,7 @@ local config = function()
                 }),
                 sources = cmp.config.sources({
 
-                        { name = "copilot",  priority = 100 },
+                        { name = "copilot", priority = 100 },
                         { name = 'nvim_lsp' },
                         -- { name = 'ultisnips' },
                         { name = 'path' },
@@ -47,7 +47,7 @@ local config = function()
                                 return true
                         end
 
-                        return fcitx5ui.get_current_input_method() == ""
+                        return fcitx5ui.get_current_input_method_status().name == nil
                 end
         })
 

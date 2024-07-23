@@ -16,13 +16,40 @@ local function config()
                 'lsp_progress',
                 spinner_symbols = {
                         '🌑 ', '🌒 ', '🌓 ', '🌔 ',
-                        '🌕 ', '🌖 ', '🌗 ', '🌘 ' } })
+                        '🌕 ', '🌖 ', '🌗 ', '🌘 ' }
+        })
         table.insert(
                 cfg.sections.lualine_y,
-                'require("fcitx5-ui").get_current_input_method()')
-        require('lualine').setup(cfg)
+                'require("fcitx5-ui").get_current_input_method_status().name')
+        require('lualine').setup({
+                options = {
+                        disabled_filetypes = {
+                                'neo-tree',
+                                'packer',
+                        },
+                },
+                sections = {
+                        lualine_x = { {
+                                'lsp_progress',
+                                spinner_symbols = {
+                                        '🌑 ', '🌒 ', '🌓 ', '🌔 ',
+                                        '🌕 ', '🌖 ', '🌗 ', '🌘 ' }
+                        } },
+                        lualine_y = {
+                                function()
+                                        local status =
+                                            require("fcitx5-ui").get_current_input_method_status()
+                                        if status.name == nil then
+                                                return ""
+                                        end
+
+                                        return status.name .. "|" .. status.language_code
+                                end
+                        },
+                }
 
 
+        })
 end
 
 return {

@@ -9,7 +9,10 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
         local lazyrepo = "https://github.com/folke/lazy.nvim.git"
         shell.run_command(
-                { "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath },
+                {
+                        "git", "clone", "--filter=blob:none", "--branch=stable",
+                        lazyrepo, lazypath,
+                },
                 "clone lazy.nvim", true
         )
 end
@@ -41,7 +44,10 @@ local function setup_python()
                 end
 
                 return shell.run_command(
-                        { 'env', 'PYENV_VERSION=neovim', 'pyenv', 'exec', 'pip', 'install', 'neovim' },
+                        {
+                                'env', 'PYENV_VERSION=neovim',
+                                'pyenv', 'exec', 'pip', 'install', 'neovim',
+                        },
                         'install neovim in virtualenv "neovim"',
                         false)
         end
