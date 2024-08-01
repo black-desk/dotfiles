@@ -1,12 +1,15 @@
 local config = function()
         local od = require('onedark')
-        od.setup({
+        local cfg = {
                 highlights = {
                         TSConstructor = { fg = '$yellow', fmt = 'NONE' },
                         TSPunctBracket = { fg = '$none' },
-                },
-                transparent = true,
-        })
+                }
+        }
+        if vim.g.neovide then
+                cfg.transparent = false
+        end
+        od.setup(cfg)
         od.load()
 end
 
