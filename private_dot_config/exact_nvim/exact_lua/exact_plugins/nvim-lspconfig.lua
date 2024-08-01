@@ -110,6 +110,7 @@ end
 return {
         'neovim/nvim-lspconfig',
         config = config,
+        event = { "BufReadPost", "BufNewFile" },
         dependencies = {
                 'folke/which-key.nvim',
                 'jose-elias-alvarez/null-ls.nvim',
