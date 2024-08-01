@@ -81,6 +81,10 @@ setup_python()
 
 -- Global configuration
 
+if vim.g.neovide then
+        vim.o.guifont = "FiraCode Nerd Font Mono,Noto Sans Mono CJK SC:h15"
+end
+
 vim.g.mapleader = ";"
 vim.g.maplocalleader = "<space>"
 
