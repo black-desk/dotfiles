@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while grep 'org.gnome.Shell' < /proc/self/cgroup
+do
+        sleep 0.1
+done
+
+exec "$@"
