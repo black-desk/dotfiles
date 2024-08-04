@@ -23,6 +23,11 @@ return {
                         end
 
                 },
+                {
+                        "CopilotC-Nvim/CopilotChat.nvim",
+                        branch = "canary",
+                        opts = {}
+                }
         }
 
 }

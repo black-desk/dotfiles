@@ -42,6 +42,10 @@ local config = function()
                         }
                 }),
                 enabled = function()
+                        if vim.bo.ft == 'TelescopePrompt' then
+                                return false
+                        end
+
                         local ret, fcitx5ui = pcall(require, 'fcitx5-ui')
                         if not ret then
                                 return true
