@@ -3,13 +3,18 @@ generators:
   - name: remove-all-dbusactivatable-equals-true
     filter: .*
     command: [ 'sed',
-      '-e', 's/DBusActivatable=true/d',
+      '-e', '/DBusActivatable=true/d',
     ]
-  - filter: ^dev\.zed\.Zed\.desktop$
-    name: fix-zeditor
+  - name: fix-zeditor
+    filter: ^dev\.zed\.Zed\.desktop$
     command: [ 'sed',
       # Add missing StartupWMClass
       '-e', '/\[Desktop Entry\]/a StartupWMClass=dev.zed.Zed',
       # Remove StartupNotify
       '-e', '/StartupNotify=true/d',
+    ]
+  - name: add-chromium-wrapper
+    filter: ^(microsoft-edge|google-chrome)\.desktop$
+    command: [ 'sed',
+      '-e', 's/^Exec=/Exec=chromium-wrapper /',
     ]
