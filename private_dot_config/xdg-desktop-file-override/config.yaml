@@ -1,0 +1,15 @@
+version: 0.1.0
+generators:
+  - name: remove-all-dbusactivatable-equals-true
+    filter: .*
+    command: [ 'sed',
+      '-e', 's/DBusActivatable=true/d',
+    ]
+  - filter: ^dev\.zed\.Zed\.desktop$
+    name: fix-zeditor
+    command: [ 'sed',
+      # Add missing StartupWMClass
+      '-e', '/\[Desktop Entry\]/a StartupWMClass=dev.zed.Zed',
+      # Remove StartupNotify
+      '-e', '/StartupNotify=true/d',
+    ]
