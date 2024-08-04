@@ -8,6 +8,8 @@ patch:
         - key_bindings:/paging_with_minus_equal
         - key_bindings:/numbered_mode_switch
         - my_mapping
+  schema_list:
+    - schema: double_pinyin_flypy    # 小鹤双拼
 
 my_mapping:
   __append:
