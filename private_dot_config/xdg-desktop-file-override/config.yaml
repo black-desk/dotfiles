@@ -13,6 +13,11 @@ generators:
       # Remove StartupNotify
       '-e', '/StartupNotify=true/d',
     ]
+  - name: fix-microsoft-edge
+    filter: ^microsoft-edge\.desktop$
+    command: [ 'sed',
+      '-e', '/\[Desktop Entry\]/a StartupWMClass=Microsoft-edge',
+    ]
   - name: add-chromium-wrapper
     filter: ^(microsoft-edge|google-chrome)\.desktop$
     command: [ 'sed',
