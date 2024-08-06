@@ -1,8 +1,16 @@
 #!/bin/sh
 
-while grep 'org.gnome.Shell' < /proc/self/cgroup
-do
-        sleep 0.1
+# NOTE:
+# GNOME Shell launch application in a systemd scope not systemd service
+# which causes some of the application processes
+# leaks to the org.gnome.Shell cgroup
+# if application fork too fast.
+# Check this bug for more information:
+# https://bugs.launchpad.net/ubuntu/+source/gnome-shell/+bug/2011806
+# This script waits for the cgroup set, then launch the real application.
+
+while grep 'org.gnome.Shell' </proc/self/cgroup; do
+	sleep 0.1
 done
 
 exec "$@"

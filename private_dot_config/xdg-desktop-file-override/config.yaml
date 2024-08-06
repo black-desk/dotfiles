@@ -8,18 +8,28 @@ generators:
   - name: fix-zeditor
     filter: ^dev\.zed\.Zed\.desktop$
     command: [ 'sed',
-      # Add missing StartupWMClass
+      # Add missing StartupWMClass.
       '-e', '/\[Desktop Entry\]/a StartupWMClass=dev.zed.Zed',
-      # Remove StartupNotify
+      # Remove StartupNotify.
       '-e', '/StartupNotify=true/d',
     ]
   - name: fix-microsoft-edge
     filter: ^microsoft-edge\.desktop$
     command: [ 'sed',
+      # Add missing StartupWMClass.
       '-e', '/\[Desktop Entry\]/a StartupWMClass=Microsoft-edge',
+    ]
+  - name: fix-neovide
+    filter: ^dev\.neovide\.Neovide\.desktop$
+    command: [ 'sed',
+      # Add missing StartupWMClass.
+      '-e', '/\[Desktop Entry\]/a StartupWMClass=neovide',
+      # Adjust language to English.
+      '-e', 's/^Exec=neovide/Exec=env LC_ALL=en_US.UTF-8 neovide/',
     ]
   - name: add-chromium-wrapper
     filter: ^(microsoft-edge|google-chrome)\.desktop$
     command: [ 'sed',
+      # Check ~/.local/bin/chromium-wrapper
       '-e', 's/^Exec=/Exec=chromium-wrapper /',
     ]
