@@ -5,6 +5,12 @@ generators:
     command: [ 'sed',
       '-e', '/DBusActivatable=true/d',
     ]
+  - name: add-chromium-wrapper
+    filter: ^(microsoft-edge|google-chrome)\.desktop$
+    command: [ 'sed',
+      # Check ~/.local/bin/chromium-wrapper
+      '-e', 's/^Exec=/Exec=chromium-wrapper /',
+    ]
   - name: fix-zeditor
     filter: ^dev\.zed\.Zed\.desktop$
     command: [ 'sed',
@@ -18,6 +24,16 @@ generators:
     command: [ 'sed',
       # Add missing StartupWMClass.
       '-e', '/\[Desktop Entry\]/a StartupWMClass=Microsoft-edge',
+      # Remove StartupNotify.
+      '-e', '/StartupNotify=true/d',
+    ]
+  - name: fix-google-chrome
+    filter: ^google-chrome\.desktop$
+    command: [ 'sed',
+      # Add missing StartupWMClass.
+      '-e', '/\[Desktop Entry\]/a StartupWMClass=Google-chrome',
+      # Remove StartupNotify.
+      '-e', '/StartupNotify=true/d',
     ]
   - name: fix-neovide
     filter: ^dev\.neovide\.Neovide\.desktop$
@@ -26,10 +42,4 @@ generators:
       '-e', '/\[Desktop Entry\]/a StartupWMClass=neovide',
       # Adjust language to English.
       '-e', 's/^Exec=neovide/Exec=env LC_ALL=en_US.UTF-8 neovide/',
-    ]
-  - name: add-chromium-wrapper
-    filter: ^(microsoft-edge|google-chrome)\.desktop$
-    command: [ 'sed',
-      # Check ~/.local/bin/chromium-wrapper
-      '-e', 's/^Exec=/Exec=chromium-wrapper /',
     ]
