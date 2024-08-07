@@ -115,62 +115,85 @@ local function config()
         require 'telescope'.load_extension('file_browser')
 end
 
-return {
+local extensions = {
         {
-                'nvim-telescope/telescope.nvim',
-                dependencies = {
-                        'nvim-lua/plenary.nvim',
-                },
-                keys = {
-                        {
-                                "<leader>e",
-                                function()
-                                        require('telescope').
-                                            extensions.
-                                            file_browser.
-                                            file_browser({
-                                                    initial_mode = "normal"
-                                            })
-                                end,
-                                desc = "TELE:: file browser",
-                                remap = false
-                        },
-                        {
-                                "t?",
-                                "<cmd>lua require('telescope.builtin').help_tags()<cr>",
-                                desc = "TELE:: helps",
-                                remap = false
-                        },
-                        {
-                                "tR",
-                                "<cmd>lua require('telescope.builtin').grep_string()<cr>",
-                                desc = "TELE:: search in files",
-                                remap = false
-                        },
-                        {
-                                "tb",
-                                "<cmd>lua require('telescope.builtin').buffers()<cr>",
-                                desc = "TELE:: buffer list",
-                                remap = false
-                        },
-                        {
-                                "te",
-                                "<cmd>lua require('telescope.builtin').find_files()<cr>",
-                                desc = "TELE:: search filename",
-                                remap = false
-                        },
-                        {
-                                "tr",
-                                "<cmd>lua require('telescope.builtin').live_grep()<cr>",
-                                desc = "TELE:: search in files",
-                                remap = false
-                        },
-                },
-                init = init,
-                cmd = { 'Telescope' },
-                config = config,
+                'nvim-telescope/telescope-ui-select.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
         },
-        { 'nvim-telescope/telescope-ui-select.nvim',    dependencies = { 'nvim-telescope/telescope.nvim' } },
-        { 'nvim-telescope/telescope-project.nvim',      dependencies = { 'nvim-telescope/telescope.nvim' } },
-        { 'nvim-telescope/telescope-file-browser.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
+        {
+                'nvim-telescope/telescope-project.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
+        },
+        {
+                'nvim-telescope/telescope-file-browser.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
+        },
 }
+
+return { {
+        'nvim-telescope/telescope.nvim',
+        dependencies = {
+                'nvim-lua/plenary.nvim',
+        },
+        keys = {
+                {
+                        "<leader>p",
+                        function()
+                                require('telescope').
+                                    extensions.
+                                    project.
+                                    project({
+                                            initial_mode = "normal"
+                                    })
+                        end,
+                        desc = "TELE:: projects browser",
+                        remap = false
+                },
+                {
+                        "<leader>e",
+                        function()
+                                require('telescope').
+                                    extensions.
+                                    file_browser.
+                                    file_browser({
+                                            initial_mode = "normal"
+                                    })
+                        end,
+                        desc = "TELE:: file browser",
+                        remap = false
+                },
+                {
+                        "t?",
+                        "<cmd>lua require('telescope.builtin').help_tags()<cr>",
+                        desc = "TELE:: helps",
+                        remap = false
+                },
+                {
+                        "tR",
+                        "<cmd>lua require('telescope.builtin').grep_string()<cr>",
+                        desc = "TELE:: search in files",
+                        remap = false
+                },
+                {
+                        "tb",
+                        "<cmd>lua require('telescope.builtin').buffers()<cr>",
+                        desc = "TELE:: buffer list",
+                        remap = false
+                },
+                {
+                        "te",
+                        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+                        desc = "TELE:: search filename",
+                        remap = false
+                },
+                {
+                        "tr",
+                        "<cmd>lua require('telescope.builtin').live_grep()<cr>",
+                        desc = "TELE:: search in files",
+                        remap = false
+                },
+        },
+        init = init,
+        cmd = { 'Telescope' },
+        config = config,
+}, table.unpack(extensions) }
