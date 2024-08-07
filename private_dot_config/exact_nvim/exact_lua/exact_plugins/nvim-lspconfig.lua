@@ -78,6 +78,7 @@ local function config()
                 -- 'hls',
                 'perlnavigator',
                 'typst_lsp',
+                'marksman',
                 'jsonls',
                 'pyright',
                 'rust_analyzer',
