@@ -72,6 +72,7 @@ end
 
 local function config()
         local actions = require("telescope.actions")
+        local fb_actions = require "telescope._extensions.file_browser.actions"
         require('telescope').setup({
                 defaults = {
                         layout_strategy = "vertical",
@@ -89,8 +90,23 @@ local function config()
                 },
                 extensions = {
                         ["ui-select"] = {
-                                require("telescope.themes").get_dropdown {} }
-
+                                require("telescope.themes").get_dropdown {} },
+                        file_browser = {
+                                hijack_netrw = true,
+                                mappings = {
+                                        n = {
+                                                l = actions.select_default,
+                                                h = fb_actions.goto_parent_dir,
+                                        }
+                                }
+                        },
+                        project = {
+                                base_dirs = { {
+                                        "~/Documents/workspace/repos",
+                                        max_depth = 3,
+                                }
+                                }
+                        }
                 }
         })
 
@@ -108,7 +124,14 @@ return {
                 keys = {
                         {
                                 "<leader>e",
-                                function()require('telescope').extensions.file_browser.file_browser() end,
+                                function()
+                                        require('telescope').
+                                            extensions.
+                                            file_browser.
+                                            file_browser({
+                                                    initial_mode = "normal"
+                                            })
+                                end,
                                 desc = "TELE:: file browser",
                                 remap = false
                         },
@@ -147,7 +170,7 @@ return {
                 cmd = { 'Telescope' },
                 config = config,
         },
-        { 'nvim-telescope/telescope-ui-select.nvim',     dependencies = { 'nvim-telescope/telescope.nvim' } },
-        { 'nvim-telescope/telescope-project.nvim',       dependencies = { 'nvim-telescope/telescope.nvim' } },
-        { 'nvim-telescope/telescope-file-browser.nvim',  dependencies = { 'nvim-telescope/telescope.nvim' } },
+        { 'nvim-telescope/telescope-ui-select.nvim',    dependencies = { 'nvim-telescope/telescope.nvim' } },
+        { 'nvim-telescope/telescope-project.nvim',      dependencies = { 'nvim-telescope/telescope.nvim' } },
+        { 'nvim-telescope/telescope-file-browser.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
 }
