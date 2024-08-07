@@ -4,12 +4,13 @@
 -- Keep and restore fcitx state
 
 local function config()
+        local consts = require("fcitx5-ui.consts");
         require("fcitx5-ui").setup({
                 trigger = '<M-Space>',
                 keymap = {
                         ['<M-Space>'] = {
-                                require("fcitx5-ui.consts").FcitxKey.space,
-                                require("fcitx5-ui.consts").FcitxKeyState.super,
+                                consts.FcitxKey.space,
+                                consts.FcitxKeyState.super,
                         }
                 }
         })
