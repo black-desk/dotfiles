@@ -26,7 +26,9 @@ return {
                 {
                         "CopilotC-Nvim/CopilotChat.nvim",
                         branch = "canary",
-                        opts = {}
+                        opts = {
+                                context = 'buffers'
+                        }
                 }
         }
 
