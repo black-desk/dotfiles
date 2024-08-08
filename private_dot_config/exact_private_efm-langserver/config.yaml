@@ -40,3 +40,5 @@ languages:
     - <<: *prettierd
   typescript:
     - <<: *prettierd
+  markdown:
+    - <<: *prettierd
