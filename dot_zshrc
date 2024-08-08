@@ -46,7 +46,6 @@ if [[ -f $CMD_EXE ]]; then
                         export WSL_INTEROP=/run/WSL/${i}_interop
                 fi
         done
-        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 fi
 
 export LANG=zh_CN.UTF-8
