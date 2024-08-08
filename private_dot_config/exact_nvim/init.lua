@@ -116,6 +116,11 @@ vim.api.nvim_create_autocmd('Filetype', {
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
+        pattern = 'rust',
+        callback = function() vim.opt_local.colorcolumn = '101' end
+})
+
+vim.api.nvim_create_autocmd('Filetype', {
         pattern = 'gitcommit',
         callback = function() vim.opt_local.colorcolumn = '51,72' end
 })
