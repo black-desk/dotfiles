@@ -27,7 +27,10 @@ go.work.sum
 **/cmake-build-*/
 
 # linglong
-/.linglong-target
+/linglong/
 /.ll-builder
+
+# rust
+/target/
 
 **/.idea
