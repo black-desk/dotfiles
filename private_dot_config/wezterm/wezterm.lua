@@ -7,7 +7,7 @@ return {
         use_ime = true,
         colors = colors,
         font = wezterm.font_with_fallback({
-                "Fira Code Nerd Font Mono",
+                "FiraCode Nerd Font Mono",
                 "Noto Sans Mono CJK SC"
         }),
         font_size = 13,
