@@ -207,7 +207,7 @@ vim.keymap.set(
 vim.keymap.set(
         'n', '<leader>R', function()
                 local line = vim.api.nvim_get_current_line()
-                local ok, _, command = line:find('shell: `(.+)`$')
+                local ok, _, command = line:find('shell: `(.+)`')
                 if ok == nil then
                         vim.print("No command found")
                         return
