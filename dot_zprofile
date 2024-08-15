@@ -113,4 +113,6 @@ function add_windows_path() {
         unset windows_path
 }
 
+export NEOVIDE_FORK=1
+
 add_windows_path
