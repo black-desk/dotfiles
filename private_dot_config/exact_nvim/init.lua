@@ -3,6 +3,29 @@
 require('compatibility')
 local shell = require('shell')
 
+do
+        local auto_view_aug = vim.api.nvim_create_augroup("auto_view", { clear = true })
+
+        local auto_view_pattern = { "*.lua", "*.md", "*.json", "*.cpp", "*.hpp", "*.c" }
+
+        vim.api.nvim_create_autocmd({ "BufWinLeave" },
+                {
+                        group = auto_view_aug,
+                        pattern = auto_view_pattern,
+                        callback = function()
+                                vim.cmd("silent! mkview")
+                        end
+                })
+        vim.api.nvim_create_autocmd({ "BufWinEnter" },
+                {
+                        group = auto_view_aug,
+                        pattern = auto_view_pattern,
+                        callback = function()
+                                vim.cmd("loadview")
+                        end
+                })
+end
+
 -- Bootstrap lazy.nvim
 local function bootstrap_lazy_nvim()
         local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
