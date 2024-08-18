@@ -113,9 +113,6 @@ return {
         config = config,
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
-                'folke/which-key.nvim',
-                'jose-elias-alvarez/null-ls.nvim',
-                'kevinhwang91/nvim-ufo',
                 'williamboman/mason.nvim',
         }
 }

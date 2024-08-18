@@ -113,7 +113,6 @@ local function config()
         require("telescope").load_extension("ui-select")
         require 'telescope'.load_extension('project')
         require 'telescope'.load_extension('file_browser')
-        require("telescope").load_extension("persisted")
 end
 
 local extensions = {
