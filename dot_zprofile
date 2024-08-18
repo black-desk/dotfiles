@@ -10,6 +10,11 @@ if $(cat /etc/os-release | grep Debian --quiet); then
         export DEBUGINFOD_URLS="https://debuginfod.debian.net"
 fi
 
+if $(cat /etc/os-release | grep Ubuntu --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
+fi
+
+
 export HISTFILE="$HOME/.zsh_history"
 export SAVEHIST=100000
 export HISTSIZE=100000
