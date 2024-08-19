@@ -21,7 +21,7 @@ do
                         group = auto_view_aug,
                         pattern = auto_view_pattern,
                         callback = function()
-                                vim.cmd("loadview")
+                                vim.cmd("silent! loadview")
                         end
                 })
 end
