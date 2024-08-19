@@ -36,7 +36,7 @@ generators:
       '-e', '/StartupNotify=true/d',
     ]
   - name: fix-microsoft-edge-dev
-    filter: ^microsoft-edge-deb\.desktop$
+    filter: ^microsoft-edge-dev\.desktop$
     command: [ 'sed',
       # Add missing StartupWMClass.
       '-e', '/\[Desktop Entry\]/a StartupWMClass=Microsoft-edge-dev',
