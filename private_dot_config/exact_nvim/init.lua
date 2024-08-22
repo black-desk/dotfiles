@@ -6,7 +6,7 @@ local shell = require('shell')
 do
         local auto_view_aug = vim.api.nvim_create_augroup("auto_view", { clear = true })
 
-        local auto_view_pattern = { "*.lua", "*.md", "*.json", "*.cpp", "*.hpp", "*.c" }
+        local auto_view_pattern = { "*.rs", "*.lua", "*.md", "*.json", "*.cpp", "*.hpp", "*.c" }
 
         vim.api.nvim_create_autocmd({ "BufWinLeave" },
                 {
