@@ -1,9 +1,9 @@
 local function config()
         vim.keymap.set("n", "<space>e",
                 function()
-                        require("trouble").toggle("workspace_diagnostics")
+                        require("trouble").toggle("diagnostics")
                 end,
-                { ["desc"] = "toggle trouble workspace diagnostics" })
+                { ["desc"] = "toggle trouble diagnostics" })
 end
 
 return {
