@@ -70,7 +70,6 @@ local function config()
                 'bashls',
                 'clangd',
                 'cmake',
-                'efm',
                 'eslint',
                 'gopls',
                 'lemminx',

@@ -9,6 +9,7 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "copilot-cmp": { "branch": "master", "commit": "b6e5286b3d74b04256d0a7e3bd2908eabec34b44" },
   "copilot.lua": { "branch": "master", "commit": "86537b286f18783f8b67bccd78a4ef4345679625" },
+  "efmls-configs-nvim": { "branch": "main", "commit": "b23178bef394eac491788f525747acebaf259c05" },
   "fcitx5-ui.nvim": { "branch": "dev", "commit": "821f2aa78b2a5ca2a331863e05a980116a18af4a" },
   "fugitive-gitea": { "branch": "master", "commit": "d93176028d13820f941c165c14039a6019744a5a" },
   "fugitive-gitlab.vim": { "branch": "master", "commit": "838d3a110836f511be099002ce1a71493c042615" },
