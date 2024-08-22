@@ -207,19 +207,12 @@ rg(){
 
 if command -v nvim &>/dev/null; then
 nvim(){
-        unset -f nvim
-        [ -d "$PYENV_ROOT/versions/neovim" ] || (
-                [ -d "$PYENV_ROOT/versions/miniforge3-latest" ] ||
-                        pyenv install miniforge3-latest
-                pyenv virtualenv miniforge3-latest neovim
-        )
-
-        [ -d "$PYENV_ROOT/versions/neovim/lib/python3.12/site-packages/neovim" ] || (
-                pyenv activate neovim
-                pip install neovim
-                pyenv deactivate
-        )
-        nvim "$@"
+        if [ -n "$DISPLAY" ]; then
+                neovide "$@"
+        else
+                unset -f nvim
+                nvim "$@"
+        fi
 }
 
 export VISUAL=nvim
