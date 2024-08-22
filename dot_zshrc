@@ -52,7 +52,7 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
 if [[
-        $(systemctl show --user gpg-agent-ssh.socket --property ActiveState) ==
+        $(systemctl show --user gpg-agent-ssh.socket --property ActiveState 2>/dev/null) ==
         "ActiveState=active"
    ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
