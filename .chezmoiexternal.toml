@@ -13,5 +13,5 @@ url = "https://github.com/pyenv/pyenv"
 
 [".local/bin/mdoc"]
 type = "file"
-url = "https://github.com/linglongdev/mdoc/releases/latest/download/mdoc"
+url = "https://github.com/black-desk/mdoc/releases/latest/download/mdoc"
 executable = true
