@@ -1,13 +1,17 @@
-# tmux config
 [".tmux.conf"]
-        type = "file"
-        url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
-        refreshPeriod = "24h"
-# goenv
+type = "file"
+url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
+refreshPeriod = "24h"
+
 [".goenv"]
-        type = "git-repo"
-        url = "https://github.com/syndbg/goenv"
-# pyenv
+type = "git-repo"
+url = "https://github.com/syndbg/goenv"
+
 [".pyenv"]
-        type = "git-repo"
-        url = "https://github.com/pyenv/pyenv"
+type = "git-repo"
+url = "https://github.com/pyenv/pyenv"
+
+[".local/bin/mdoc"]
+type = "file"
+url = "https://github.com/linglongdev/mdoc/releases/latest/download/mdoc"
+executable = true
