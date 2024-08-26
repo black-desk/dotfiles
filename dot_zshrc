@@ -301,4 +301,10 @@ command -v thefuck &>/dev/null && eval $(thefuck --alias)
 
 export GPG_TTY=$(tty)
 
+if command -v fcitx5 &>/dev/null; then
+        # fcitx5 do not have dbus activation feature,
+        # so we start a fcitx5 service here but not replace existing daemon.
+        fcitx5 --keep -d &>/dev/null
+fi
+
 R
