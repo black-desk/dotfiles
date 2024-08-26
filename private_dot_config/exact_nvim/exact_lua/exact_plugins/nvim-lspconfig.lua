@@ -114,5 +114,6 @@ return {
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
                 'williamboman/mason.nvim',
+                'kevinhwang91/nvim-ufo',
         }
 }
