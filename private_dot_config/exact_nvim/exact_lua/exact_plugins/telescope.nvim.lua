@@ -92,6 +92,10 @@ local function config()
                         ["ui-select"] = {
                                 require("telescope.themes").get_dropdown {} },
                         file_browser = {
+                                hidden = {
+                                        file_browser = true,
+                                        folder_browser = true,
+                                },
                                 hijack_netrw = true,
                                 mappings = {
                                         n = {
