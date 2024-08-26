@@ -14,7 +14,8 @@
 if [[ "$TERM_PROGRAM" != "WezTerm" ]] &&
         [[ -n "$PS1" ]] &&
         [[ -z "$TMUX" ]] &&
-        [[ -n "$SSH_CONNECTION" ]]; then
+        [[ -n "$SSH_CONNECTION" ]] &&
+        command -v tmux &>/dev/null; then
 
         ( tmux list-session 2>&1 | grep ssh ) && exec tmux attach-session -t ssh
         exec tmux new-session -s ssh
