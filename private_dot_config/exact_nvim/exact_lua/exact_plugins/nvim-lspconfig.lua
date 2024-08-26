@@ -84,6 +84,7 @@ local function config()
                 'lua_ls',
                 'texlab',
                 'tsserver',
+                'yamlls',
         }
 
         local default_lsp_config = {
