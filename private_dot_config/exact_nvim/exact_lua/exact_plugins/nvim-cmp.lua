@@ -27,9 +27,9 @@ local config = function()
                 }),
                 sources = cmp.config.sources({
 
-                        { name = "copilot", priority = 100 },
+                        { name = 'ultisnips', priority = 100 },
+                        { name = "copilot",  priority = 50 },
                         { name = 'nvim_lsp' },
-                        -- { name = 'ultisnips' },
                         { name = 'path' },
                         { name = 'buffer' },
                         {
@@ -79,21 +79,20 @@ local config = function()
         Capabilities = require('cmp_nvim_lsp').default_capabilities(Capabilities)
 end
 
-return {
+return { {
         'hrsh7th/nvim-cmp',
-        dependencies = {
-                -- https://github.com/hrsh7th/cmp-nvim-lsp
-                'hrsh7th/cmp-nvim-lsp',
-                -- https://github.com/hrsh7th/cmp-buffer
-                'hrsh7th/cmp-buffer',
-                -- https://github.com/hrsh7th/cmp-path
-                'hrsh7th/cmp-path',
-                -- https://github.com/hrsh7th/cmp-cmdline
-                'hrsh7th/cmp-cmdline',
-                -- https://github.com/quangnguyen30192/cmp-nvim-ultisnips
-                -- 'quangnguyen30192/cmp-nvim-ultisnips',
-                -- https://github.com/octaltree/cmp-look
-                'octaltree/cmp-look',
-        },
         config = config,
-}
+}, {
+        -- https://github.com/hrsh7th/cmp-nvim-lsp
+        'hrsh7th/cmp-nvim-lsp',
+        -- https://github.com/hrsh7th/cmp-buffer
+        'hrsh7th/cmp-buffer',
+        -- https://github.com/hrsh7th/cmp-path
+        'hrsh7th/cmp-path',
+        -- https://github.com/hrsh7th/cmp-cmdline
+        'hrsh7th/cmp-cmdline',
+        -- https://github.com/quangnguyen30192/cmp-nvim-ultisnips
+        'quangnguyen30192/cmp-nvim-ultisnips',
+        -- https://github.com/octaltree/cmp-look
+        'octaltree/cmp-look',
+}, }
