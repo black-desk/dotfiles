@@ -1,32 +1,100 @@
-# A valid snippet should starts with:
-#
-#		snippet trigger_word [ "description" [ options ] ]
-#
-# and end with:
-#
-#		endsnippet
-#
-# Snippet options:
-#
-#		b - Beginning of line.
-#		i - In-word expansion.
-#		w - Word boundary.
-#		r - Regular expression
-#		e - Custom context snippet
-#		A - Snippet will be triggered automatically, when condition matches.
-#
-# Basic example:
-#
-#		snippet emitter "emitter properties" b
-#		private readonly ${1} = new Emitter<$2>()
-#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
-#		endsnippet
-#
-# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
-
 snippet check_root "check if running as root" b
 if [ "$EUID" -ne 0 ]
 	then echo "Please run as root"
 	exit
 fi
+
+
+endsnippet
+
+snippet # "start a new shell script" b
+#!/usr/bin/env $1
+
+# Use /usr/bin/env to find shell interpreter for better portability.
+# Reference: https://en.wikipedia.org/wiki/Shebang_%28Unix%29#Portability
+
+# Exit immediately if any commands (even in pipeline)
+# exits with a non-zero status.
+
+set -e
+set -o pipefail
+
+
+endsnippet
+
+snippet CURRENT_SOURCE_FILE_PATH "get current source file path" b
+# WARNING:
+# This is not reliable when current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
+
+
+endsnippet
+
+snippet CURRENT_SOURCE_FILE_ABSOLUTE_PATH_bash "get current source file absolute path" b
+# WARNING:
+# This is not reliable when current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_ABSOLUTE_PATH="${BASH_SOURCE[0]:-\$0}"
+if [ -n "${CURRENT_SOURCE_FILE_ABSOLUTE_PATH%%/*}" ]; then
+	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE"
+fi
+
+
+endsnippet
+
+snippet CURRENT_SOURCE_FILE_ABSOLUTE_PATH_sh "get current source file absolute path in bash" b
+# WARNING:
+# This is not reliable when current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_ABSOLUTE_PATH="\$0"
+if [[ CURRENT_SOURCE_FILE_ABSOLUTE_PATH != /* ]]; then
+	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE
+fi
+
+
+endsnippet
+
+snippet CURRENT_SOURCE_FILE_DIR "get current source file directory" b
+# WARNING:
+# This is not reliable when current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
+CURRENT_SOURCE_FILE_DIR="$(dirname -- "$CURRENT_SOURCE_FILE_PATH")"
+
+
+endsnippet
+
+snippet CURRENT_SOURCE_FILE_DIR_ABSOLUTE_PATH "get current source file directory absolute path" b
+# WARNING:
+# This is not reliable when current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_ABSOLUTE_PATH="\$0"
+if [[ CURRENT_SOURCE_FILE_ABSOLUTE_PATH != /* ]]; then
+	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE
+fi
+CURRENT_SOURCE_FILE_DIR_ABSOLUTE_PATH="$(dirname -- "$CURRENT_SOURCE_FILE_ABSOLUTE_PATH")"
+
+
+endsnippet
+
+snippet download_latest_github_release "download latest release from GitHub repository" b
+function download_latest_github_release() {
+	REPOSITORY="\$1"
+	ASSET="\$2"
+	SAVE_AS="\$3"
+
+	URL="https://github.com/$REPOSITORY/releases/latest/download/$ASSET"
+
+	mkdir -p "$(dirname -- "$SAVE_AS")"
+
+	if command -v curl &>/dev/null; then
+		curl -L "$URL" -o "$SAVE_AS"
+		return
+	fi
+
+	if command -v wget &>/dev/null; then
+		wget "$URL" -O "$SAVE_AS"
+		return
+	fi
+
+	exit 1
+}
+
+
 endsnippet
