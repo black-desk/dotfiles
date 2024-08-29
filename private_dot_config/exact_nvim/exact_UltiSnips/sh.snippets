@@ -9,13 +9,13 @@ endsnippet
 
 snippet # "start a new shell script" b
 #!/usr/bin/env $1
-
+# NOTE:
 # Use /usr/bin/env to find shell interpreter for better portability.
 # Reference: https://en.wikipedia.org/wiki/Shebang_%28Unix%29#Portability
 
+# NOTE:
 # Exit immediately if any commands (even in pipeline)
 # exits with a non-zero status.
-
 set -e
 set -o pipefail
 
@@ -24,51 +24,45 @@ endsnippet
 
 snippet CURRENT_SOURCE_FILE_PATH "get current source file path" b
 # WARNING:
-# This is not reliable when current script file is sourced by \`source\` or \`.\`
+# This is not reliable when using POSIX sh
+# and current script file is sourced by \`source\` or \`.\`
 CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
 
 
 endsnippet
 
-snippet CURRENT_SOURCE_FILE_ABSOLUTE_PATH_bash "get current source file absolute path" b
-# WARNING:
-# This is not reliable when current script file is sourced by \`source\` or \`.\`
-CURRENT_SOURCE_FILE_ABSOLUTE_PATH="${BASH_SOURCE[0]:-\$0}"
-if [ -n "${CURRENT_SOURCE_FILE_ABSOLUTE_PATH%%/*}" ]; then
-	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE"
-fi
+snippet get_absolute_path_function "a function to generate absolute path from likely relative path argument" b
+# This function generates an absolute path from a likely relative path argument.
+# Arguments:
+#   \$1 - The file path which can be relative or absolute.
+# Returns:
+#   The absolute path of the given file path.
+function get_absolute_path() {
+	FILE_PATH="\$1"
+	if [ -n "${FILE_PATH%%/*}" ]; then
+		FILE_PATH="$PWD/$FILE_PATH"
+	fi
+	echo "$FILE_PATH"
+}
 
 
 endsnippet
 
-snippet CURRENT_SOURCE_FILE_ABSOLUTE_PATH_sh "get current source file absolute path in bash" b
-# WARNING:
-# This is not reliable when current script file is sourced by \`source\` or \`.\`
-CURRENT_SOURCE_FILE_ABSOLUTE_PATH="\$0"
-if [[ CURRENT_SOURCE_FILE_ABSOLUTE_PATH != /* ]]; then
-	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE
+snippet get_absolute_path "generate absolute path from a likely relative path" b
+# Make $1 an absolute path.
+if [ -n "${$1%%/*}" ]; then
+	$1="$PWD/$$1"
 fi
-
-
 endsnippet
 
 snippet CURRENT_SOURCE_FILE_DIR "get current source file directory" b
-# WARNING:
-# This is not reliable when current script file is sourced by \`source\` or \`.\`
-CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
 CURRENT_SOURCE_FILE_DIR="$(dirname -- "$CURRENT_SOURCE_FILE_PATH")"
 
 
 endsnippet
 
-snippet CURRENT_SOURCE_FILE_DIR_ABSOLUTE_PATH "get current source file directory absolute path" b
-# WARNING:
-# This is not reliable when current script file is sourced by \`source\` or \`.\`
-CURRENT_SOURCE_FILE_ABSOLUTE_PATH="\$0"
-if [[ CURRENT_SOURCE_FILE_ABSOLUTE_PATH != /* ]]; then
-	CURRENT_SOURCE_FILE_ABSOLUTE_PATH="$PWD/$CURRENT_SOURCE_FILE_ABSOLUTE
-fi
-CURRENT_SOURCE_FILE_DIR_ABSOLUTE_PATH="$(dirname -- "$CURRENT_SOURCE_FILE_ABSOLUTE_PATH")"
+snippet CURRENT_SOURCE_FILE_NAME "get current source file name" b
+CURRENT_SOURCE_FILE_NAME="$(basename -- "$CURRENT_SOURCE_FILE_PATH")"
 
 
 endsnippet
@@ -98,3 +92,83 @@ function download_latest_github_release() {
 
 
 endsnippet
+
+snippet check_CI "check if running in CI environment" b
+# NOTE:
+# GitHub actions sets CI environment variable.
+# Reference: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
+if [ -z "$CI" ]; then
+	echo "WARNING: This script is meant to be run in CI environment." >&2
+fi
+
+
+endsnippet
+
+snippet build_cmake_project "xxx" b
+# This function builds a CMake project.
+# Arguments:
+#   \$1 - The source directory of the project.
+#   \$2 - The directory where the build will take place.
+#   $@ - Additional arguments to pass to the cmake command.
+function build_cmake_project() {
+	configure_cmake_project "$@"
+
+	shift
+	local project_binary_dir
+	project_binary_dir="\$1"
+	# Make project_binary_dir an absolute path.
+	if [ -n "${project_binary_dir%%/*}" ]; then
+		project_binary_dir="$PWD/$project_binary_dir"
+	fi
+	shift
+
+	# NOTE:
+	# Do not use pushd and popd here for POSIX sh compliance.
+	local old_pwd
+	old_pwd="$PWD"
+	cd "$project_binary_dir"
+	cmake --build .
+	cd "$old_pwd"
+}
+endsnippet
+
+snippet configure_cmake_project "configure a CMake project" b
+# This function configures a CMake project by setting up the necessary directories
+# and running the CMake command with the appropriate arguments.
+#
+# Arguments:
+#   \$1 - The source directory of the project.
+#   \$2 - The directory where the build will take place.
+#   $@ - Additional arguments to pass to the cmake command.
+function configure_cmake_project() {
+	# NOTE:
+	# Do not use cmake -S and -B options for better compatibility.
+	local project_source_dir
+	project_source_dir="\$1"
+	# Make project_source_dir an absolute path.
+	if [ -n "${project_source_dir%%/*}" ]; then
+		project_source_dir="$PWD/$project_source_dir"
+	fi
+	shift
+
+	local project_binary_dir
+	project_binary_dir="\$1"
+	# Make project_binary_dir an absolute path.
+	if [ -n "${project_binary_dir%%/*}" ]; then
+		project_binary_dir="$PWD/$project_binary_dir"
+	fi
+	shift
+
+	mkdir -p "$project_binary_dir"
+	# NOTE:
+	# Do not use pushd and popd here for POSIX sh compliance.
+	local old_pwd
+	old_pwd="$PWD"
+	cd "$project_binary_dir"
+	cmake "$project_source_dir" "$@"
+	cd "$old_pwd"
+}
+
+
+endsnippet
+
