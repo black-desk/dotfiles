@@ -16,3 +16,8 @@ type = "file"
 url = "https://github.com/black-desk/mdoc/releases/latest/download/mdoc"
 executable = true
 refreshPeriod = "5m"
+
+[".local/share/nautilus-python/extensions/code-nautilus.py"]
+type = "file"
+url = "https://raw.githubusercontent.com/harry-cpp/code-nautilus/master/code-nautilus.py"
+refreshPeriod = "5m"
