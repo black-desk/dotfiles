@@ -1,0 +1,13 @@
+{{ $name := promptString "name" -}}
+{{ $gmail := promptString "gmail" -}}
+{{ $ut_email := promptString "ut_email" -}}
+{{ $ut_id := promptString "ut_id" -}}
+{{ $github_id := promptString "github_id" -}}
+{{ $email := promptString "email" -}}
+[data]
+	name = {{ $name | quote }}
+	gmail = {{ $gmail | quote }}
+	ut_email = {{ $ut_email | quote }}
+        ut_id = {{ $ut_id | quote }}
+        github_id = {{ $github_id | quote }}
+        email = {{ $email | quote }}
