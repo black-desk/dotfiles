@@ -263,8 +263,18 @@ bindkey -s '^l' "^[[C"
 # This is just a workaround.
 alias sudo="sudo "
 
-alias ls="ls --color"
-alias la="ls -la"
+function ls () {
+        if [[ "$PWD" == "$HOME" ]]; then
+                /usr/bin/env ls -Isnap --color "$@"
+                return
+        fi
+        /usr/bin/env ls --color "$@"
+}
+
+function la () {
+        ls -la "$@"
+}
+
 alias ra="ranger"
 
 alias pkg_auto_remove="sudo pacman -Rcns \$(pacman -Qdtq)"
