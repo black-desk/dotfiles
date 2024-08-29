@@ -2,12 +2,12 @@ local config = function()
         -- Register linters and formatters per language
         local prettierd = require('efmls-configs.formatters.prettier_d')
         local black = require('efmls-configs.formatters.black')
-        local clang_tidy = require('efmls-configs.linters.clang_tidy')
+        -- local clang_tidy = require('efmls-configs.linters.clang_tidy')
         local languages = {
                 markdown = { prettierd },
                 python = { black },
-                c = { clang_tidy },
-                cpp = { clang_tidy },
+                -- c = { clang_tidy },
+                -- cpp = { clang_tidy },
         }
 
         -- Or use the defaults provided by this plugin
@@ -18,7 +18,7 @@ local config = function()
         local efmls_config = {
                 filetypes = vim.tbl_keys(languages),
                 settings = {
-                        rootMarkers = { '.git/', 'build/compile_commands.json' },
+                        rootMarkers = { 'build/compile_commands.json', ".git" },
                         languages = languages,
                 },
                 init_options = {
