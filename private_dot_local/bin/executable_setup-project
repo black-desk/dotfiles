@@ -65,6 +65,7 @@ function setup() {
 			-DCMAKE_COLOR_DIAGNOSTICS=1 ||
 			exit 255
 		cmake --build . || exit 255
+		ln -f -s "$BUILD_ROOT"/compile_commands.json ../compile_commands.json
 		if [ -n "${TEST}" ] && cmake --build . --target help | grep "test: phony" -q; then
 			export CTEST_OUTPUT_ON_FAILURE=1
 			export GTEST_COLOR=1
