@@ -1,6 +1,6 @@
-[".tmux.conf"]
-type = "file"
-url = "https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf"
+[".local/share/oh-my-tmux"]
+type = "git-repo"
+url = "https://github.com/gpakosz/.tmux"
 refreshPeriod = "24h"
 
 [".goenv"]
