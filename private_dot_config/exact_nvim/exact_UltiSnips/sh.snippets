@@ -9,6 +9,7 @@ snippet # "shell script common header" b
 # exits with a non-zero status.
 set -e
 set -o pipefail
+
 endsnippet
 
 
@@ -17,10 +18,12 @@ snippet CURRENT_SOURCE_FILE_PATH "get current source file path" b
 # This is not reliable when using POSIX sh
 # and current script file is sourced by \`source\` or \`.\`
 CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
+
 endsnippet
 
 snippet CURRENT_SOURCE_FILE_NAME "get current source file name" b
 CURRENT_SOURCE_FILE_NAME="$(basename -- "$CURRENT_SOURCE_FILE_PATH")"
+
 endsnippet
 
 snippet function_log "" b
@@ -35,6 +38,7 @@ function log() {
 	# shellcheck disable=SC2059
 	printf "$CURRENT_SOURCE_FILE_NAME: $format\n" "$@" >&2 || true
 }
+
 endsnippet
 
 snippet USAGE "" b
@@ -67,6 +71,8 @@ while getopts ':h' option; do
 	esac
 done
 shift $((OPTIND - 1))
+
+
 endsnippet
 
 snippet function_check_euid "" b
@@ -87,6 +93,7 @@ function check_euid() {
 	log "[ERROR] Please run as user $expected_euid"
 	exit 1
 }
+
 endsnippet
 
 snippet function_check_ci "" b
@@ -101,6 +108,7 @@ function check_ci() {
 	fi
 	log "[WARNING] This script is meant to be run in CI environment"
 }
+
 endsnippet
 
 snippet function_get_absolute_path "" b
@@ -119,12 +127,14 @@ function get_absolute_path() {
 	fi
 	echo "$file_path"
 }
+
 endsnippet
 
 snippet CURRENT_SOURCE_FILE_PATH_ABSOLUTE "" b
 CURRENT_SOURCE_FILE_PATH_ABSOLUTE="$(
 	get_absolute_path "${CURRENT_SOURCE_FILE_PATH}"
 )"
+
 endsnippet
 
 snippet CURRENT_SOURCE_FILE_DIR "" b
@@ -135,6 +145,7 @@ snippet CURRENT_SOURCE_FILE_DIR_ABSOLUTE "" b
 CURRENT_SOURCE_FILE_DIR_ABSOLUTE="$(
 	get_absolute_path "$CURRENT_SOURCE_FILE_DIR"
 )"
+
 endsnippet
 
 
@@ -177,6 +188,7 @@ function download_latest_github_release() {
 
 	false
 }
+
 endsnippet
 
 snippet function_run_in_directory "" b
@@ -197,6 +209,7 @@ function run_in_directory() {
 	"$@"
 	cd -- "$old_pwd"
 }
+
 endsnippet
 
 snippet function_build_cmake_project "" b
@@ -221,6 +234,7 @@ function build_cmake_project() {
 
 	run_in_directory "$binary_dir" cmake --build .
 }
+
 endsnippet
 
 snippet function_configure_cmake_project "" b
@@ -246,6 +260,7 @@ function configure_cmake_project() {
 
 	run_in_directory "$binary_dir" cmake "$source_dir" "$@"
 }
+
 endsnippet
 
 snippet function_get_github_latest_release_tag "" b
@@ -289,6 +304,7 @@ function get_github_latest_release_tag() {
 	log "[ERROR] One of the following commands is required: gh, curl, wget"
 	false
 }
+
 endsnippet
 
 snippet template_tool "template of shell script tools in code repository" b

@@ -140,7 +140,7 @@ endsnippet
 
 
 snippet template_github_actions_auto_prerelease "" b
-name: "Automatic pre-release"
+name: Automatic pre-release
 
 on:
   push:
@@ -161,7 +161,7 @@ jobs:
           # might need history for generate change log.
           fetch-depth: 0
 
-      - name: Run tools/generate-release-assets.sh
+      - name: Run generate-release-assets.sh
         id: generate_release_assets
         run: |
           # NOTE:
@@ -190,4 +190,27 @@ jobs:
           automatic_release_tag: ${{ needs.auto_tag.outputs.new_tag }}
           prerelease: true
           files: ${{ steps.generate_release_assets.outputs.assets }}
+endsnippet
+
+snippet name:actions/setup-go(github-action) "" b
+- name: Run actions/setup-go
+  uses: actions/setup-go@${1:v5}
+  with:
+    go-version: stable
+    cache: true
+
+
+endsnippet
+
+snippet name:goreleaser/goreleaser-action(github-action) "" b
+- name: Run goreleaser/goreleaser-action
+  uses: goreleaser/goreleaser-action@${1:v6}
+  with:
+    distribution: goreleaser
+    version: latest
+    args: release --clean
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
 endsnippet
