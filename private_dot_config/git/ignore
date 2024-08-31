@@ -23,6 +23,7 @@ go.work.sum
 
 # cmake/meson build directories
 **/build-*/
+**/build_*/
 **/build/
 **/cmake-build-*/
 
