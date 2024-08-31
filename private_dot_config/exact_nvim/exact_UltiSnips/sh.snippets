@@ -172,3 +172,76 @@ function configure_cmake_project() {
 
 endsnippet
 
+snippet get_github_latest_release_tag "configure a CMake project" b
+# Function to get the latest release tag of a GitHub repository.
+# Arguments:
+#   \$1: The GitHub repository in the format "owner/repo".
+function get_github_latest_release_tag() {
+	local repo
+	repo="\$1"
+
+	if command -v gh &>/dev/null; then
+		gh release view -R "${repo}" --json tagName -q .tagName
+		return
+	fi
+
+	function get_tag_name() {
+		if command -v jq &>/dev/null; then
+			jq -r .tag_name
+			return
+		fi
+
+		echo "\\\`jq\\\` is missing, fallback to use grep to get tag_name in json" >&2
+
+		grep -oP '"tag_name": "\K(.*)(?=")'
+	}
+
+	if command -v curl &>/dev/null; then
+		curl -sL https://api.github.com/repos/"${repo}"/releases/latest |
+			get_tag_name
+		return
+	fi
+
+	if command -v wget &>/dev/null; then
+		wget -qO- https://api.github.com/repos/"${repo}"/releases/latest |
+			get_tag_name
+		return
+	fi
+
+	echo "One of the following commands is required: gh, curl, wget" >&2
+	false
+}
+
+
+endsnippet
+
+snippet options "parse command line options" b
+# shellcheck disable=SC2016
+USAGE="$CURRENT_SOURCE_FILE_NAME"'
+
+
+'"
+Usage:
+  $CURRENT_SOURCE_FILE_NAME -h
+  $CURRENT_SOURCE_FILE_NAME
+
+Options:
+  -h	Show this screen."
+
+while getopts ':h' option; do
+	case "$option" in
+	h)
+		echo "$USAGE"
+		exit
+		;;
+	\?)
+		printf "$CURRENT_SOURCE_FILE_NAME: Unknown option: -%s\n\n" "$OPTARG" >&2
+		echo "$USAGE" >&2
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+
+endsnippet
