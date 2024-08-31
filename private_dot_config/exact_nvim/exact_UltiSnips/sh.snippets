@@ -1,13 +1,4 @@
-snippet check_root "check if running as root" b
-if [ "$EUID" -ne 0 ]
-	then echo "Please run as root"
-	exit
-fi
-
-
-endsnippet
-
-snippet # "start a new shell script" b
+snippet # "shell script common header" b
 #!/usr/bin/env $1
 # NOTE:
 # Use /usr/bin/env to find shell interpreter for better portability.
@@ -18,167 +9,254 @@ snippet # "start a new shell script" b
 # exits with a non-zero status.
 set -e
 set -o pipefail
-
-
 endsnippet
+
 
 snippet CURRENT_SOURCE_FILE_PATH "get current source file path" b
 # WARNING:
 # This is not reliable when using POSIX sh
 # and current script file is sourced by \`source\` or \`.\`
 CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
+endsnippet
 
+snippet CURRENT_SOURCE_FILE_NAME "get current source file name" b
+CURRENT_SOURCE_FILE_NAME="$(basename -- "$CURRENT_SOURCE_FILE_PATH")"
+endsnippet
+
+snippet function_log "" b
+# This function log messages to stderr works like printf
+# with a prefix of the current script name.
+# Arguments:
+#   \$1 - The format string.
+#   $@ - Arguments to the format string, just like printf.
+function log() {
+	local format="\$1"
+	shift
+	# shellcheck disable=SC2059
+	printf "$CURRENT_SOURCE_FILE_NAME: $format\n" "$@" >&2 || true
+}
+endsnippet
+
+snippet USAGE "" b
+# shellcheck disable=SC2016
+USAGE="$CURRENT_SOURCE_FILE_NAME"'
+
+Description of your script goes HERE.
+
+'"
+Usage:
+  $CURRENT_SOURCE_FILE_NAME -h
+  $CURRENT_SOURCE_FILE_NAME
+
+Options:
+  -h	Show this screen."
 
 endsnippet
 
-snippet get_absolute_path_function "a function to generate absolute path from likely relative path argument" b
+snippet getopts "" b
+while getopts ':h' option; do
+	case "$option" in
+	h)
+		echo "$USAGE"
+		exit
+		;;
+	\?)
+		log "[ERROR] Unknown option: -%s" "$OPTARG"
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+endsnippet
+
+snippet function_check_euid "" b
+# This function checks
+# if the script is running with the expected EUID
+# else exits with an error message.
+# Arguments:
+#   \$1 - The expected EUID.
+function check_euid() {
+	local expected_euid
+	expected_euid="\$1"
+	shift
+
+	if [ "$EUID" -e "$expected_euid" ]; then
+		return
+	fi
+
+	log "[ERROR] Please run as user $expected_euid"
+	exit 1
+}
+endsnippet
+
+snippet function_check_ci "" b
+# This function checks if the script is running in a CI environment.
+# If not, it logs a warning message.
+function check_ci() {
+	# NOTE:
+	# GitHub actions sets CI environment variable.
+	# Reference: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
+	if [ -n "$CI" ]; then
+		return
+	fi
+	log "[WARNING] This script is meant to be run in CI environment"
+}
+endsnippet
+
+snippet function_get_absolute_path "" b
 # This function generates an absolute path from a likely relative path argument.
 # Arguments:
 #   \$1 - The file path which can be relative or absolute.
 # Returns:
 #   The absolute path of the given file path.
 function get_absolute_path() {
-	FILE_PATH="\$1"
-	if [ -n "${FILE_PATH%%/*}" ]; then
-		FILE_PATH="$PWD/$FILE_PATH"
+	local file_path
+	file_path="\$1"
+	shift
+
+	if [ -n "${file_path%%/*}" ]; then
+		file_path="$PWD/$file_path"
 	fi
-	echo "$FILE_PATH"
+	echo "$file_path"
 }
-
-
 endsnippet
 
-snippet get_absolute_path "generate absolute path from a likely relative path" b
-# Make $1 an absolute path.
-if [ -n "${$1%%/*}" ]; then
-	$1="$PWD/$$1"
-fi
+snippet CURRENT_SOURCE_FILE_PATH_ABSOLUTE "" b
+CURRENT_SOURCE_FILE_PATH_ABSOLUTE="$(
+	get_absolute_path "${CURRENT_SOURCE_FILE_PATH}"
+)"
 endsnippet
 
-snippet CURRENT_SOURCE_FILE_DIR "get current source file directory" b
+snippet CURRENT_SOURCE_FILE_DIR "" b
 CURRENT_SOURCE_FILE_DIR="$(dirname -- "$CURRENT_SOURCE_FILE_PATH")"
-
-
 endsnippet
 
-snippet CURRENT_SOURCE_FILE_NAME "get current source file name" b
-CURRENT_SOURCE_FILE_NAME="$(basename -- "$CURRENT_SOURCE_FILE_PATH")"
-
-
+snippet CURRENT_SOURCE_FILE_DIR_ABSOLUTE "" b
+CURRENT_SOURCE_FILE_DIR_ABSOLUTE="$(
+	get_absolute_path "$CURRENT_SOURCE_FILE_DIR"
+)"
 endsnippet
 
-snippet download_latest_github_release "download latest release from GitHub repository" b
+
+snippet function_download_latest_github_release "" b
+# This function downloads the latest release asset from a GitHub repository.
+#
+# Arguments:
+#   \$1 - The GitHub repository in the format "owner/repo".
+#   \$2 - The name of the asset to download.
+#   \$3 - The path where the downloaded asset will be saved.
+# Returns:
+#   None. Error if neither curl nor wget is available.
 function download_latest_github_release() {
-	REPOSITORY="\$1"
-	ASSET="\$2"
-	SAVE_AS="\$3"
+	local repository
+	repository="\$1"
+	shift
+	local asset
+	asset="\$1"
+	shift
+	local save_as
+	save_as="\$1"
+	shift
+	
+	local url
+	url="https://github.com/$repository/releases/latest/download/$asset"
 
-	URL="https://github.com/$REPOSITORY/releases/latest/download/$ASSET"
-
-	mkdir -p "$(dirname -- "$SAVE_AS")"
+	mkdir -p "$(dirname -- "$save_as")"
 
 	if command -v curl &>/dev/null; then
-		curl -L "$URL" -o "$SAVE_AS"
+		curl -L "$url" -o "$save_as"
 		return
 	fi
 
 	if command -v wget &>/dev/null; then
-		wget "$URL" -O "$SAVE_AS"
+		wget "$url" -O "$save_as"
 		return
 	fi
 
-	exit 1
+	log "[ERROR] One of the following commands is required: curl, wget"
+
+	false
 }
-
-
 endsnippet
 
-snippet check_CI "check if running in CI environment" b
-# NOTE:
-# GitHub actions sets CI environment variable.
-# Reference: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
-if [ -z "$CI" ]; then
-	echo "WARNING: This script is meant to be run in CI environment." >&2
-fi
-
-
-endsnippet
-
-snippet build_cmake_project "xxx" b
-# This function builds a CMake project.
+snippet function_run_in_directory "" b
+# This function runs a command in a specified directory.
 # Arguments:
-#   \$1 - The source directory of the project.
-#   \$2 - The directory where the build will take place.
-#   $@ - Additional arguments to pass to the cmake command.
-function build_cmake_project() {
-	configure_cmake_project "$@"
-
-	shift
-	local project_binary_dir
-	project_binary_dir="\$1"
-	# Make project_binary_dir an absolute path.
-	if [ -n "${project_binary_dir%%/*}" ]; then
-		project_binary_dir="$PWD/$project_binary_dir"
-	fi
+#   \$1 - The directory in which to run the command.
+#   $@ - The command to run.
+function run_in_directory() {
+	local directory
+	directory="\$1"
 	shift
 
 	# NOTE:
 	# Do not use pushd and popd here for POSIX sh compliance.
 	local old_pwd
 	old_pwd="$PWD"
-	cd "$project_binary_dir"
-	cmake --build .
-	cd "$old_pwd"
+	cd -- "$directory"
+	"$@"
+	cd -- "$old_pwd"
 }
 endsnippet
 
-snippet configure_cmake_project "configure a CMake project" b
-# This function configures a CMake project by setting up the necessary directories
-# and running the CMake command with the appropriate arguments.
+snippet function_build_cmake_project "" b
+# This function builds a CMake project.
+#
+# Arguments:
+#   \$1 - The source directory of the project.
+#   \$2 - The directory where the build will take place.
+#   $@ - Additional arguments to pass to the cmake command.
+function build_cmake_project() {
+	local source_dir
+	source_dir="$(get_absolute_path "\$1")"
+	shift
+	local binary_dir
+	binary_dir="$(get_absolute_path "\$1")"
+	shift
+
+	# NOTE:
+	# Do not use cmake -S and -B options for better compatibility.
+
+	configure_cmake_project "$source_dir" "$binary_dir" "\$@"
+
+	run_in_directory "$binary_dir" cmake --build .
+}
+endsnippet
+
+snippet function_configure_cmake_project "" b
+# This function configures a CMake project.
 #
 # Arguments:
 #   \$1 - The source directory of the project.
 #   \$2 - The directory where the build will take place.
 #   $@ - Additional arguments to pass to the cmake command.
 function configure_cmake_project() {
+	local source_dir
+	source_dir="$(get_absolute_path "\$1")"
+	shift
+
+	local binary_dir
+	binary_dir="$(get_absolute_path "\$1")"
+	shift
+
 	# NOTE:
 	# Do not use cmake -S and -B options for better compatibility.
-	local project_source_dir
-	project_source_dir="\$1"
-	# Make project_source_dir an absolute path.
-	if [ -n "${project_source_dir%%/*}" ]; then
-		project_source_dir="$PWD/$project_source_dir"
-	fi
-	shift
 
-	local project_binary_dir
-	project_binary_dir="\$1"
-	# Make project_binary_dir an absolute path.
-	if [ -n "${project_binary_dir%%/*}" ]; then
-		project_binary_dir="$PWD/$project_binary_dir"
-	fi
-	shift
+	mkdir -p "$binary_dir"
 
-	mkdir -p "$project_binary_dir"
-	# NOTE:
-	# Do not use pushd and popd here for POSIX sh compliance.
-	local old_pwd
-	old_pwd="$PWD"
-	cd "$project_binary_dir"
-	cmake "$project_source_dir" "$@"
-	cd "$old_pwd"
+	run_in_directory "$binary_dir" cmake "$source_dir" "$@"
 }
-
-
 endsnippet
 
-snippet get_github_latest_release_tag "configure a CMake project" b
+snippet function_get_github_latest_release_tag "" b
 # Function to get the latest release tag of a GitHub repository.
+#
 # Arguments:
 #   \$1: The GitHub repository in the format "owner/repo".
 function get_github_latest_release_tag() {
 	local repo
 	repo="\$1"
+	shift
 
 	if command -v gh &>/dev/null; then
 		gh release view -R "${repo}" --json tagName -q .tagName
@@ -191,7 +269,7 @@ function get_github_latest_release_tag() {
 			return
 		fi
 
-		echo "\\\`jq\\\` is missing, fallback to use grep to get tag_name in json" >&2
+		log "[WARNING] \\\`jq\\\` is missing, fallback to use grep to get tag_name in json"
 
 		grep -oP '"tag_name": "\K(.*)(?=")'
 	}
@@ -208,17 +286,33 @@ function get_github_latest_release_tag() {
 		return
 	fi
 
-	echo "One of the following commands is required: gh, curl, wget" >&2
+	log "[ERROR] One of the following commands is required: gh, curl, wget"
 	false
 }
-
-
 endsnippet
 
-snippet options "parse command line options" b
+snippet template_tool "template of shell script tools in code repository" b
+#!/usr/bin/env bash
+# NOTE:
+# Use /usr/bin/env to find shell interpreter for better portability.
+# Reference: https://en.wikipedia.org/wiki/Shebang_%28Unix%29#Portability
+
+# NOTE:
+# Exit immediately if any commands (even in pipeline)
+# exits with a non-zero status.
+set -e
+set -o pipefail
+
+# WARNING:
+# This is not reliable when using POSIX sh
+# and current script file is sourced by \`source\` or \`.\`
+CURRENT_SOURCE_FILE_PATH="${BASH_SOURCE[0]:-\$0}"
+CURRENT_SOURCE_FILE_NAME="$(basename -- "$CURRENT_SOURCE_FILE_PATH")"
+
 # shellcheck disable=SC2016
 USAGE="$CURRENT_SOURCE_FILE_NAME"'
 
+Description of your script goes HERE.
 
 '"
 Usage:
@@ -228,20 +322,39 @@ Usage:
 Options:
   -h	Show this screen."
 
-while getopts ':h' option; do
-	case "$option" in
-	h)
-		echo "$USAGE"
-		exit
-		;;
-	\?)
-		printf "$CURRENT_SOURCE_FILE_NAME: Unknown option: -%s\n\n" "$OPTARG" >&2
-		echo "$USAGE" >&2
-		exit 1
-		;;
-	esac
-done
-shift $((OPTIND - 1))
+CURRENT_SOURCE_FILE_DIR="$(dirname -- "$CURRENT_SOURCE_FILE_PATH")"
+cd -- "$CURRENT_SOURCE_FILE_DIR"
+
+# This function log messages to stderr works like printf
+# with a prefix of the current script name.
+# Arguments:
+#   \$1 - The format string.
+#   $@ - Arguments to the format string, just like printf.
+function log() {
+	local format="\$1"
+	shift
+	# shellcheck disable=SC2059
+	printf "$CURRENT_SOURCE_FILE_NAME: $format\n" "$@" >&2 || true
+}
 
 
+function main() {
+	while getopts ':h' option; do
+		case "$option" in
+		h)
+			echo "$USAGE"
+			exit
+			;;
+		\?)
+			log "[ERROR] Unknown option: -%s" "$OPTARG"
+			exit 1
+			;;
+		esac
+	done
+	shift $((OPTIND - 1))
+
+	$0
+}
+
+main "$@"
 endsnippet
