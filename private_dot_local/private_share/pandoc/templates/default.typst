@@ -1,0 +1,230 @@
+// vim: set shiftwidth=2 tabstop=2 expandtab:
+
+#let horizontalrule = [
+  #line(start: (25%,0%), end: (75%,0%))
+]
+
+#let endnote(num, contents) = [
+  #stack(dir: ltr, spacing: 3pt, super[#num], contents)
+]
+
+#show terms: it => {
+  it.children
+    .map(child => [
+      #strong[#child.term]
+      #block(inset: (left: 1.5em, top: -0.4em))[#child.description]
+      ])
+    .join()
+}
+
+#show figure: set block(breakable: true)
+#show table.cell.where(y: 0): set text(weight: "bold")
+#set table(
+  inset: 6pt,
+)
+
+#let content-to-string(content) = {
+  if content.has("text") {
+    content.text
+  } else if content.has("children") {
+    content.children.map(content-to-string).join("")
+  } else if content.has("body") {
+    content-to-string(content.body)
+  } else if content == [ ] {
+    " "
+  }
+}
+
+#let conf(
+  title: none,
+  authors: (),
+  keywords: (),
+  date: none,
+  abstract: none,
+  cols: 1,
+  margin: (x: 1.25in, y: 1.25in),
+  paper: "a4",
+  lang: "en",
+  region: "US",
+  font: (),
+  fontsize: 11pt,
+  sectionnumbering: none,
+  doc,
+) = {
+  set document(
+    title: title,
+    author: authors.map(author => content-to-string(author.name)),
+    keywords: keywords,
+  )
+  set page(
+    paper: paper,
+    margin: margin,
+  )
+  set par(justify: true)
+  set text(lang: lang,
+           region: region,
+           font: font,
+           size: fontsize)
+  set heading(numbering: sectionnumbering)
+
+  align(horizon)[
+    #if title != none {
+      align(center)[#block(inset: 2em)[
+        #text(weight: "bold", size: 3em)[#title]
+      ]]
+    }
+
+    #if authors != none and authors != [] {
+      let count = authors.len()
+      let ncols = calc.min(count, 3)
+      grid(
+        columns: (1fr,) * ncols,
+        row-gutter: 1.5em,
+        ..authors.map(author =>
+            align(center)[
+              #author.name \
+              #author.affiliation \
+              #author.email
+            ]
+        )
+      )
+    }
+
+    #if date != none {
+      align(center)[#block(inset: 1em)[
+        #date
+      ]]
+    }
+  ]
+
+  pagebreak(weak: true)
+
+  if abstract != none {
+    block(inset: 2em)[
+    #text(weight: "semibold")[Abstract] #h(1em) #abstract
+    ]
+  }
+
+  if cols == 1 {
+    doc
+  } else {
+    columns(cols, doc)
+  }
+}
+
+#show: doc => conf(
+$if(title)$
+  title: [$title$],
+$endif$
+$if(author)$
+  authors: (
+$for(author)$
+$if(author.name)$
+    ( name: [$author.name$],
+      affiliation: [$author.affiliation$],
+      email: [$author.email$] ),
+$else$
+    ( name: [$author$],
+      affiliation: "",
+      email: "" ),
+$endif$
+$endfor$
+    ),
+$endif$
+$if(keywords)$
+  keywords: ($for(keywords)$$keyword$$sep$,$endfor$),
+$endif$
+$if(date)$
+  date: [$date$],
+$endif$
+$if(lang)$
+  lang: "$lang$",
+$endif$
+$if(region)$
+  region: "$region$",
+$endif$
+$if(abstract)$
+  abstract: [$abstract$],
+$endif$
+$if(margin)$
+  margin: ($for(margin/pairs)$$margin.key$: $margin.value$,$endfor$),
+$endif$
+$if(papersize)$
+  paper: "$papersize$",
+$endif$
+$if(mainfont)$
+  font: ("$mainfont$",),
+$endif$
+$if(fontsize)$
+  fontsize: $fontsize$,
+$endif$
+$if(section-numbering)$
+  sectionnumbering: "$section-numbering$",
+$endif$
+  cols: $if(columns)$$columns$$else$1$endif$,
+  doc,
+)
+
+#set page( header: [
+  #h(1fr)
+  $if(title)$
+    $title$
+  $endif$
+])
+
+$for(header-includes)$
+$header-includes$
+
+$endfor$
+
+$if(toc)$
+#outline(
+  title: auto,
+  indent: $toc-indent$,
+  depth: $toc-depth$,
+);
+#pagebreak(weak: true)
+$endif$
+
+#set page(
+    numbering: "1",
+)
+
+#counter(page).update(1)
+
+#show raw: set text(font: ($for(monofont)$"$monofont$",$endfor$))
+
+#set par(first-line-indent: 2em)
+#let fakepar=context{box();v(-measure(block()+block()).height)}
+#show heading: it=>it+fakepar
+#show figure: it=>it+fakepar
+#show math.equation.where(block: true): it=>it+fakepar
+#show enum: it=>it+fakepar
+#show list: it=>it+fakepar
+#show math.equation.where(block: true): it=>it+fakepar
+#show raw.where(block: true): it=>it+fakepar
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+
+$body$
+
+$if(citations)$
+$if(csl)$
+
+#set bibliography(style: "$csl$")
+$elseif(bibliographystyle)$
+
+#set bibliography(style: "$bibliographystyle$")
+$endif$
+$if(bibliography)$
+
+#bibliography($for(bibliography)$"$bibliography$"$sep$,$endfor$)
+$endif$
+$endif$
+$for(include-after)$
+
+$include-after$
+$endfor$
