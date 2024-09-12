@@ -78,7 +78,7 @@ systemd_system_unit_dir=$(shell \
 	pkg-config systemd --variable=systemd_system_unit_dir)
 endif
 
-install:
+install-systemd-system-unit:
 	$(INSTALL_DATA) ${1:path/to/your.service} "$(DESTDIR)$(systemd_system_unit_dir)"/${2:your.service}
 endsnippet
 
@@ -95,7 +95,7 @@ systemd_user_unit_dir=$(shell \
 	pkg-config systemd --variable=systemd_user_unit_dir)
 endif
 
-install:
+install-systemd-user-unit:
 	$(INSTALL_DATA) ${1:path/to/your.service} "$(DESTDIR)$(systemd_user_unit_dir)"/${2:your.service}
 endsnippet
 
@@ -196,15 +196,3 @@ test-coverage-report:
 
 
 endsnippet
-
-snippet install: "" b
-PREFIX ?= /usr/local
-DESTDIR ?=
-
-.PHONY: install
-install:
-	$1
-
-
-endsnippet
-
