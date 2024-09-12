@@ -11,12 +11,6 @@ url = "https://github.com/syndbg/goenv"
 type = "git-repo"
 url = "https://github.com/pyenv/pyenv"
 
-[".local/bin/mdoc"]
-type = "file"
-url = "https://github.com/black-desk/mdoc/releases/latest/download/mdoc"
-executable = true
-refreshPeriod = "5m"
-
 [".local/share/nautilus-python/extensions/code-nautilus.py"]
 type = "file"
 url = "https://raw.githubusercontent.com/harry-cpp/code-nautilus/master/code-nautilus.py"
