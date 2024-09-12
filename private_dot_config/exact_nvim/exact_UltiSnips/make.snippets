@@ -32,6 +32,7 @@ endsnippet
 snippet install_bin "" b
 .PHONY: install-bin
 install-bin:
+	$(INSTALL) -d "$(DESTDIR)$(bindir)"
 	$(INSTALL_PROGRAM) ${1:path/to/your/executable} "$(DESTDIR)$(bindir)"/${2:executable}
 
 endsnippet
@@ -39,6 +40,7 @@ endsnippet
 snippet install_libexec "" b
 .PHONY: install-libexec
 install-libexec:
+	$(INSTALL) -d "$(DESTDIR)$(libexecdir)"
 	$(INSTALL_PROGRAM) ${1:path/to/your/internal/executable} "$(DESTDIR)$(libexecdir)"/${2:executable}
 
 endsnippet
@@ -46,6 +48,7 @@ endsnippet
 snippet install_static_library "" b
 .PHONY: install-static-library
 install-static-library:
+	$(INSTALL) -d "$(DESTDIR)$(libdir)"
 	$(INSTALL_DATA) ${1:path/to/your.a} "$(DESTDIR)$(libdir)"/${2:your.a}
 
 endsnippet
@@ -55,14 +58,15 @@ snippet install_pkg_config "" b
 pc_paths=$(subst :, , $(shell pkg-config pkg-config --variable=pc_path))
 # Select the first path that is under $(datarootdir)
 pc_dir?=$(word 1, $(filter $(datarootdir)%, $(pc_paths)))
-# If no path is found, use the default path
-ifeq ($(pc_dir),)
-pc_dir=$(datarootdir)/pkg-config
-endif
 
 .PHONY: install-pkg-config
 install-pkg-config:
-	$(INSTALL_DATA) ${1:path/to/your.pc} "$(pc_dir)"/${2:your.pc}
+# If no path is found, use the default path
+ifeq ($(pc_dir),)
+	$(error Failed to find location to install pkg-config files)
+endif
+	$(INSTALL) -d "$(DESTDIR)$(pc_dir)"
+	$(INSTALL_DATA) ${1:path/to/your.pc} "$(DESTDIR)$(pc_dir)"/${2:your.pc}
 endsnippet
 
 snippet install_systemd_system_unit "" b
@@ -72,13 +76,13 @@ systemd_system_unit_paths=$(subst :, , $(shell \
 # Select the first path that is under $(libdir).
 systemd_system_unit_dir?=$(word 1, \
 	$(filter $(libdir)%, $(systemd_system_unit_paths)))
-# If no path is found, use the default path, to make sure the unit can be found.
-ifeq ($(systemd_system_unit_dir),)
-systemd_system_unit_dir=$(shell \
-	pkg-config systemd --variable=systemd_system_unit_dir)
-endif
 
+.PHONY: install-systemd-system-unit
 install-systemd-system-unit:
+ifeq ($(systemd_system_unit_dir),)
+	$(error Failed to find location to install systemd system units)
+endif
+	$(INSTALL) -d "$(DESTDIR)$(systemd_system_unit_dir)"
 	$(INSTALL_DATA) ${1:path/to/your.service} "$(DESTDIR)$(systemd_system_unit_dir)"/${2:your.service}
 endsnippet
 
@@ -89,13 +93,13 @@ systemd_user_unit_paths=$(subst :, , $(shell \
 # Select the first path that is under $(datarootdir).
 systemd_user_unit_dir?=$(word 1, \
 	$(filter $(datarootdir)%, $(systemd_user_unit_paths)))
-# If no path is found, use the default path, to make sure the unit can be found.
-ifeq ($(systemd_user_unit_dir),)
-systemd_user_unit_dir=$(shell \
-	pkg-config systemd --variable=systemd_user_unit_dir)
-endif
 
+.PHONY: install-systemd-user-unit
 install-systemd-user-unit:
+ifeq ($(systemd_user_unit_dir),)
+	$(error Failed to find location to install systemd user units)
+endif
+	$(INSTALL) -d "$(DESTDIR)$(systemd_user_unit_dir)"
 	$(INSTALL_DATA) ${1:path/to/your.service} "$(DESTDIR)$(systemd_user_unit_dir)"/${2:your.service}
 endsnippet
 
