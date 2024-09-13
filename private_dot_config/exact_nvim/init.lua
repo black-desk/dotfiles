@@ -110,7 +110,8 @@ end
 
 vim.g.mapleader = ";"
 vim.g.maplocalleader = "<space>"
-
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
 vim.opt.clipboard = vim.opt.clipboard + { 'unnamedplus' }
 vim.opt.ignorecase = true
 vim.opt.updatetime = 100
@@ -134,7 +135,7 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
-        pattern = {'go', "sh"},
+        pattern = { 'go', "sh" },
         callback = function() vim.opt_local.expandtab = false end
 })
 
