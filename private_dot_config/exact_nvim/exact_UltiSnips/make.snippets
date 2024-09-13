@@ -16,16 +16,19 @@ include $(INPUT)
 endsnippet
 
 snippet # "" b
-DESTDIR?=
-prefix?=/usr/local
-bindir?=$(prefix)/bin
-libdir?=$(prefix)/lib
-libexecdir?=$(prefix)/libexec
-datarootdir?=$(prefix)/share
-INSTALL?=install
-INSTALL_PROGRAM?= $(INSTALL)
-INSTALL_DATA?= $(INSTALL) -m 644
-SHELL=sh
+DESTDIR ?=
+
+prefix      ?= /usr/local
+bindir      ?= $(prefix)/bin
+libdir      ?= $(prefix)/lib
+libexecdir  ?= $(prefix)/libexec
+datarootdir ?= $(prefix)/share
+
+INSTALL         ?= install
+INSTALL_PROGRAM ?= $(INSTALL)
+INSTALL_DATA    ?= $(INSTALL) -m 644
+
+SHELL = sh
 
 endsnippet
 
@@ -54,8 +57,7 @@ install-static-library:
 endsnippet
 
 snippet install_pkg_config "" b
-pc_dir?=$(libdir)/pkgconfig
-
+pc_dir ?= $(libdir)/pkgconfig
 ifeq ($(findstring $(pc_dir), $(subst :, , $(shell \
 	$(PKG_CONFIG) --variable=pc_path)), )
 $(warning pc_dir="$(pc_dir)" \
@@ -69,7 +71,7 @@ install-pkg-config:
 endsnippet
 
 snippet install_systemd_system_unit "" b
-systemd_system_unit_dir?=$(shell \
+systemd_system_unit_dir ?= $(shell \
 	$(PKG_CONFIG) --define-variable=prefix=$(prefix) \
 	systemd --variable=systemd_system_unit_dir)
 ifeq ($(findstring $(systemd_system_unit_dir), $(subst :, , $(shell \
@@ -85,7 +87,7 @@ install-systemd-system-unit:
 endsnippet
 
 snippet install_systemd_user_unit "" b
-systemd_user_unit_dir?=$(shell \
+systemd_user_unit_dir ?= $(shell \
 	$(PKG_CONFIG) --define-variable=prefix=$(prefix) \
 	systemd --variable=systemd_user_unit_dir)
 ifeq ($(findstring $(systemd_user_unit_dir), $(subst :, , $(shell \
