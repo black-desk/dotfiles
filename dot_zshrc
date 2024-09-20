@@ -206,7 +206,7 @@ rg(){
         rg "$@"
 }
 
-if command -v nvim &>/dev/null; then
+if command -v nvim &>/dev/null && command -v neovide &>/dev/null ;then
 nvim(){
         if [ -n "$DISPLAY" ]; then
                 neovide "$@"
@@ -215,10 +215,10 @@ nvim(){
                 nvim "$@"
         fi
 }
+fi
 
 export VISUAL=nvim
 export EDITOR=nvim
-fi
 
 export PAGER=less
 
