@@ -92,6 +92,7 @@ local function config()
                         ["ui-select"] = {
                                 require("telescope.themes").get_dropdown {} },
                         file_browser = {
+                                depth = false,
                                 hidden = {
                                         file_browser = true,
                                         folder_browser = true,
@@ -159,9 +160,7 @@ return { {
                                 require('telescope').
                                     extensions.
                                     file_browser.
-                                    file_browser({
-                                            initial_mode = "normal"
-                                    })
+                                    file_browser()
                         end,
                         desc = "TELE:: file browser",
                         remap = false
