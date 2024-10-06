@@ -21,3 +21,8 @@ type = "archive"
 exact = true
 url = "https://github.com/pandoc/lua-filters/releases/download/v2021-11-05/lua-filters.tar.gz"
 stripComponents = 2
+
+[".local/share/fcitx5/rime"]
+type = "git-repo"
+url = "https://github.com/iDvel/rime-ice"
+refreshPeriod = "24h"
