@@ -24,5 +24,5 @@ stripComponents = 2
 
 [".local/share/fcitx5/rime"]
 type = "git-repo"
-url = "https://github.com/iDvel/rime-ice"
+url = "https://github.com/black-desk/rime-ice"
 refreshPeriod = "24h"
