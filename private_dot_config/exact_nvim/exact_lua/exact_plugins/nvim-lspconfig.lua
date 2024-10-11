@@ -83,7 +83,7 @@ local function config()
                 'rust_analyzer',
                 'lua_ls',
                 'texlab',
-                'tsserver',
+                'ts_ls',
                 'yamlls',
         }
 
