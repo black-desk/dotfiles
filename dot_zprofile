@@ -103,6 +103,11 @@ update_path "$N_PREFIX/bin"
 
 update_path "$HOME/.cargo/bin"
 
+# GHCup
+
+update_path "$HOME/.ghcup/bin"
+update_path "$HOME/.cabal/bin"
+
 unset update_path
 
 # CPM
