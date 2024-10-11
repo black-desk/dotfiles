@@ -74,7 +74,7 @@ local function config()
                 'gopls',
                 'lemminx',
                 'taplo',
-                -- 'hls',
+                'hls',
                 'perlnavigator',
                 'typst_lsp',
                 'marksman',
