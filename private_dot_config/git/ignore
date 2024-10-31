@@ -35,3 +35,8 @@ go.work.sum
 /target/
 
 **/.idea
+
+coverage.txt
+coverage.info
+
+CMakeUserPresets.json
