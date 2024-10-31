@@ -40,6 +40,14 @@ install-bin:
 
 endsnippet
 
+snippet install_data "" b
+.PHONY: install-data
+install-data:
+	$(INSTALL) -d "$(DESTDIR)$(datarootdir)"
+	$(INSTALL_DATA) ${1:path/to/your/data} "$(DESTDIR)$(datarootdir)"/${2:data}
+
+endsnippet
+
 snippet install_libexec "" b
 .PHONY: install-libexec
 install-libexec:
