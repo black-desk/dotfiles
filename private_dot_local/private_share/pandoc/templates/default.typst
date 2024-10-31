@@ -195,14 +195,8 @@ $endif$
 #show raw: set text(font: ($for(monofont)$"$monofont$",$endfor$))
 
 #set par(first-line-indent: 2em)
-#let fakepar=context{box();v(-measure(block()+block()).height)}
-#show heading: it=>it+fakepar
-#show figure: it=>it+fakepar
-#show math.equation.where(block: true): it=>it+fakepar
-#show enum: it=>it+fakepar
-#show list: it=>it+fakepar
-#show math.equation.where(block: true): it=>it+fakepar
-#show raw.where(block: true): it=>it+fakepar
+#import "@preview/indenta:0.0.3": fix-indent
+#show: fix-indent()
 
 $for(include-before)$
 $include-before$
