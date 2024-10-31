@@ -19,7 +19,7 @@ ActivateKeys=
 DeactivateKeys=
 
 [Hotkey/TriggerKeys]
-0=Super+space
+0=Control+space
 
 [Hotkey/PrevPage]
 0=Up

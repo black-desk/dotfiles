@@ -6,11 +6,11 @@
 local function config()
         local consts = require("fcitx5-ui.consts");
         require("fcitx5-ui").setup({
-                trigger = '<M-Space>',
+                trigger = '<C-Space>',
                 keymap = {
-                        ['<M-Space>'] = {
+                        ['<C-Space>'] = {
                                 consts.FcitxKey.space,
-                                consts.FcitxKeyState.super,
+                                consts.FcitxKeyState.ctrl,
                         }
                 }
         })
