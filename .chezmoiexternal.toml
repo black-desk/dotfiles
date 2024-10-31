@@ -26,3 +26,13 @@ stripComponents = 2
 type = "git-repo"
 url = "https://github.com/black-desk/rime-ice"
 refreshPeriod = "24h"
+
+[".ssh/config.d/aosc"]
+type = "file"
+url = "https://cdn.jsdelivr.net/gh/AOSC-Dev/Buildbots/ssh_config"
+refreshPeriod = "24h"
+
+[".ssh/known_hosts.d/aosc"]
+type = "file"
+url = "https://cdn.jsdelivr.net/gh/AOSC-Dev/Buildbots/ssh_known_hosts"
+refreshPeriod = "24h"
