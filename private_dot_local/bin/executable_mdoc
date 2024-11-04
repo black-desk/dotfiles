@@ -10,6 +10,12 @@ set -e
 set -o pipefail
 
 input="${1:-index.md}"
+
+metadata="${input%.md}".meta.yaml
+if [ ! -f "$metadata" ]; then
+	metadata="/dev/null"
+fi
+
 output="$(
 	grep \# -m 1 "$input" |
 		awk '{$1 = ""; print substr($0, 2)}'
@@ -17,13 +23,14 @@ output="$(
 
 podman run -it --rm \
 	-v "$PWD:/data" \
-	-v "/usr/share/fonts/:/pandocx/share/fonts" \
-	-v "$HOME/.local/share/pandoc/templates:/pandocx/share/pandoc/templates" \
-	docker.io/blackdesk/pandocx:with_plantuml \
+	-v "/usr/share/fonts/:/usr/share/fonts" \
+	docker.io/blackdesk/pandocx:diagram \
 	"$input" -o "$output" -t typst \
+	--data-dir=/usr/local/share/pandoc \
+	--template=PandocX.typst \
 	--columns=80 \
 	--extract-media=media \
-	--metadata-file="${input%.md}".meta.yaml \
+	--metadata-file="$metadata" \
 	-M date="$(date)" \
 	--from markdown+east_asian_line_breaks \
 	--shift-heading-level-by=-1 \
