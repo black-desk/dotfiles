@@ -16,12 +16,6 @@ type = "file"
 url = "https://raw.githubusercontent.com/harry-cpp/code-nautilus/master/code-nautilus.py"
 refreshPeriod = "5m"
 
-[".local/share/pandoc/filters"]
-type = "archive"
-exact = true
-url = "https://github.com/pandoc/lua-filters/releases/download/v2021-11-05/lua-filters.tar.gz"
-stripComponents = 2
-
 [".local/share/fcitx5/rime"]
 type = "git-repo"
 url = "https://github.com/black-desk/rime-ice"
@@ -36,3 +30,9 @@ refreshPeriod = "24h"
 type = "file"
 url = "https://cdn.jsdelivr.net/gh/AOSC-Dev/Buildbots/ssh_known_hosts"
 refreshPeriod = "24h"
+
+[".local/bin/pandocx"]
+type = "file"
+url = "https://raw.githubusercontent.com/black-desk/PandocX/refs/heads/master/pandocx"
+refreshPeriod = "24h"
+executable = true
