@@ -144,6 +144,11 @@ vim.api.nvim_create_autocmd('Filetype', {
         callback = function() vim.opt_local.colorcolumn = '101' end
 })
 
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+        pattern = '*.pmd',
+        callback = function() vim.opt_local.filetype = 'markdown' end
+})
+
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = 'gitcommit',
         callback = function() vim.opt_local.colorcolumn = '51,72' end
