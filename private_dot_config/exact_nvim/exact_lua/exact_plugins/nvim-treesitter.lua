@@ -42,7 +42,4 @@ return {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
         config = config,
-        dependencies = {
-                'mason.nvim',
-        }
 }

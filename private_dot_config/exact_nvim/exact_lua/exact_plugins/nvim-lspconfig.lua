@@ -64,28 +64,44 @@ local function config()
                 return ret
         end
 
+        local function get_server_list()
+                local server_map = {
+                        bashls = 'bash-language-server',
+                        clangd = 'clangd',
+                        cmake = 'cmake-language-server',
+                        eslint = 'vscode-eslint-language-server',
+                        gopls = 'gopls',
+                        lemminx = 'lemminx',
+                        taplo = 'taplo',
+                        hls = 'haskell-language-server',
+                        perlnavigator = 'perlnavigator',
+                        typst_lsp = 'typst-lsp',
+                        marksman = 'marksman',
+                        jsonls = 'vscode-json-languageserver',
+                        pyright = 'pyright',
+                        rust_analyzer = 'rust-analyzer',
+                        lua_ls = 'lua-language-server',
+                        texlab = 'texlab',
+                        ts_ls = 'typescript-language-server',
+                        yamlls = 'yaml-language-server',
+                }
+
+                local server_list = {}
+
+                for lsp, command in pairs(server_map) do
+                        if vim.fn.executable(command) ~= 1 then
+                                goto continue
+                        end
+                        table.insert(server_list, lsp)
+                        ::continue::
+                end
+
+                return server_list
+        end
+
         local lsp_config = get_my_lsp_configs()
 
-        local server_list = {
-                'bashls',
-                'clangd',
-                'cmake',
-                'eslint',
-                'gopls',
-                'lemminx',
-                'taplo',
-                'hls',
-                'perlnavigator',
-                'typst_lsp',
-                'marksman',
-                'jsonls',
-                'pyright',
-                'rust_analyzer',
-                'lua_ls',
-                'texlab',
-                'ts_ls',
-                'yamlls',
-        }
+        local server_list = get_server_list()
 
         local default_lsp_config = {
                 flags = {
@@ -113,7 +129,6 @@ return {
         config = config,
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
-                'williamboman/mason.nvim',
                 'kevinhwang91/nvim-ufo',
         }
 }

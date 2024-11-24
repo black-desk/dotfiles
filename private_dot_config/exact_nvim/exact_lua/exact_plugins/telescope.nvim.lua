@@ -107,7 +107,7 @@ local function config()
                         },
                         project = {
                                 base_dirs = { {
-                                        "~/Documents/workspace/repos",
+                                        os.getenv("HOME") .. "/Documents/workspace/repos",
                                         max_depth = 3,
                                 }
                                 }
