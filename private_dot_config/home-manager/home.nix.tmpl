@@ -5,8 +5,8 @@ let
     { inherit pkgs; };
 in
 {
-  home.username = "black_desk";
-  home.homeDirectory = "/home/black_desk";
+  home.username = "{{ .chezmoi.username }}";
+  home.homeDirectory = "{{ .chezmoi.homeDir }}";
   home.stateVersion = "24.05"; # Please read the comment before changing.
   home.packages = with nurpkgs.repos.definfo.rime-ls; [
     pkgs.chezmoi
@@ -14,7 +14,6 @@ in
     pkgs.clang-tools
     pkgs.cmake
     pkgs.cmake-language-server
-    pkgs.distrobox
     pkgs.efm-langserver
     pkgs.git
     pkgs.github-cli
