@@ -1,0 +1,52 @@
+{ config, pkgs, ... }:
+let
+  nurpkgs =
+    import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
+    { inherit pkgs; };
+in
+{
+  home.username = "black_desk";
+  home.homeDirectory = "/home/black_desk";
+  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home.packages = with nurpkgs.repos.definfo.rime-ls; [
+    pkgs.chezmoi
+    pkgs.clang
+    pkgs.clang-tools
+    pkgs.cmake
+    pkgs.cmake-language-server
+    pkgs.distrobox
+    pkgs.efm-langserver
+    pkgs.git
+    pkgs.github-cli
+    pkgs.gnumake
+    pkgs.gopls
+    pkgs.haskell-language-server
+    pkgs.lazygit
+    pkgs.lemminx
+    pkgs.lua-language-server
+    pkgs.marksman
+    pkgs.neovim
+    pkgs.ninja
+    pkgs.nodePackages.npm
+    pkgs.nodePackages.typescript-language-server
+    pkgs.pandoc
+    pkgs.perlnavigator
+    pkgs.plantuml
+    pkgs.prettierd
+    pkgs.pyright
+    pkgs.pyright
+    pkgs.rime-ls
+    pkgs.ripgrep
+    pkgs.rust-analyzer
+    pkgs.shellcheck
+    pkgs.shfmt
+    pkgs.taplo
+    pkgs.texlab
+    pkgs.typst
+    pkgs.typst-lsp
+    pkgs.vscode-langservers-extracted
+    pkgs.wl-clipboard
+    pkgs.yaml-language-server
+  ];
+  programs.home-manager.enable = true;
+}
