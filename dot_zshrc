@@ -49,6 +49,10 @@ if [[ -f $CMD_EXE ]]; then
         done
 fi
 
+if [[ -e $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]]; then
+	. $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+fi
+
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
