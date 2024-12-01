@@ -12,6 +12,12 @@ local function config()
                         '🌑 ', '🌒 ', '🌓 ', '🌔 ',
                         '🌕 ', '🌖 ', '🌗 ', '🌘 ' }
         })
+        table.insert(cfg.sections.lualine_x, function()
+                if vim.b.rime_enabled then
+                        return 'ㄓ'
+                end
+                return ''
+        end)
         require('lualine').setup(cfg)
 end
 

@@ -129,22 +129,36 @@ local function config()
                         end, "format document")
                         set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
                         set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
+
+                        local client = vim.lsp.get_client_by_id(args.data.client_id)
+                        if client == nil then
+                                return
+                        end
+
+                        if client.name ~= "rime_ls" then
+                                return
+                        end
+
                         set_keymap("<leader><space>", function()
-                                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                                if client == nil then
-                                        return
-                                end
-                                client.request('workspace/executeCommand',
-                                        { command = "rime-ls.toggle-rime" },
-                                        function(_, result, ctx, _)
-                                                if ctx.client_id == client.id then
-                                                        vim.b.rime_enabled = result
-                                                end
+                                client.request("workspace/executeCommand", {
+                                        command = "rime-ls.toggle-rime",
+                                }, function(_, result, ctx, _)
+                                        if ctx.client_id ~= client.id then
+                                                return
                                         end
-                                )
-                        end, "")
-                        set_keymap('<leader>rs',
-                                function() vim.lsp.buf.execute_command({ command = "rime-ls.sync-user-data" }) end, "")
+                                        vim.b.rime_enabled = result
+                                        if result then
+                                                vim.cmd([[:Copilot disable]])
+                                        else
+                                                vim.cmd([[:Copilot enable]])
+                                        end
+                                end)
+                        end, "toggle rime")
+                        set_keymap('<leader>rs', function()
+                                client.request("workspace/executeCommand", {
+                                        command = "rime-ls.sync-user-data",
+                                })
+                        end, "sync rime user data")
                 end
         })
 end

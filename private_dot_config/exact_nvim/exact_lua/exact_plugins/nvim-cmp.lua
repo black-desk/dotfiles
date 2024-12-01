@@ -60,7 +60,7 @@ local config = function()
                         end, { 'i', 's' }),
                 }),
                 sources = cmp.config.sources({
-                        { name = 'nvim_lsp',  priority = 110 },
+                        { name = 'nvim_lsp' },
                         { name = 'ultisnips', priority = 100 },
                         { name = "copilot",   priority = 50 },
                         { name = 'path' },

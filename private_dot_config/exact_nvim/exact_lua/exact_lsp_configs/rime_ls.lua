@@ -1,5 +1,6 @@
 return {
         init_options = {
+                enabled = false,
                 user_data_dir = "~/.local/share/nvim/rime-ls", -- 指定用户目录, 最好新建一个
                 log_dir = "~/.cache/nvim/rime-ls",             -- 日志目录
                 max_candidates = 10,                           -- [v0.2.0 后不再有用] 与 rime 的候选数量配置最好保持一致
