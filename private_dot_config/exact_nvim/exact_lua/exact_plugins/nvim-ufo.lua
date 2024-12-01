@@ -1,8 +1,4 @@
 local config = function()
-        Capabilities.textDocument.foldingRange = {
-                dynamicRegistration = false,
-                lineFoldingOnly = true
-        }
         local handler = function(virtText, lnum, endLnum, width, truncate)
                 local newVirtText = {}
                 local suffix = ('  %d'):format(endLnum - lnum)

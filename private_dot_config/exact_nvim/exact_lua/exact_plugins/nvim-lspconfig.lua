@@ -3,40 +3,6 @@
 -- Description:
 -- lsp configs for neovim builtin lsp
 
-Capabilities = vim.lsp.protocol.make_client_capabilities()
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-On_Attach_hooks = {}
-function On_Attach(client, bufnr)
-        local set_keymap = function(lhs, rhs, desc)
-                local desc_prefix = "[lsp] "
-                vim.keymap.set(
-                        "n", lhs, rhs,
-                        { ["desc"] = desc_prefix .. desc }
-                )
-        end
-
-        set_keymap("K", vim.lsp.buf.hover, "do hover")
-        set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
-        set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
-        set_keymap("<space>f", function()
-                vim.lsp.buf.format({
-                        filter = function(client)
-                                return client.name ~= "tsserver"
-                        end
-                })
-        end, "format document")
-        set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
-        set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
-
-        for _, hook in ipairs(On_Attach_hooks) do
-                if hook ~= nil then
-                        hook(client, bufnr)
-                end
-        end
-end
-
 -- NOTE: In config() we are not allow to call other local functions, which
 -- leads to a error. So we have to put all local functions at the start of
 -- config()
@@ -103,12 +69,16 @@ local function config()
 
         local server_list = get_server_list()
 
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true
+        }
+        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
         local default_lsp_config = {
-                flags = {
-                        debounce_text_changes = nil,
-                },
-                on_attach = On_Attach,
-                capabilities = Capabilities
+                flags = { debounce_text_changes = nil },
+                capabilities = capabilities
         }
 
         -- Use a loop to conveniently call 'setup' on multiple servers and map
@@ -122,6 +92,32 @@ local function config()
                         'force', default_lsp_config, my_cfg)
                 require('lspconfig')[lsp].setup(cfg)
         end
+
+
+        vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function()
+                        local set_keymap = function(lhs, rhs, desc)
+                                local desc_prefix = "[lsp] "
+                                vim.keymap.set(
+                                        "n", lhs, rhs,
+                                        { desc = desc_prefix .. desc }
+                                )
+                        end
+
+                        set_keymap("K", vim.lsp.buf.hover, "do hover")
+                        set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
+                        set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
+                        set_keymap("<space>f", function()
+                                vim.lsp.buf.format({
+                                        filter = function(client)
+                                                return client.name ~= "tsserver"
+                                        end
+                                })
+                        end, "format document")
+                        set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
+                        set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
+                end
+        })
 end
 
 return {
@@ -130,5 +126,6 @@ return {
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
                 'kevinhwang91/nvim-ufo',
+                'creativenull/efmls-configs-nvim',
         }
 }

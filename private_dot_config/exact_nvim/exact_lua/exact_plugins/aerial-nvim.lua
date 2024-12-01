@@ -22,8 +22,5 @@ return {
         config = config,
         cmd = {
                 'AerialToggle',
-        },
-        dependencies = {
-                'neovim/nvim-lspconfig',
-        },
+        }
 }

@@ -1,56 +1,78 @@
--- My neovim configuration file.
+-- =============================================================================
+-- Compatibility setup
+-- =============================================================================
 
-require('compatibility')
-local shell = require('shell')
+-- > Function unpack was moved into the table library
+-- > and therefore must be called as table.unpack.
+-- Reference: https://www.lua.org/manual/5.2/manual.html
+table.unpack = table.unpack or unpack -- NOLINT
+
+-- > Remove at Nvim 1.0
+-- > @deprecated
+-- > vim.loop = vim.uv
+-- Reference: https://github.com/neovim/neovim/blob/410cf29ee6a5d41a90d71d4d6d1fc84b5fe503e5/runtime/lua/vim/_editor.lua#L1127-L1129
+vim.uv = vim.uv or vim.loop -- NOLINT
+
+-- =============================================================================
+-- Utilities
+-- =============================================================================
+
+local utils = {}
 
 do
-        local auto_view_aug = vim.api.nvim_create_augroup("auto_view", { clear = true })
+        local function run_command(command, trace_message, exit)
+                vim.api.nvim_echo({
+                        { "Running command to " .. trace_message .. "..." },
+                }, true, {})
 
-        local auto_view_pattern = { "*.rs", "*.lua", "*.md", "*.json", "*.cpp", "*.hpp", "*.c" }
+                local out = vim.fn.system(command)
+                if vim.v.shell_error == 0 then
+                        return out, true
+                end
 
-        vim.api.nvim_create_autocmd({ "BufWinLeave" },
-                {
-                        group = auto_view_aug,
-                        pattern = auto_view_pattern,
-                        callback = function()
-                                vim.cmd("silent! mkview")
-                        end
-                })
-        vim.api.nvim_create_autocmd({ "BufWinEnter" },
-                {
-                        group = auto_view_aug,
-                        pattern = auto_view_pattern,
-                        callback = function()
-                                vim.cmd("silent! loadview")
-                        end
-                })
-end
+                vim.api.nvim_echo({
+                        { "Failed to " .. trace_message .. ":\n", "ErrorMsg" },
+                        { out .. "\n",                            "WarningMsg" },
+                }, true, {})
+                if not exit then
+                        return out, false
+                end
 
--- Bootstrap lazy.nvim
-local function bootstrap_lazy_nvim()
-        local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-        vim.opt.rtp:prepend(lazypath)
-
-        if vim.uv.fs_stat(lazypath) then
-                return
+                vim.api.nvim_echo({
+                        { "Press any key to exit..." },
+                }, true, {})
+                vim.fn.getchar()
+                os.exit(1)
         end
 
-        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-        shell.run_command(
-                {
-                        "git", "clone", "--filter=blob:none", "--branch=stable",
-                        lazyrepo, lazypath,
+        local set_local_tabsize = function(size)
+                return function()
+                        vim.opt_local.tabstop = size
+                        vim.opt_local.shiftwidth = size
+                        vim.opt_local.softtabstop = size
+                end
+        end
+
+        local enable_wrap = function()
+                vim.opt.wrap = true
+                vim.keymap.set({ 'n', 'v' }, 'j', 'gj', { buffer = true })
+                vim.keymap.set({ 'n', 'v' }, 'k', 'gk', { buffer = true })
+        end
+
+        utils = {
+                shell = {
+                        run_command = run_command
                 },
-                "clone lazy.nvim", true
-        )
+                vim = {
+                        set_local_tabsize = set_local_tabsize,
+                        enable_wrap = enable_wrap
+                }
+        }
 end
-bootstrap_lazy_nvim()
 
+-- =============================================================================
 -- Global configuration
-
-if vim.g.neovide then
-        vim.o.guifont = "FiraCode Nerd Font Mono,Noto Sans Mono CJK SC:h15"
-end
+-- =============================================================================
 
 vim.g.mapleader = ";"
 vim.g.maplocalleader = "<space>"
@@ -72,6 +94,17 @@ vim.opt.hlsearch = true
 vim.opt.colorcolumn = '81'
 vim.opt.signcolumn = 'yes'
 vim.opt.foldlevel = 99
+local auto_view_pattern = {
+        "*.c",
+        "*.cpp",
+        "*.hpp",
+        "*.json",
+        "*.lua",
+        "*.md",
+        "*.rs",
+}
+
+-- Language specific configurations
 
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
         pattern = '*.dj',
@@ -79,7 +112,20 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
-        pattern = { 'go', "sh" },
+        pattern = { 'go' },
+        callback = function() vim.opt_local.expandtab = false end
+})
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+        pattern = '*_test.go',
+        callback = function()
+                vim.opt_local.colorcolumn = ''
+                utils.vim.set_local_tabsize(2)()
+        end
+})
+
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { "sh" },
         callback = function() vim.opt_local.expandtab = false end
 })
 
@@ -98,47 +144,40 @@ vim.api.nvim_create_autocmd('Filetype', {
         callback = function() vim.opt_local.colorcolumn = '51,72' end
 })
 
-local set_local_tabsize = function(size)
-        return function()
-                vim.opt_local.tabstop = size
-                vim.opt_local.shiftwidth = size
-                vim.opt_local.softtabstop = size
-        end
-end
-
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = { 'gitcommit', 'markdown', 'cmake', 'djot' },
-        callback = set_local_tabsize(2)
-})
-
-vim.api.nvim_create_autocmd('Filetype', {
-        pattern = { 'gitcommit', 'markdown', 'cmake', 'djot' },
-        callback = set_local_tabsize(2)
+        callback = utils.vim.set_local_tabsize(2)
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = { 'typst' },
         callback = function()
-                vim.opt_local.wrap = true
-                vim.keymap.set('n', 'j', 'gj')
-                vim.keymap.set('n', 'k', 'gk')
+                utils.vim.enable_wrap()
         end
 })
 
-vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-        pattern = '*_test.go',
-        callback = function()
-                vim.opt_local.colorcolumn = ''
-                set_local_tabsize(2)()
-        end
+-- Auto view
+
+local auto_view_aug = vim.api.nvim_create_augroup("auto_view", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+        group = auto_view_aug,
+        pattern = auto_view_pattern,
+        callback = function() vim.cmd("silent! mkview") end
 })
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+        group = auto_view_aug,
+        pattern = auto_view_pattern,
+        callback = function() vim.cmd("silent! loadview") end
+})
+
 
 -- https://unix.stackexchange.com/a/260277
 vim.keymap.set(
         'n', '<leader><tab><tab>', 'mc80A <esc>080lDgelD`cP',
         { desc = "align to right" })
 vim.keymap.set(
-        't', '<c-q><c-q>', '<c-\\><c-n>',
+        't', '<ESC><ESC>', '<c-\\><c-n>',
         { desc = "exit insert mode in terminal" })
 vim.keymap.set(
         '', '<leader>T', function() vim.cmd.terminal() end,
@@ -146,26 +185,6 @@ vim.keymap.set(
                 desc = "open terminal in new buffer",
                 silent = true
         })
-if vim.fn.getregion ~= nil then
-        vim.keymap.set(
-                'v', '<leader>T', function()
-                        local get_current_selected_text = function()
-                                return vim.fn.getregion(
-                                        vim.fn.getcharpos("'<"),
-                                        vim.fn.getcharpos("'>")
-                                )
-                        end
-
-                        local strings = get_current_selected_text()
-                        local command = table.concat(strings, ' ')
-                        vim.cmd.terminal(command)
-                end,
-                {
-                        desc = "open terminal in new buffer",
-                        silent = true
-                })
-end
-
 vim.keymap.set(
         '', '<leader>vimrc', ':cd ~/.config/nvim<cr>:e ~/.config/nvim/init.lua<cr>',
         {
@@ -193,7 +212,24 @@ vim.keymap.set(
         }
 )
 
+-- =============================================================================
 -- Setup lazy.nvim
+-- =============================================================================
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+vim.opt.rtp:prepend(lazypath)
+
+if not vim.uv.fs_stat(lazypath) then
+        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+        utils.shell.run_command(
+                {
+                        "git", "clone", "--filter=blob:none", "--branch=stable",
+                        lazyrepo, lazypath,
+                },
+                "clone lazy.nvim", true
+        )
+end
+
 require("lazy").setup({
         spec = {
                 -- import your plugins
@@ -202,10 +238,4 @@ require("lazy").setup({
         -- Configure any other settings here. See the documentation for more details.
         -- colorscheme that will be used when installing plugins.
         install = { missing = true, colorscheme = { "habamax" } },
-        dev = {
-                path = "~/Documents/workspace/repos/source",
-                patterns = { "black-desk" },
-                fallback = true,
-        }
-
 })

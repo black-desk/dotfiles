@@ -5,71 +5,6 @@
 -- Built on the latest awesome features from neovim core.
 -- Telescope is centered around modularity, allowing for easy customization.
 
-local builtin = "<cmd>lua require('telescope.builtin')."
-local lsp_prefix = "TELE::LSP:: "
-local function hook(_, bufnr)
-        require("which-key").add({
-                {
-                        "<space>H",
-                        builtin .. "jumplist()<cr>",
-                        buffer = bufnr,
-                        desc = "TELE:: jump list",
-                        remap = false
-                },
-                {
-                        "<space>M",
-                        builtin .. "marks()<cr>",
-                        buffer = bufnr,
-                        desc = "TELE:: mark list",
-                        remap = false
-                },
-                {
-                        "<space>s",
-                        builtin .. "lsp_document_symbols()<cr>",
-                        buffer = bufnr,
-                        desc =
-                        "TELE::LSP:: document symbol",
-                        remap = false
-                },
-                {
-                        "gd",
-                        builtin .. "lsp_definitions()<cr>",
-                        buffer = bufnr,
-                        desc =
-                        "TELE::LSP:: definition",
-                        remap = false
-                },
-                {
-                        "gi",
-                        builtin .. "lsp_implementations()<cr>",
-                        buffer = bufnr,
-                        desc =
-                        "TELE::LSP:: implementation",
-                        remap = false
-                },
-                {
-                        "gr",
-                        builtin .. "lsp_references()<cr>",
-                        buffer = bufnr,
-                        desc =
-                        "TELE::LSP:: reference",
-                        remap = false
-                },
-                {
-                        "gy",
-                        builtin .. "lsp_type_definitions()<cr>",
-                        buffer = bufnr,
-                        desc =
-                        "TELE::LSP:: type definition",
-                        remap = false
-                },
-        })
-end
-
-local function init()
-        table.insert(On_Attach_hooks, hook)
-end
-
 local function config()
         local actions = require("telescope.actions")
         local fb_actions = require "telescope._extensions.file_browser.actions"
@@ -116,24 +51,31 @@ local function config()
         })
 
         require("telescope").load_extension("ui-select")
-        require 'telescope'.load_extension('project')
-        require 'telescope'.load_extension('file_browser')
-end
+        require("telescope").load_extension('project')
+        require("telescope").load_extension('file_browser')
 
-local extensions = {
-        {
-                'nvim-telescope/telescope-ui-select.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-        {
-                'nvim-telescope/telescope-project.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-        {
-                'nvim-telescope/telescope-file-browser.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-}
+        vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function()
+                        local map = function(lhs, rhs, desc)
+                                vim.keymap.set('n', lhs, rhs, {
+                                        silent = true,
+                                        buffer = true,
+                                        desc = desc,
+                                })
+                        end
+
+                        local builtin = require('telescope.builtin')
+
+                        map("<space>H", builtin.jumplist, "Telescope jumplist")
+                        map("<space>M", builtin.marks, "Telescope marks")
+                        map("<space>s", builtin.lsp_document_symbols, "Telescope LSP document symbols")
+                        map("gd", builtin.lsp_definitions, "Telescope LSP definitions")
+                        map("gi", builtin.lsp_implementations, "Telescope LSP implementations")
+                        map("gr", builtin.lsp_references, "Telescope LSP references")
+                        map("gy", builtin.lsp_type_definitions, "Telescope LSP type definitions")
+                end,
+        })
+end
 
 return { {
         'nvim-telescope/telescope.nvim',
@@ -151,7 +93,7 @@ return { {
                                             initial_mode = "normal"
                                     })
                         end,
-                        desc = "TELE:: projects browser",
+                        desc = "Telescope projects browser",
                         remap = false
                 },
                 {
@@ -162,41 +104,38 @@ return { {
                                     file_browser.
                                     file_browser()
                         end,
-                        desc = "TELE:: file browser",
-                        remap = false
-                },
-                {
-                        "t?",
-                        "<cmd>lua require('telescope.builtin').help_tags()<cr>",
-                        desc = "TELE:: helps",
+                        desc = "Telescope file browser",
                         remap = false
                 },
                 {
                         "tR",
-                        "<cmd>lua require('telescope.builtin').grep_string()<cr>",
+                        require('telescope.builtin').grep_string,
                         desc = "TELE:: search in files",
                         remap = false
-                },
-                {
-                        "tb",
-                        "<cmd>lua require('telescope.builtin').buffers()<cr>",
-                        desc = "TELE:: buffer list",
-                        remap = false
-                },
-                {
-                        "te",
-                        "<cmd>lua require('telescope.builtin').find_files()<cr>",
-                        desc = "TELE:: search filename",
-                        remap = false
+
                 },
                 {
                         "tr",
-                        "<cmd>lua require('telescope.builtin').live_grep()<cr>",
+                        require('telescope.builtin').live_grep,
                         desc = "TELE:: search in files",
                         remap = false
+
                 },
         },
-        init = init,
         cmd = { 'Telescope' },
+        event = "LspAttach",
         config = config,
-}, table.unpack(extensions) }
+},
+        {
+                'nvim-telescope/telescope-ui-select.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
+        },
+        {
+                'nvim-telescope/telescope-project.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
+        },
+        {
+                'nvim-telescope/telescope-file-browser.nvim',
+                dependencies = { 'nvim-telescope/telescope.nvim' }
+        },
+}
