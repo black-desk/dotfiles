@@ -41,6 +41,7 @@ local function config()
                         efm = "efm-langserver",
                         jsonls = 'vscode-json-languageserver',
                         lemminx = 'lemminx',
+                        rime_ls = "rime_ls",
                         lua_ls = 'lua-language-server',
                         marksman = 'marksman',
                         perlnavigator = 'perlnavigator',
@@ -68,8 +69,19 @@ local function config()
 
         local lsp_config = get_my_lsp_configs()
 
-        local server_list = get_server_list()
+        local configs = require('lspconfig.configs')
+        if not configs.rime_ls then
+                configs.rime_ls = {
+                        default_config = {
+                                name = "rime_ls",
+                                cmd = { 'rime_ls' },
+                                filetypes = { '*' },
+                                single_file_support = true,
+                        },
+                }
+        end
 
+        local server_list = get_server_list()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities.textDocument.foldingRange = {
                 dynamicRegistration = false,
@@ -88,8 +100,6 @@ local function config()
                 local my_cfg = lsp_config[lsp]
                 if my_cfg == nil then
                         my_cfg = {}
-                else
-                        print(vim.inspect(my_cfg))
                 end
                 local cfg = vim.tbl_deep_extend(
                         'force', default_lsp_config, my_cfg)
@@ -107,7 +117,6 @@ local function config()
                                         }
                                 )
                         end
-
                         set_keymap("K", vim.lsp.buf.hover, "do hover")
                         set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
                         set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
@@ -120,6 +129,22 @@ local function config()
                         end, "format document")
                         set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
                         set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
+                        set_keymap("<leader><space>", function()
+                                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                                if client == nil then
+                                        return
+                                end
+                                client.request('workspace/executeCommand',
+                                        { command = "rime-ls.toggle-rime" },
+                                        function(_, result, ctx, _)
+                                                if ctx.client_id == client.id then
+                                                        vim.b.rime_enabled = result
+                                                end
+                                        end
+                                )
+                        end, "")
+                        set_keymap('<leader>rs',
+                                function() vim.lsp.buf.execute_command({ command = "rime-ls.sync-user-data" }) end, "")
                 end
         })
 end

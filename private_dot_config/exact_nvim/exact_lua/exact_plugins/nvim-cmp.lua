@@ -5,6 +5,7 @@
 
 local config = function()
         local cmp = require('cmp')
+        local compare = require 'cmp.config.compare'
         cmp.setup({
                 snippet = {
                         -- REQUIRED - you must specify a snippet engine
@@ -22,13 +23,46 @@ local config = function()
                         ["<S-tab>"] = cmp.mapping.select_prev_item(),
                         -- Accept currently selected item. Set `select` to
                         -- `false` to only confirm explicitly selected items.
-                        ['<CR>'] = cmp.mapping.confirm({ select = true }),
                         ['<C-e>'] = cmp.mapping.abort(),
+                        ['<Space>'] = cmp.mapping(function(fallback)
+                                local entry = cmp.get_selected_entry()
+                                if entry == nil then
+                                        entry = cmp.core.view:get_first_entry()
+                                end
+                                if entry and entry.source.name == "nvim_lsp"
+                                    and entry.source.source.client.name == "rime_ls" then
+                                        cmp.confirm({
+                                                behavior = cmp.ConfirmBehavior.Replace,
+                                                select = true,
+                                        })
+                                else
+                                        fallback()
+                                end
+                        end, { 'i', 's' }),
+                        ['<CR>'] = cmp.mapping(function(fallback)
+                                local entry = cmp.get_selected_entry()
+                                if entry == nil then
+                                        entry = cmp.core.view:get_first_entry()
+                                end
+                                if entry and entry.source.name == 'nvim_lsp'
+                                    and entry.source.source.client.name == 'rime_ls' then
+                                        cmp.abort()
+                                else
+                                        if entry ~= nil then
+                                                cmp.confirm({
+                                                        behavior = cmp.ConfirmBehavior.Replace,
+                                                        select = true
+                                                })
+                                        else
+                                                fallback()
+                                        end
+                                end
+                        end, { 'i', 's' }),
                 }),
                 sources = cmp.config.sources({
+                        { name = 'nvim_lsp',  priority = 110 },
                         { name = 'ultisnips', priority = 100 },
                         { name = "copilot",   priority = 50 },
-                        { name = 'nvim_lsp' },
                         { name = 'path' },
                         { name = 'buffer' },
                         {
@@ -38,8 +72,7 @@ local config = function()
                                         convert_case = true,
                                         loud = true
                                 }
-                        }
-                }),
+                        } }),
                 enabled = function()
                         if vim.bo.ft == 'TelescopePrompt' then
                                 return false
@@ -51,7 +84,19 @@ local config = function()
                         end
 
                         return fcitx5ui.get_current_input_method_status().name == nil
-                end
+                end,
+                sorting = {
+                        comparators = {
+                                compare.sort_text,
+                                compare.offset,
+                                compare.exact,
+                                compare.score,
+                                compare.recently_used,
+                                compare.kind,
+                                compare.length,
+                                compare.order,
+                        }
+                },
         })
 
         -- Use buffer source for `/` (if you enabled `native_menu`, this won't
