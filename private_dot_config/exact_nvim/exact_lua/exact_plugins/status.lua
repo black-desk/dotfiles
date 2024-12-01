@@ -12,17 +12,6 @@ local function config()
                         '🌑 ', '🌒 ', '🌓 ', '🌔 ',
                         '🌕 ', '🌖 ', '🌗 ', '🌘 ' }
         })
-        table.insert(cfg.sections.lualine_y, {
-                function()
-                        local status =
-                            require("fcitx5-ui").get_current_input_method_status()
-                        if status.name == nil then
-                                return ""
-                        end
-
-                        return status.name .. "|" .. status.language_code
-                end
-        })
         require('lualine').setup(cfg)
 end
 

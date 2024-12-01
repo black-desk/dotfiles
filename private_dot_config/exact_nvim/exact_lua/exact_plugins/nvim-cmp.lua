@@ -26,9 +26,8 @@ local config = function()
                         ['<C-e>'] = cmp.mapping.abort(),
                 }),
                 sources = cmp.config.sources({
-
                         { name = 'ultisnips', priority = 100 },
-                        { name = "copilot",  priority = 50 },
+                        { name = "copilot",   priority = 50 },
                         { name = 'nvim_lsp' },
                         { name = 'path' },
                         { name = 'buffer' },
@@ -75,7 +74,6 @@ local config = function()
         cmp.event:on(
                 'confirm_done',
                 cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
-
 end
 
 return { {

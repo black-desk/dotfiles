@@ -22,7 +22,7 @@ local function config()
                 for lsp_config in lsp_configs:lines() do
                         local name = string.match(
                                 lsp_config,
-                                home .. "/[.]config/nvim/lua/lsp_configs/(.*)[.]lua")
+                                home .. "/[.]config/nvim/lua/lsp_configs//?(.*)[.]lua")
                         if name ~= nil then
                                 ret[name] = require("lsp_configs." .. name)
                         end
@@ -37,18 +37,19 @@ local function config()
                         cmake = 'cmake-language-server',
                         eslint = 'vscode-eslint-language-server',
                         gopls = 'gopls',
-                        lemminx = 'lemminx',
-                        taplo = 'taplo',
                         hls = 'haskell-language-server',
-                        perlnavigator = 'perlnavigator',
-                        typst_lsp = 'typst-lsp',
-                        marksman = 'marksman',
+                        efm = "efm-langserver",
                         jsonls = 'vscode-json-languageserver',
+                        lemminx = 'lemminx',
+                        lua_ls = 'lua-language-server',
+                        marksman = 'marksman',
+                        perlnavigator = 'perlnavigator',
                         pyright = 'pyright',
                         rust_analyzer = 'rust-analyzer',
-                        lua_ls = 'lua-language-server',
+                        taplo = 'taplo',
                         texlab = 'texlab',
                         ts_ls = 'typescript-language-server',
+                        typst_lsp = 'typst-lsp',
                         yamlls = 'yaml-language-server',
                 }
 
@@ -87,20 +88,23 @@ local function config()
                 local my_cfg = lsp_config[lsp]
                 if my_cfg == nil then
                         my_cfg = {}
+                else
+                        print(vim.inspect(my_cfg))
                 end
                 local cfg = vim.tbl_deep_extend(
                         'force', default_lsp_config, my_cfg)
                 require('lspconfig')[lsp].setup(cfg)
         end
 
-
         vim.api.nvim_create_autocmd("LspAttach", {
-                callback = function()
+                callback = function(args)
                         local set_keymap = function(lhs, rhs, desc)
-                                local desc_prefix = "[lsp] "
                                 vim.keymap.set(
                                         "n", lhs, rhs,
-                                        { desc = desc_prefix .. desc }
+                                        {
+                                                buffer = args.buf,
+                                                desc = desc
+                                        }
                                 )
                         end
 

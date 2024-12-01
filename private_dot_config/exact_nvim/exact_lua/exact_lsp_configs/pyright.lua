@@ -1,5 +1,5 @@
 local path = io.popen("poetry env info -e 2>/dev/null"):read()
-if path == "" then
+if path ==nil or path == "" then
         return {}
 end
 
