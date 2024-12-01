@@ -6,11 +6,11 @@ emulate zsh
 
 export QT_QPA_PLATFORM=xcb
 
-if $(cat /etc/os-release | grep Debian --quiet); then
+if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
         export DEBUGINFOD_URLS="https://debuginfod.debian.net"
 fi
 
-if $(cat /etc/os-release | grep Ubuntu --quiet); then
+if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
         export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
 fi
 
