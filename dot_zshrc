@@ -290,7 +290,6 @@ alias gst="git status"
 alias cfg="chezmoi"
 
 alias clang-format-all="find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\|h\)' -exec clang-format -style=file -i {} \;"
-alias cmake-buildj="cmake --build build -j $(($(nproc) - 1))"
 alias getcpm="wget -O CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake"
 
 setopt autopushd pushdsilent pushdtohome
