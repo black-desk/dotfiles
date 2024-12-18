@@ -108,7 +108,14 @@ local auto_view_pattern = {
 
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
         pattern = '*.dj',
-        callback = function() vim.opt_local.filetype = "djot" end
+        callback = function()
+                vim.opt_local.filetype = "djot"
+        end
+})
+
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { 'djot' },
+        callback = function() vim.opt_local.colorcolumn = { 73 } end
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
