@@ -60,6 +60,8 @@ local config = function()
                         end, { 'i', 's' }),
                 }),
                 sources = cmp.config.sources({
+                        { name = 'ultisnips' },
+                },{
                         { name = 'nvim_lsp' },
                         { name = "copilot", priority = 50 },
                         {
@@ -72,7 +74,6 @@ local config = function()
                         },
                 }, {
                         { name = 'path' },
-                        { name = 'ultisnips' },
                 }),
                 enabled = function()
                         if vim.bo.ft == 'TelescopePrompt' then
