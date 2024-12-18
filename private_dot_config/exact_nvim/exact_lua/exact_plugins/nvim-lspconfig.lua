@@ -39,7 +39,7 @@ local function config()
                         gopls = 'gopls',
                         hls = 'haskell-language-server',
                         efm = "efm-langserver",
-                        jsonls = 'vscode-json-languageserver',
+                        jsonls = 'vscode-json-language-server',
                         lemminx = 'lemminx',
                         rime_ls = "rime_ls",
                         lua_ls = 'lua-language-server',
