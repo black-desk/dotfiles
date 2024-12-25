@@ -4,3 +4,6 @@ customCommands:
   - key: 'S'
     context: 'localBranches'
     command: 'git-sign'
+git:
+  paging:
+    externalDiffCommand: difft --color=always
