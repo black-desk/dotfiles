@@ -193,6 +193,11 @@ _rust(){
                 sh -s -- --no-modify-path --default-toolchain nightly
 }
 
+rustup() {
+        _rust
+        rustup "$@"
+}
+
 cargo(){
         _rust
         cargo "$@"
