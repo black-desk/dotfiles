@@ -14,7 +14,7 @@ local function config()
                 auto_install = true,
 
                 -- List of parsers to ignore installing
-                ignore_install = {},
+                ignore_install = { 'rust' },
 
                 highlight = {
                         -- `false` will disable the whole extension

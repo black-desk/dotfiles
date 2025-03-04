@@ -1,5 +1,151 @@
 # vim: ft=zsh
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export QT_QPA_PLATFORM=xcb
+
+if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+fi
+
+if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
+fi
+
+export HISTFILE="$HOME/.zsh_history"
+export SAVEHIST=100000
+export HISTSIZE=100000
+
+function remove_windows_path() {
+        setopt EXTENDED_GLOB
+        export windows_path=(${(M)path:#/mnt/c/*})
+        path=(${(M)path:#^/mnt/c/*})
+        unsetopt EXTENDED_GLOB
+}
+
+remove_windows_path
+
+function update_path() {
+        local dir=$1
+        local append=$2
+        if [[ ${path[(ie)$dir]} -gt ${#path} ]]; then 
+                if [[ -n $append ]]; then
+                        path+=($dir)
+                else
+                        path=($dir $path)
+                fi
+        fi
+}
+
+# BASIC
+update_path "/usr/local/sbin"
+update_path "/usr/local/bin"
+update_path "$HOME/.local/bin"
+update_path "/sbin" append
+update_path "/bin" append
+update_path "/usr/sbin" append
+update_path "/usr/bin" append
+
+if command -v clang &>/dev/null; then
+        # export CC="clang"
+fi
+if command -v clang++ &>/dev/null; then
+        # export CXX="clang++"
+fi
+if command -v lld &>/dev/null; then
+        # export CMAKE_LINKER_TYPE="lld"
+fi
+
+update_path "/usr/lib/ccache"
+if command -v distcc &>/dev/null; then
+        export CCACHE_PREFIX="distcc"
+fi
+if command -v ninja &>/dev/null; then
+        export CMAKE_GENERATOR="Ninja"
+fi
+export CMAKE_TOOLCHAIN_FILE="$HOME/.config/blackdesk/cmake/LLVM.cmake"
+
+export DISTCC_BACKOFF_PERIOD=0
+
+export GDBHISTFILE=.gdb_history
+
+update_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
+
+# GOENV
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+export GOENV_APPEND_GOPATH=
+export GOENV_PREPEND_GOPATH=1
+export GOPATH="$HOME/Documents/go"
+export GOENV_GOPATH_PREFIX="$GOPATH"
+
+update_path "$GOPATH/bin"
+update_path "$GOENV_ROOT/bin"
+update_path "$GOENV_ROOT/shims"
+
+# GOENV
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+export GOENV_APPEND_GOPATH=
+export GOENV_PREPEND_GOPATH=1
+export GOPATH="$HOME/Documents/go"
+export GOENV_GOPATH_PREFIX="$GOPATH"
+
+update_path "$GOPATH/bin"
+update_path "$GOENV_ROOT/bin"
+update_path "$GOENV_ROOT/shims"
+
+# PYENV
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
+
+update_path "$PYENV_ROOT/bin"
+update_path "$PYENV_ROOT/shims"
+
+# RBENV
+export RBENV_ROOT="$HOME/.rbenv"
+
+update_path "$RBENV_ROOT/bin"
+update_path "$RBENV_ROOT/shims"
+
+# N
+export N_PREFIX="$HOME/.n"
+
+update_path "$N_PREFIX/bin"
+
+# RUSTUP
+
+update_path "$HOME/.cargo/bin"
+
+# GHCup
+
+update_path "$HOME/.ghcup/bin"
+update_path "$HOME/.cabal/bin"
+
+unset update_path
+
+# CPM
+
+export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
+
+# LATEX
+
+export TEXMFHOME="$HOME/.config/texmf"
+
+function add_windows_path() {
+        path=($path $windows_path)
+        unset windows_path
+}
+
+export NEOVIDE_FORK=1
+
+add_windows_path
+
 # If this shell is launching in a tty,
 # I use fbterm to get UTF-8 character work.
 [[ $(tty) == \/dev\/tty[0-6]* ]] &&
@@ -327,3 +473,6 @@ if command -v fcitx5 &>/dev/null; then
 fi
 
 R
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

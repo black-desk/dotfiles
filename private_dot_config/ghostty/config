@@ -32,3 +32,5 @@ gtk-tabs-location = bottom
 mouse-scroll-multiplier = 0.5
 
 linux-cgroup = always
+
+command = zsh

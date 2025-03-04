@@ -7,6 +7,28 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+        "ssh_connections": [
+    {
+      "host": "black-desk-E500",
+      "projects": [
+        {
+          "paths": [
+            "~/Documents"
+          ]
+        },
+        {
+          "paths": [
+            "~/Documents/workspace/repos/source/cgtproxy"
+          ]
+        },
+        {
+          "paths": [
+            "~/tmp"
+          ]
+        }
+      ]
+    }
+  ],
         "assistant": {
                 "default_model": {
                         "provider": "copilot_chat",

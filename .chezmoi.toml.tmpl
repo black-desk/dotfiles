@@ -1,13 +1,33 @@
 {{ $name := promptString "name" -}}
-{{ $gmail := promptString "gmail" -}}
-{{ $ut_email := promptString "ut_email" -}}
-{{ $ut_id := promptString "ut_id" -}}
+{{ $username := promptString "username" -}}
 {{ $github_id := promptString "github_id" -}}
+{{ $ut_id := promptString "ut_id" -}}
+{{ $gunpg_pub := promptString "gunpg_pub" -}}
+
 {{ $email := promptString "email" -}}
+
+{{ $gmail := promptString "gmail" -}}
+{{ $gmail_app_passwrod := promptString "gmail_app_passwrod" -}}
+
+
+{{ $ut_email := promptString "ut_email" -}}
+{{ $ut_email_app_password := promptString "ut_email_app_password" -}}
+
+[cd]
+        args = ["sh", "-c", "command -v zsh >/dev/null 2>&1 && exec zsh; command -v bash >/dev/null 2>&1 && exec bash; exec sh"]
+        command = "/usr/bin/env"
+
 [data]
 	name = {{ $name | quote }}
+	username = {{ $username | quote }}
+	github_id = {{ $github_id | quote }}
+	ut_id = {{ $ut_id | quote }}
+	gunpg_pub = {{ $gunpg_pub | quote }}
+
+	email = {{ $email | quote }}
+
 	gmail = {{ $gmail | quote }}
+	gmail_app_password = {{ $gmail_app_password | quote }}
+
 	ut_email = {{ $ut_email | quote }}
-        ut_id = {{ $ut_id | quote }}
-        github_id = {{ $github_id | quote }}
-        email = {{ $email | quote }}
+	ut_email_app_password = {{ $ut_email_app_password | quote }}

@@ -50,7 +50,7 @@ local function config()
                         taplo = 'taplo',
                         texlab = 'texlab',
                         ts_ls = 'typescript-language-server',
-                        typst_lsp = 'typst-lsp',
+                        tinymist = 'tinymist',
                         yamlls = 'yaml-language-server',
                 }
 

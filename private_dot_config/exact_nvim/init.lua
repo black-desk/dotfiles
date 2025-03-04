@@ -70,6 +70,63 @@ do
         }
 end
 
+-- Setup python for neovim.
+local function setup_python()
+        -- If pyenv is not installed or anything goes wrong,
+        -- we will just return, which means to use system provided python.
+
+        if not vim.env.PYENV_ROOT then
+                return
+        end
+
+        local pyenv = require("pyenv")
+
+        local python3_host_prog =
+            vim.env.PYENV_ROOT .. '/versions/neovim/bin/python'
+
+        if pyenv.check_python_version('neovim') then
+                vim.g.python3_host_prog = python3_host_prog
+                return
+        end
+
+        if not pyenv.ensure_python_version('miniforge3-latest') then
+                return
+        end
+
+        if not pyenv.ensure_plugin(
+                    'pyenv-virtualenv',
+                    'https://github.com/pyenv/pyenv-virtualenv'
+            ) then
+                return
+        end
+
+        if not shell.run_command(
+                    {
+                            'pyenv', 'virtualenv',
+                            'miniforge3-latest', 'neovim',
+                    },
+                    'create virtualenv "neovim" ' ..
+                    'from "miniforge3-latest"',
+                    false
+            ) then
+                return
+        end
+
+        if not shell.run_command(
+                    {
+                            'env', 'PYENV_VERSION=neovim',
+                            'pyenv', 'exec', 'pip', 'install', 'neovim',
+                    },
+                    'install neovim in virtualenv "neovim"',
+                    false) then
+                return
+        end
+
+        vim.g.python3_host_prog = python3_host_prog
+end
+setup_python()
+
+
 -- =============================================================================
 -- Global configuration
 -- =============================================================================
@@ -246,3 +303,4 @@ require("lazy").setup({
         -- colorscheme that will be used when installing plugins.
         install = { missing = true, colorscheme = { "habamax" } },
 })
+

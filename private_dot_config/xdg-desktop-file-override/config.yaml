@@ -59,3 +59,9 @@ generators:
       # Adjust language to English.
       '-e', 's/^Exec=neovide/Exec=env LC_ALL=en_US.UTF-8 neovide /',
     ]
+  - name: fix-ghostty
+    filter: ^com\.mitchellh\.ghostty\.desktop$
+    command: [ 'sed',
+      # Remove StartupNotify.
+      '-e', '/StartupNotify=true/d',
+    ]

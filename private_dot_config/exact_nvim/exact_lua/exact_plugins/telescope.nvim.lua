@@ -44,8 +44,7 @@ local function config()
                                 base_dirs = { {
                                         os.getenv("HOME") .. "/Documents/workspace/repos",
                                         max_depth = 3,
-                                }
-                                }
+                                } }
                         }
                 }
         })
