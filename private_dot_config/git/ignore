@@ -1,19 +1,30 @@
 # vim: set ft=gitignore
 
-# cache
-**/.cache/*
-# gdb history
-**/.gdb_history
-# pyenv version
-**/.python-version
-# local vim config
+# (neo)vim
 **/.vimrc
-# clangd compoile database
+
+# IDEA
+**/.idea
+
+# gdb
+**/.gdb_history
+
+# CMake
+CMakeUserPresets.json
+
+# build directories
+**/build-*/
+**/build_*/
+**/build/
+**/cmake-build-*/
+
+# clangd
+**/.cache/clangd/index
 **/compile_commands.json
-# autoconf m4 files
-**/m4
-# my git worktrees
-/.worktrees
+
+# pyenv
+**/.python-version
+
 # node modules
 /node_modules
 
@@ -21,22 +32,8 @@
 go.work
 go.work.sum
 
-# cmake/meson build directories
-**/build-*/
-**/build_*/
-**/build/
-**/cmake-build-*/
-
-# linglong
-/linglong/
-/.ll-builder
-
 # rust
 /target/
 
-**/.idea
-
 coverage.txt
 coverage.info
-
-CMakeUserPresets.json

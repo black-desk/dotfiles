@@ -1,0 +1,11 @@
+; vim:set ft=gitconfig:
+
+[core]
+        excludesFile =
+
+[user]
+        email = {{ .email }}
+        name = {{ .name }}
+
+[sendemail]
+        from = {{ .name }} <{{ .email }}>

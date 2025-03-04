@@ -1,37 +1,52 @@
 [user]
         email = {{ .email }}
         name = {{ .github_id }}
-        signingkey = D818ACDD385CAE92D4BAC01A6269794D24791D21
+        signingkey = {{ .gunpg_pub }}
+
 [sendemail]
         smtpServer = smtp.gmail.com
         smtpServerPort = 465
         smtpEncryption = ssl
         smtpUser = {{ .gmail }}
-        from = {{ .email }}
+        from = {{ .username }} <{{ .email }}>
+
 [credential]
         helper = store
+
+[fetch]
+        writeCommitGraph = true
+
 [pull]
         rebase = true
+
 [core]
 	quotePath = false
 	commitGraph = true
+        abbrev = 12
+
 [receive]
 	advertisePushOptions = true
-	procReceiveRefs = refs/for
+	procReceiveRefs = refs{{ .chezmoi.pathSeparator }}for
+
 [gc]
 	writeCommitGraph = true
-[includeIf "hasconfig:remote.*.url:*uniontech*"]
-        path = ~/.config/git/uniontech.gitconfig
-[includeIf "gitdir:*uniontech*"]
-        path = ~/.config/git/uniontech.gitconfig
-[includeIf "hasconfig:remote.*.url:*kernel*"]
-        path = ~/.config/git/kernel.gitconfig
-[includeIf "gitdir:*kernel*"]
-        path = ~/.config/git/kernel.gitconfig
+
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/env gh auth git-credential
+
 [credential "https://gist.github.com"]
 	helper = 
         helper = !/usr/bin/env gh auth git-credential
 
+[includeIf "gitdir:UnionTech/"]
+        path = ~/.config/git/UnionTech.gitconfig
+
+[includeIf "gitdir:GNU/"]
+        path = ~/.config/git/GNU.gitconfig
+
+[includeIf "gitdir:Linux/"]
+        path = ~/.config/git/Linux.gitconfig
+
+[pretty]
+        fixes = Fixes: %h (\"%s\")

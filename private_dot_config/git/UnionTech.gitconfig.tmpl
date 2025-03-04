@@ -1,10 +1,13 @@
+; vim:set ft=gitconfig:
+
 [user]
         email = {{ .ut_email }}
         name = {{ .name }}
-[commit]
-        gpgsign = false
+
 [sendemail]
         smtpServer = smtp.exmail.qq.com
         smtpServerPort = 465
         smtpEncryption = ssl
         smtpUser = {{ .ut_email }}
+        smtpPass = {{ .ut_email_app_password }}
+        from = {{ .name }} <{{ .ut_email }}>
