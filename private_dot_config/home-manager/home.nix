@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   nurpkgs =
     import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
@@ -9,23 +9,23 @@ in
   home.homeDirectory = "{{ .chezmoi.homeDir }}";
   home.stateVersion = "24.05"; # Please read the comment before changing.
   home.packages = with nurpkgs.repos.definfo.rime-ls; [
+    pkgs.black
     pkgs.chezmoi
-    pkgs.clang
     pkgs.clang-tools
-    pkgs.cmake
     pkgs.cmake-language-server
+    pkgs.difftastic
     pkgs.efm-langserver
     pkgs.git
     pkgs.github-cli
-    pkgs.gnumake
     pkgs.gopls
     pkgs.haskell-language-server
     pkgs.lazygit
     pkgs.lemminx
     pkgs.lua-language-server
+    pkgs.luarocks
     pkgs.marksman
-    pkgs.neovim
     pkgs.ninja
+    pkgs.nodePackages.bash-language-server
     pkgs.nodePackages.npm
     pkgs.nodePackages.typescript-language-server
     pkgs.pandoc
@@ -41,8 +41,8 @@ in
     pkgs.shfmt
     pkgs.taplo
     pkgs.texlab
+    pkgs.tinymist
     pkgs.typst
-    pkgs.typst-lsp
     pkgs.vscode-langservers-extracted
     pkgs.wl-clipboard
     pkgs.yaml-language-server
