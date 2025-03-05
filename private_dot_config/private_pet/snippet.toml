@@ -1,0 +1,24 @@
+
+[[Snippets]]
+  Description = "Use clang-format to format all c++ source and header in current directory."
+  Output = ""
+  Tag = []
+  command = "find . -regex '.*\\.\\(cpp\\|hpp\\|cc\\|cxx\\|h\\)' -exec clang-format -style=file -i {} \\;\\n"
+
+[[Snippets]]
+  Description = "Download CPM.cmake"
+  Output = ""
+  Tag = []
+  command = "wget -O CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake\\n"
+
+[[Snippets]]
+  Description = "Download GPL-3.0"
+  Output = ""
+  Tag = []
+  command = "wget -O LICENSE https://www.gnu.org/licenses/gpl-3.0.txt"
+
+[[Snippets]]
+  Description = "Download LGPL-3.0"
+  Output = ""
+  Tag = []
+  command = "wget -O LICENSE https://www.gnu.org/licenses/lgpl-3.0.txt"
