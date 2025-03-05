@@ -7,19 +7,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export QT_QPA_PLATFORM=xcb
-
-if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
-        export DEBUGINFOD_URLS="https://debuginfod.debian.net"
-fi
-
-if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
-        export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
-fi
-
-export HISTFILE="$HOME/.zsh_history"
-export SAVEHIST=100000
-export HISTSIZE=100000
+# ==============================================================================
+# Utilities
+# ==============================================================================
 
 function remove_windows_path() {
         setopt EXTENDED_GLOB
@@ -28,7 +18,10 @@ function remove_windows_path() {
         unsetopt EXTENDED_GLOB
 }
 
-remove_windows_path
+function add_windows_path() {
+        path=($path $windows_path)
+        unset windows_path
+}
 
 function update_path() {
         local dir=$1
@@ -42,41 +35,119 @@ function update_path() {
         fi
 }
 
-# BASIC
-update_path "/usr/local/sbin"
+function install_if_not_found() {
+        if command -v "$1" &>/dev/null; then
+                return
+        fi
+        echo "\033[0;31mInstall $1\033[0m"
+        false
+}
+
+# ==============================================================================
+# Environment
+# ==============================================================================
+
+export GPG_TTY=$(tty)
+
+export LANG=zh_CN.UTF-8
+export LANGUAGE=zh_CN:en_US
+
+remove_windows_path
+
+export HISTFILE="$HOME/.zsh_history"
+export SAVEHIST=100000
+export HISTSIZE=100000
+setopt share_history
+
+bindkey -v
+
+bindkey "^r" history-incremental-search-backward
+bindkey -s '^g' "lazygit^M"
+bindkey -s '^h' "^[[D"
+bindkey -s '^j' "^[[B"
+bindkey -s '^k' "^[[A"
+bindkey -s '^l' "^[[C"
+
+export PAGER=less
+
+# For command completion in sudo ...
+# This is just a workaround.
+alias sudo="sudo "
+
+function ls () {
+        if [[ "$PWD" == "$HOME" ]]; then
+                /usr/bin/env ls -Isnap --color "$@"
+                return
+        fi
+        /usr/bin/env ls --color "$@"
+}
+
+function la () {
+        ls -la "$@"
+}
+
+setopt autopushd pushdsilent pushdtohome pushdignoredups pushdminus
+
+update_path "/bin"
+update_path "/sbin"
+update_path "/usr/bin"
+update_path "/usr/sbin"
 update_path "/usr/local/bin"
+update_path "/usr/local/sbin"
 update_path "$HOME/.local/bin"
-update_path "/sbin" append
-update_path "/bin" append
-update_path "/usr/sbin" append
-update_path "/usr/bin" append
+
+# autotools
 
 if command -v clang &>/dev/null; then
-        # export CC="clang"
+        export CC="clang"
 fi
+
 if command -v clang++ &>/dev/null; then
-        # export CXX="clang++"
-fi
-if command -v lld &>/dev/null; then
-        # export CMAKE_LINKER_TYPE="lld"
+        export CXX="clang++"
 fi
 
-update_path "/usr/lib/ccache"
-if command -v distcc &>/dev/null; then
-        export CCACHE_PREFIX="distcc"
-fi
-if command -v ninja &>/dev/null; then
-        export CMAKE_GENERATOR="Ninja"
-fi
-export CMAKE_TOOLCHAIN_FILE="$HOME/.config/blackdesk/cmake/LLVM.cmake"
+# GDB
 
-export DISTCC_BACKOFF_PERIOD=0
+if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+fi
+
+if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
+        export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
+fi
 
 export GDBHISTFILE=.gdb_history
 
+# CMake
+
+if command -v ninja &>/dev/null; then
+        export CMAKE_GENERATOR="Ninja"
+fi
+
+if command -v clang &>/dev/null && command -v clang++ &>/dev/null; then
+        export CMAKE_TOOLCHAIN_FILE="$HOME/.config/blackdesk/cmake/LLVM.cmake"
+fi
+
+export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
+
+# ccache
+
+update_path "/usr/lib/ccache"
+
+# distcc
+
+if command -v distcc &>/dev/null; then
+        export CCACHE_PREFIX="distcc"
+fi
+
+export DISTCC_BACKOFF_PERIOD=0
+
+# JetBrains Toolbox
+
 update_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
-# GOENV
+# goenv
+
 export GOENV_ROOT="$HOME/.goenv"
 export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
 export GOENV_APPEND_GOPATH=
@@ -88,63 +159,208 @@ update_path "$GOPATH/bin"
 update_path "$GOENV_ROOT/bin"
 update_path "$GOENV_ROOT/shims"
 
-# GOENV
-export GOENV_ROOT="$HOME/.goenv"
-export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
-export GOENV_APPEND_GOPATH=
-export GOENV_PREPEND_GOPATH=1
-export GOPATH="$HOME/Documents/go"
-export GOENV_GOPATH_PREFIX="$GOPATH"
+function _go() {
+        unset -f _go
+        unset -f go
+        unset -f goenv
+        [ -d "$GOENV_ROOT" ] || (
+                git clone https://github.com/syndbg/goenv.git "$GOENV_ROOT"
+                goenv install latest
+                goenv global `goenv install -l | tail -1`
+        )
+        eval "$(goenv init -)"
+}
 
-update_path "$GOPATH/bin"
-update_path "$GOENV_ROOT/bin"
-update_path "$GOENV_ROOT/shims"
+function goenv() {
+        _go
+        goenv "$@"
+}
 
-# PYENV
+function go() {
+        _go
+        go "$@"
+}
+
+function cobra-cli() {
+        unset -f cobra-cli
+        install_if_not_found cobra-cli ||
+                go install github.com/spf13/cobra-cli@latest
+        cobra-cli "$@"
+}
+
+function dlv() {
+        unset -f dlv
+        install_if_not_found dlv ||
+                go install github.com/go-delve/delve/cmd/dlv@latest
+        dlv "$@"
+}
+
+function gh() {
+        unset -f gh
+        install_if_not_found gh ||
+                go install github.com/cli/cli/cmd/gh@latest
+        gh "$@"
+}
+
+function lazygit() {
+        unset -f lazygit
+        install_if_not_found lazygit ||
+                go install github.com/jesseduffield/lazygit@latest
+        lazygit "$@"
+}
+
+function stringer() {
+        unset -f stringer
+        install_if_not_found stringer ||
+                go install golang.org/x/tools/cmd/stringer@latest
+        stringer "$@"
+}
+
+function pet() {
+        install_if_not_found pet ||
+                go install github.com/knqyf263/pet@latest
+        LANG= /usr/bin/env pet "$@"
+}
+
+function prev() {
+        pet &> /dev/null
+        PREV=$(fc -lrn | head -n 1)
+        sh -c "pet new `printf %q "$PREV"`"
+}
+
+# pyenv
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
 
 update_path "$PYENV_ROOT/bin"
 update_path "$PYENV_ROOT/shims"
 
-# RBENV
+function _python() {
+        unset -f _python
+        unset -f pyenv
+        unset -f python
+        [ -d "$PYENV_ROOT" ] ||
+                git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+        [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ] ||
+                git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
+        eval "$(pyenv init -)"
+}
+
+function python() {
+        _python
+        python "$@"
+}
+
+function pyenv() {
+        _python
+        pyenv $@
+}
+
+function ranger() {
+        unset -f ranger
+        install_if_not_found ranger ||
+                pipx install ranger-fm
+        ranger "$@"
+}
+
+# rbenv
+
 export RBENV_ROOT="$HOME/.rbenv"
 
 update_path "$RBENV_ROOT/bin"
 update_path "$RBENV_ROOT/shims"
 
-# N
+_ruby(){
+        unset -f _ruby
+        unset -f rbenv
+        [ -d "$RBENV_ROOT" ] || git clone https://github.com/rbenv/rbenv.git "$RBENV_ROOT"
+        eval "$(rbenv init -)"
+}
+
+rbenv(){
+        _ruby
+        rbenv $@
+}
+
+# n
+
 export N_PREFIX="$HOME/.n"
 
 update_path "$N_PREFIX/bin"
 
-# RUSTUP
+function n() {
+        unset -f n
+        install_if_not_found n ||
+                curl -L https://bit.ly/n-install | \
+                N_PREFIX="$N_PREFIX" \
+                N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
+                bash /dev/stdin -n -y
+        n "$@"
+}
+
+# rustup
 
 update_path "$HOME/.cargo/bin"
 
-# GHCup
+function _rust() {
+        unset -f _rust
+        unset -f rustup
+        unset -f cargo
+        install_if_not_found rustup ||
+                curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
+                sh -s -- --no-modify-path --default-toolchain nightly
+}
+
+function rustup() {
+        _rust
+        rustup "$@"
+}
+
+function cargo() {
+        _rust
+        cargo "$@"
+}
+
+function cargo-binstall() {
+        unset -f cargo-binstall
+        install_if_not_found cargo-binstall || cargo install cargo-binstall
+        cargo-binstall "$@"
+}
+
+function rg() {
+        unset -f rg
+        install_if_not_found rg || cargo-binstall ripgrep
+        rg "$@"
+}
+
+# ghcup
 
 update_path "$HOME/.ghcup/bin"
 update_path "$HOME/.cabal/bin"
 
-unset update_path
-
-# CPM
-
-export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
-
-# LATEX
+# latex
 
 export TEXMFHOME="$HOME/.config/texmf"
 
-function add_windows_path() {
-        path=($path $windows_path)
-        unset windows_path
-}
+# neovim
 
-export NEOVIDE_FORK=1
+if command -v fcitx5 &>/dev/null; then
+        # fcitx5 do not have dbus activation feature,
+        # so we start a fcitx5 service here but not replace existing daemon.
+        fcitx5 --keep -d &>/dev/null &
+fi
+
+if command -v nvim &>/dev/null; then
+        export VISUAL=nvim
+        export EDITOR=nvim
+fi
 
 add_windows_path
+
+# ==============================================================================
+# P10K
+# ==============================================================================
 
 # If this shell is launching in a tty,
 # I use fbterm to get UTF-8 character work.
@@ -199,185 +415,12 @@ if [[ -e $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]]; then
 	. $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 fi
 
-export LANG=zh_CN.UTF-8
-export LANGUAGE=zh_CN:en_US
-
 if [[
         $(systemctl show --user gpg-agent-ssh.socket --property ActiveState 2>/dev/null) ==
         "ActiveState=active"
    ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 fi
-
-_go(){
-        unset -f _go
-        unset -f go
-        unset -f goenv
-        [ -d "$GOENV_ROOT" ] || (
-                git clone https://github.com/syndbg/goenv.git "$GOENV_ROOT"
-                goenv install latest
-                goenv global `goenv install -l | tail -1`
-        )
-        eval "$(goenv init -)"
-}
-
-goenv(){
-        _go
-        goenv "$@"
-}
-
-go(){
-        _go
-        go "$@"
-
-}
-
-_python(){
-        unset -f _python
-        unset -f pyenv
-        unset -f python
-        [ -d "$PYENV_ROOT" ] ||
-                git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
-        [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ] ||
-                git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
-        eval "$(pyenv init -)"
-}
-
-python(){
-        _python
-        python "$@"
-}
-
-pyenv(){
-        _python
-        pyenv $@
-}
-
-_ruby(){
-        unset -f _ruby
-        unset -f rbenv
-        [ -d "$RBENV_ROOT" ] || git clone https://github.com/rbenv/rbenv.git "$RBENV_ROOT"
-        eval "$(rbenv init -)"
-
-}
-
-rbenv(){
-        _ruby
-        rbenv $@
-}
-
-install_if_not_found() {
-        if command -v "$1" &>/dev/null; then
-                return
-        fi
-        echo "\033[0;31mInstall $1\033[0m"
-        false
-}
-
-install_if_not_found chezmoi || (
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
-)
-
-cobra-cli(){
-        unset -f cobra-cli
-        install_if_not_found cobra-cli ||
-                go install github.com/spf13/cobra-cli@latest
-        cobra-cli "$@"
-}
-
-dlv(){
-        unset -f dlv
-        install_if_not_found dlv ||
-                go install github.com/go-delve/delve/cmd/dlv@latest
-        dlv "$@"
-}
-
-gh(){
-        unset -f gh
-        install_if_not_found gh ||
-                go install github.com/cli/cli/cmd/gh@latest
-        gh "$@"
-}
-
-lazygit(){
-        unset -f lazygit
-        install_if_not_found lazygit ||
-                go install github.com/jesseduffield/lazygit@latest
-        lazygit "$@"
-}
-
-stringer(){
-        unset -f stringer
-        install_if_not_found stringer ||
-                go install golang.org/x/tools/cmd/stringer@latest
-        stringer "$@"
-}
-
-ranger(){
-        unset -f ranger
-        install_if_not_found ranger ||
-                pipx install ranger-fm
-        ranger "$@"
-}
-
-n(){
-        unset -f n
-        install_if_not_found n ||
-                curl -L https://bit.ly/n-install | \
-                N_PREFIX="$N_PREFIX" \
-                N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
-                bash /dev/stdin -n -y
-        n "$@"
-}
-
-_rust(){
-        unset -f _rust
-        unset -f rustup
-        unset -f cargo
-        install_if_not_found rustup ||
-                curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
-                sh -s -- --no-modify-path --default-toolchain nightly
-}
-
-rustup() {
-        _rust
-        rustup "$@"
-}
-
-cargo(){
-        _rust
-        cargo "$@"
-}
-
-cargo-binstall(){
-        unset -f cargo-binstall
-        install_if_not_found cargo-binstall || cargo install cargo-binstall
-        cargo-binstall "$@"
-}
-
-rg(){
-        unset -f rg
-        install_if_not_found rg || cargo-binstall ripgrep
-        rg "$@"
-}
-
-if command -v nvim &>/dev/null && command -v neovide &>/dev/null ;then
-nvim(){
-        if [ -n "$DISPLAY" ]; then
-                neovide "$@"
-        else
-                unset -f nvim
-                nvim "$@"
-        fi
-}
-fi
-
-export VISUAL=nvim
-export EDITOR=nvim
-
-export PAGER=less
-
-setopt share_history
 
 # Setup zinit
 # NOTE: copy from https://github.com/zdharma-continuum/zinit#manual
@@ -404,75 +447,6 @@ zinit wait lucid depth=1 light-mode for \
         blockf atpull'zinit creinstall -q .' \
                 zsh-users/zsh-completions \
                 esc/conda-zsh-completion
-
-bindkey -v
-
-bindkey "^r" history-incremental-search-backward
-bindkey -s '^g' "lazygit^M"
-bindkey -s '^h' "^[[D"
-bindkey -s '^j' "^[[B"
-bindkey -s '^k' "^[[A"
-bindkey -s '^l' "^[[C"
-
-# For command completion in sudo ...
-# This is just a workaround.
-alias sudo="sudo "
-
-function ls () {
-        if [[ "$PWD" == "$HOME" ]]; then
-                /usr/bin/env ls -Isnap --color "$@"
-                return
-        fi
-        /usr/bin/env ls --color "$@"
-}
-
-function la () {
-        ls -la "$@"
-}
-
-alias ra="ranger"
-
-alias pkg_auto_remove="sudo pacman -Rcns \$(pacman -Qdtq)"
-alias pkg_source="asp export"
-alias yay="CC= CXX= CMAKE_C_COMPILER= CMAKE_CXX_COMPILER= CMAKE_GENERATOR= CMAKE_C_FLAGS= CMAKE_CXX_FLAGS= yay"
-
-alias gst="git status"
-
-alias cfg="chezmoi"
-
-alias clang-format-all="find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\|h\)' -exec clang-format -style=file -i {} \;"
-alias getcpm="wget -O CPM.cmake https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/CPM.cmake"
-
-setopt autopushd pushdsilent pushdtohome
-setopt pushdignoredups # Remove duplicate entries
-setopt pushdminus # This reverts the +/- operators.
-
-alias bk="popd"
-
-alias R='cd "$(realpath "`pwd`")"'
-alias s="dirs -v"
-
-alias ghdash="LANG=en_US gh dash"
-
-alias dbox="distrobox"
-
-alias gh="LANG=en_US.UTF-8 gh"
-
-if command -v wt.exe &>/dev/null; then
-        alias PS='wt.exe nt -p "Windows PowerShell"'
-fi
-
-command -v thefuck &>/dev/null && eval $(thefuck --alias)
-
-export GPG_TTY=$(tty)
-
-if command -v fcitx5 &>/dev/null; then
-        # fcitx5 do not have dbus activation feature,
-        # so we start a fcitx5 service here but not replace existing daemon.
-        fcitx5 --keep -d &>/dev/null
-fi
-
-R
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
