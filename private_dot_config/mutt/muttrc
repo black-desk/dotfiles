@@ -15,15 +15,19 @@ set message_cachedir = "$my_cache_dir/bodies"
 set certificate_file = "$my_cache_dir/certificates"
 
 set spoolfile = "imaps://imap.gmail.com/INBOX"
-set record="imaps://imap.gmail.com/[Gmail]/已发送邮件"
+set record="imaps://imap.gmail.com/[Gmail]/已发邮件"
 set postponed="imaps://imap.gmail.com/[Gmail]/草稿"
 set mbox="imaps://imap.gmail.com/[Gmail]/所有邮件"
 
 alternative_order text/html text/plain
 auto_view text/html
 
+source "$my_config_dir/gmail.muttrc"
+folder-hook $folder 'source "$my_config_dir/gmail.muttrc"'
+
+source "$my_config_dir/deepin.muttrc"
+folder-hook $folder 'source "$my_config_dir/deepin.muttrc"'
+
 source "$my_config_dir/uniontech.muttrc"
 folder-hook $folder 'source "$my_config_dir/uniontech.muttrc"'
 
-source "$my_config_dir/gmail.muttrc"
-folder-hook $folder 'source "$my_config_dir/gmail.muttrc"'

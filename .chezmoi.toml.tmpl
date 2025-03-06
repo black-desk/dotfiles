@@ -13,6 +13,9 @@
 {{ $ut_email := promptString "ut_email" -}}
 {{ $ut_email_app_password := promptString "ut_email_app_password" -}}
 
+{{ $deepin_email := promptString "deepin_email" -}}
+{{ $deepin_email_app_password := promptString "deepin_email_app_password" -}}
+
 [cd]
         args = ["sh", "-c", "command -v zsh >/dev/null 2>&1 && exec zsh; command -v bash >/dev/null 2>&1 && exec bash; exec sh"]
         command = "/usr/bin/env"
@@ -31,3 +34,6 @@
 
 	ut_email = {{ $ut_email | quote }}
 	ut_email_app_password = {{ $ut_email_app_password | quote }}
+
+	deepin_email = {{ $deepin_email | quote }}
+	deepin_email_app_password = {{ $deepin_email_app_password | quote }}
