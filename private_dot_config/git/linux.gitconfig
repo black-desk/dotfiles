@@ -1,0 +1,5 @@
+; vim: set ft=gitconfig:
+
+[sendemail]
+        tocmd ="`pwd`/scripts/get_maintainer.pl --norolestats --nol"
+        cccmd ="`pwd`/scripts/get_maintainer.pl --norolestats --nom"

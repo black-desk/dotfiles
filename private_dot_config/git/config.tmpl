@@ -39,17 +39,17 @@
 	helper = 
         helper = !/usr/bin/env gh auth git-credential
 
+[includeIf "gitdir:GNU/"]
+        path = ~/.config/git/GNU.gitconfig
+
+[includeIf "gitdir:linux/"]
+        path = ~/.config/git/linux.gitconfig
+
 [includeIf "gitdir:UnionTech/"]
         path = ~/.config/git/UnionTech.gitconfig
 
 [includeIf "gitdir:deepin/"]
         path = ~/.config/git/deepin.gitconfig
-
-[includeIf "gitdir:GNU/"]
-        path = ~/.config/git/GNU.gitconfig
-
-[includeIf "gitdir:Linux/"]
-        path = ~/.config/git/Linux.gitconfig
 
 [pretty]
         fixes = Fixes: %h (\"%s\")
