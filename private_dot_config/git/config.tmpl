@@ -45,10 +45,12 @@
 [includeIf "gitdir:linux/"]
         path = ~/.config/git/linux.gitconfig
 
-[includeIf "gitdir:UnionTech/"]
+# uniontech
+[includeIf "onbranch:**/bd/u*"]
         path = ~/.config/git/UnionTech.gitconfig
 
-[includeIf "gitdir:deepin/"]
+# deepin
+[includeIf "onbranch:**/bd/d*"]
         path = ~/.config/git/deepin.gitconfig
 
 [pretty]
