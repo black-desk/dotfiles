@@ -6,10 +6,12 @@ refreshPeriod = "24h"
 [".goenv"]
 type = "git-repo"
 url = "https://github.com/syndbg/goenv"
+refreshPeriod = "24h"
 
 [".pyenv"]
 type = "git-repo"
 url = "https://github.com/pyenv/pyenv"
+refreshPeriod = "24h"
 
 [".local/share/nautilus-python/extensions/code-nautilus.py"]
 type = "file"
