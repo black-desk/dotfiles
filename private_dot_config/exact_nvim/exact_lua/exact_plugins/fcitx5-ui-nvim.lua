@@ -30,4 +30,7 @@ return {
 
         } },
         branch = 'dev',
+        enabled = function()
+                return vim.fn.has('macunix') ~= 1
+        end,
 }
