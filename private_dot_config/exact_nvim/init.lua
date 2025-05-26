@@ -172,7 +172,25 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = { 'djot' },
-        callback = function() vim.opt_local.colorcolumn = { 73 } end
+        callback = function()
+                if vim.opt_local.columns:get() > 72 then
+                        vim.opt_local.columns = 72
+                end
+                utils.vim.enable_wrap()
+                vim.opt_local.colorcolumn = { 73 }
+        end
+})
+
+vim.api.nvim_create_autocmd('Filetype', {
+        pattern = { 'markdown' },
+        callback = function()
+                vim.print(vim.opt_local.columns)
+                if vim.opt_local.columns:get() > 80 then
+                        vim.opt_local.columns = 80
+                end
+                utils.vim.enable_wrap()
+                vim.opt_local.colorcolumn = { 81 }
+        end
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
@@ -195,7 +213,11 @@ vim.api.nvim_create_autocmd('Filetype', {
 
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = 'rust',
-        callback = function() vim.opt_local.colorcolumn = '101' end
+        callback = function()
+                if vim.opt_local.columns:get() > 100 then
+                        vim.opt_local.columns = 100
+                end
+                vim.opt_local.colorcolumn = 101 end
 })
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
@@ -205,7 +227,12 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
 
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = 'gitcommit',
-        callback = function() vim.opt_local.colorcolumn = '51,72' end
+        callback = function()
+                if vim.opt_local.columns:get() > 72 then
+                        vim.opt_local.columns = 72
+                end
+                utils.vim.enable_wrap()
+                vim.opt_local.colorcolumn = {51, 72} end
 })
 
 vim.api.nvim_create_autocmd('Filetype', {
@@ -216,6 +243,9 @@ vim.api.nvim_create_autocmd('Filetype', {
 vim.api.nvim_create_autocmd('Filetype', {
         pattern = { 'typst' },
         callback = function()
+                if vim.opt_local.columns:get() > 80 then
+                        vim.opt_local.columns = 80
+                end
                 utils.vim.enable_wrap()
         end
 })
