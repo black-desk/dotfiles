@@ -25,7 +25,13 @@ function add_windows_path() {
 
 function update_path() {
         local dir=$1
+
+        if ! [ -d "$dir" ]; then
+                return
+        fi
+
         local append=$2
+
         if [[ ${path[(ie)$dir]} -gt ${#path} ]]; then 
                 if [[ -n $append ]]; then
                         path+=($dir)
@@ -35,22 +41,39 @@ function update_path() {
         fi
 }
 
-function install_if_not_found() {
-        if command -v "$1" &>/dev/null; then
-                return
-        fi
-        echo "\033[0;31mInstall $1\033[0m"
-        false
-}
-
 # ==============================================================================
 # Environment
 # ==============================================================================
 
-export GPG_TTY=$(tty)
+brew_prefix=/opt/homebrew/bin
 
-export LANG=zh_CN.UTF-8
-export LANGUAGE=zh_CN:en_US
+if [ ! -d "$brew_prefix" ]; then
+        brew_prefix=/usr/local/bin
+fi
+
+if [ ! -d "$brew_prefix" ]; then
+        brew_prefix=/home/linuxbrew/.linuxbrew/bin
+fi
+
+if [ -d "$brew_prefix" ] && [ -x "$brew_prefix/brew" ]; then
+        eval "$("$brew_prefix/brew" shellenv)"
+fi
+
+unset brew_prefix
+
+
+if [ command -v gpg &>/dev/null ]; then
+        export GPG_TTY=$(tty)
+fi
+
+if locale -a | grep -q zh_CN.UTF-8; then
+        export LANG=zh_CN.UTF-8
+        export LANGUAGE=zh_CN
+fi
+
+if locale -a | grep -q en_US; then
+        export LANGUAGE="$LANGUAGE${LANGUAGE+:}en_US"
+fi
 
 remove_windows_path
 
@@ -96,8 +119,6 @@ update_path "/usr/local/bin"
 update_path "/usr/local/sbin"
 update_path "$HOME/.local/bin"
 
-# autotools
-
 if command -v clang &>/dev/null; then
         export CC="clang"
 fi
@@ -106,244 +127,69 @@ if command -v clang++ &>/dev/null; then
         export CXX="clang++"
 fi
 
-# GDB
+if command -v gdb &>/dev/null; then
+        if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
+                export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+        fi
 
-if $(cat /etc/os-release 2> /dev/null | grep Debian --quiet); then
-        export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+        if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
+                export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
+        fi
+
+        export GDBHISTFILE=.gdb_history
 fi
 
-if $(cat /etc/os-release 2> /dev/null | grep Ubuntu --quiet); then
-        export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
-fi
+if command -v cmake &>/dev/null; then
+        if command -v ninja &>/dev/null; then
+                export CMAKE_GENERATOR="Ninja"
+        fi
 
-export GDBHISTFILE=.gdb_history
-
-# CMake
-
-if command -v ninja &>/dev/null; then
-        export CMAKE_GENERATOR="Ninja"
-fi
-
-if command -v clang &>/dev/null && command -v clang++ &>/dev/null; then
-        export CMAKE_TOOLCHAIN_FILE="$HOME/.config/blackdesk/cmake/LLVM.cmake"
+        if command -v clang &>/dev/null && command -v clang++ &>/dev/null; then
+                export CMAKE_TOOLCHAIN_FILE="$HOME/.config/blackdesk/cmake/LLVM.cmake"
+        fi
 fi
 
 export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
 
 # ccache
 
-update_path "/usr/lib/ccache"
-
-# distcc
-
-if command -v distcc &>/dev/null; then
-        export CCACHE_PREFIX="distcc"
+if command -v ccache &>/dev/null; then
+        update_path "/usr/lib/ccache"
+        update_path "/home/linuxbrew/.linuxbrew/opt/ccache/libexec"
+        update_path "/opt/homebrew/opt/ccache/libexec"
 fi
-
-export DISTCC_BACKOFF_PERIOD=0
-
-# JetBrains Toolbox
 
 update_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
-# goenv
-
-export GOENV_ROOT="$HOME/.goenv"
-export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
-export GOENV_APPEND_GOPATH=
-export GOENV_PREPEND_GOPATH=1
 export GOPATH="$HOME/Documents/go"
-export GOENV_GOPATH_PREFIX="$GOPATH"
-
 update_path "$GOPATH/bin"
-update_path "$GOENV_ROOT/bin"
-update_path "$GOENV_ROOT/shims"
 
-function _go() {
-        unset -f _go
-        unset -f go
-        unset -f goenv
-        [ -d "$GOENV_ROOT" ] || (
-                git clone https://github.com/syndbg/goenv.git "$GOENV_ROOT"
-                goenv install latest
-                goenv global `goenv install -l | tail -1`
-        )
+if command -v goenv &>/dev/null; then
+        export GOENV_HOOK_PATH="$HOME/.local/lib/goenv_hook/"
+        export GOENV_APPEND_GOPATH=
+        export GOENV_PREPEND_GOPATH=1
+        export GOENV_GOPATH_PREFIX="$GOPATH"
         eval "$(goenv init -)"
-}
+fi
 
-function goenv() {
-        _go
-        goenv "$@"
-}
-
-function go() {
-        _go
-        go "$@"
-}
-
-function cobra-cli() {
-        unset -f cobra-cli
-        install_if_not_found cobra-cli ||
-                go install github.com/spf13/cobra-cli@latest
-        cobra-cli "$@"
-}
-
-function dlv() {
-        unset -f dlv
-        install_if_not_found dlv ||
-                go install github.com/go-delve/delve/cmd/dlv@latest
-        dlv "$@"
-}
-
-function gh() {
-        unset -f gh
-        install_if_not_found gh ||
-                go install github.com/cli/cli/cmd/gh@latest
-        gh "$@"
-}
-
-function lazygit() {
-        unset -f lazygit
-        install_if_not_found lazygit ||
-                go install github.com/jesseduffield/lazygit@latest
-        lazygit "$@"
-}
-
-function stringer() {
-        unset -f stringer
-        install_if_not_found stringer ||
-                go install golang.org/x/tools/cmd/stringer@latest
-        stringer "$@"
-}
-
-function pet() {
-        install_if_not_found pet ||
-                go install github.com/knqyf263/pet@latest
-        LANG= /usr/bin/env pet "$@"
-}
-
-function prev() {
-        pet &> /dev/null
-        PREV=$(fc -lrn | head -n 1)
-        sh -c "pet new `printf %q "$PREV"`"
-}
-
-# pyenv
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
-
-update_path "$PYENV_ROOT/bin"
-update_path "$PYENV_ROOT/shims"
-
-function _python() {
-        unset -f _python
-        unset -f pyenv
-        unset -f python
-        [ -d "$PYENV_ROOT" ] ||
-                git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
-        [ -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ] ||
-                git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
+if command -v pyenv &>/dev/null; then
+        export PYENV_HOOK_PATH="$HOME/.local/lib/pyenv_hook/"
         eval "$(pyenv init -)"
-}
+fi
 
-function python() {
-        _python
-        python "$@"
-}
-
-function pyenv() {
-        _python
-        pyenv $@
-}
-
-function ranger() {
-        unset -f ranger
-        install_if_not_found ranger ||
-                pipx install ranger-fm
-        ranger "$@"
-}
-
-# rbenv
-
-export RBENV_ROOT="$HOME/.rbenv"
-
-update_path "$RBENV_ROOT/bin"
-update_path "$RBENV_ROOT/shims"
-
-_ruby(){
-        unset -f _ruby
-        unset -f rbenv
-        [ -d "$RBENV_ROOT" ] || git clone https://github.com/rbenv/rbenv.git "$RBENV_ROOT"
+if command -v rbenv &>/dev/null; then
         eval "$(rbenv init -)"
-}
-
-rbenv(){
-        _ruby
-        rbenv $@
-}
-
-# n
+fi
 
 export N_PREFIX="$HOME/.n"
-
 update_path "$N_PREFIX/bin"
 
-function n() {
-        unset -f n
-        install_if_not_found n ||
-                curl -L https://bit.ly/n-install | \
-                N_PREFIX="$N_PREFIX" \
-                N_INSTALL_TEST_OVERRIDE_SKIP_EXISTING_INSTALLATION_TEST=1 \
-                bash /dev/stdin -n -y
-        n "$@"
-}
-
-# rustup
-
 update_path "$HOME/.cargo/bin"
-
-function _rust() {
-        unset -f _rust
-        unset -f rustup
-        unset -f cargo
-        install_if_not_found rustup ||
-                curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
-                sh -s -- --no-modify-path --default-toolchain nightly
-}
-
-function rustup() {
-        _rust
-        rustup "$@"
-}
-
-function cargo() {
-        _rust
-        cargo "$@"
-}
-
-function cargo-binstall() {
-        unset -f cargo-binstall
-        install_if_not_found cargo-binstall || cargo install cargo-binstall
-        cargo-binstall "$@"
-}
-
-function rg() {
-        unset -f rg
-        install_if_not_found rg || cargo-binstall ripgrep
-        rg "$@"
-}
-
-# ghcup
 
 update_path "$HOME/.ghcup/bin"
 update_path "$HOME/.cabal/bin"
 
-# latex
-
 export TEXMFHOME="$HOME/.config/texmf"
-
-# neovim
 
 if command -v fcitx5 &>/dev/null; then
         # fcitx5 do not have dbus activation feature,
