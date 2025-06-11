@@ -60,7 +60,7 @@ local config = function()
                         end, { 'i', 's' }),
                 }),
                 sources = cmp.config.sources({
-                        { name = 'ultisnips' },
+                        -- { name = 'ultisnips' },
                 },{
                         { name = 'nvim_lsp' },
                         { name = "copilot", priority = 50 },
@@ -136,7 +136,7 @@ return { {
         -- https://github.com/hrsh7th/cmp-cmdline
         'hrsh7th/cmp-cmdline',
         -- https://github.com/quangnguyen30192/cmp-nvim-ultisnips
-        'quangnguyen30192/cmp-nvim-ultisnips',
+        { 'quangnguyen30192/cmp-nvim-ultisnips', enabled = false },
         -- https://github.com/octaltree/cmp-look
         'octaltree/cmp-look',
 }, }
