@@ -1,8 +1,5 @@
 # vim: set ft=gitignore
 
-# (neo)vim
-**/.vimrc
-
 # IDEA
 **/.idea
 
@@ -13,9 +10,6 @@
 CMakeUserPresets.json
 
 # build directories
-**/build-*/
-**/build_*/
-**/build/
 **/cmake-build-*/
 
 # clangd
