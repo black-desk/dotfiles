@@ -8,7 +8,6 @@
         smtpServerPort = 465
         smtpEncryption = ssl
         smtpUser = {{ .gmail }}
-        from = {{ .username }} <{{ .email }}>
 
 [credential]
         helper = store
@@ -39,17 +38,9 @@
 	helper = 
         helper = !/usr/bin/env gh auth git-credential
 
-[includeIf "gitdir:GNU/"]
-        path = ~/.config/git/GNU.gitconfig
+[includeIf "gitdir:{{ .deepin_email }}"]
+        path = ~/.config/git/deepin.gitconfig
 
 [includeIf "gitdir:linux/"]
         path = ~/.config/git/linux.gitconfig
-
-# uniontech
-[includeIf "onbranch:**/bd/u*"]
-        path = ~/.config/git/UnionTech.gitconfig
-
-# deepin
-[includeIf "onbranch:**/bd/d*"]
-        path = ~/.config/git/deepin.gitconfig
 
