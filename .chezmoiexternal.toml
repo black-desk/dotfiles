@@ -43,3 +43,8 @@ type = "file"
 url = "https://raw.githubusercontent.com/black-desk/PandocX/refs/heads/master/pandocx"
 refreshPeriod = "24h"
 executable = true
+
+[".config/nvim"]
+type = "git-repo"
+url = "https://github.com/black-desk/neovim-config"
+refreshPeriod = "24h"

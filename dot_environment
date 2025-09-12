@@ -1,0 +1,94 @@
+#!/usr/bin/env sh
+
+# This file will be sourced by both .bashrc and .zshrc
+
+if locale -a | grep --quiet zh_CN.UTF-8; then
+	export LANG=zh_CN.UTF-8
+	export LANGUAGE=zh_CN
+fi
+
+if locale -a | grep --quiet en_US; then
+	export LANGAUGE="$LANGUAGE${LANGUAGE+:}en_US"
+fi
+
+function check() {
+	command -v "$1" &>/dev/null
+}
+
+function prepend_path() {
+	case ":${PATH}:" in
+	    *:"$1":*)
+		;;
+	    *)
+		export PATH="$1:$PATH"
+		;;
+	esac
+}
+
+prepend_path "/sbin"
+prepend_path "/bin"
+prepend_path "/usr/sbin"
+prepend_path "/usr/bin"
+prepend_path "/usr/local/sbin"
+prepend_path "/usr/local/bin"
+prepend_path "/opt/sbin"
+prepend_path "/opt/bin"
+prepend_path "/opt/local/sbin" # macports
+prepend_path "/opt/local/bin" # macports
+prepend_path "$HOME/.local/bin"
+
+if [ -z "$GOENV_ROOT" ] && [ -x "$HOME/.goenv/bin/goenv" ]; then
+	export GOENV_ROOT="$HOME/.goenv"
+	prepend_path "$GOENV_ROOT/bin"
+fi
+
+if check goenv; then
+	eval "$(goenv init -)"
+fi
+
+if check go; then
+	prepend_path "$(go env GOPATH)/bin"
+fi
+
+. "$HOME/.cargo/env"
+
+if [ -z "$N_PREFIX" ] && [ -x "$HOME/.n/bin/n" ]; then
+	export N_PREFIX="$HOME/.n"
+	prepend_path "$N_PREFIX/bin"
+fi
+
+if check less; then
+	export PAGER=less
+fi
+
+if check gpg; then
+	# shellcheck disable=SC2155
+	export GPG_TTY=$(tty)
+fi
+
+if check gdb; then
+	if grep Debian --quiet /etc/os-release; then
+		export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+	fi
+
+	if grep Ubuntu --quiet /etc/os-release; then
+		export DEBUGINFOD_URLS="https://debuginfod.ubuntu.com"
+	fi
+fi
+
+if check cmake; then
+	export CPM_SOURCE_CACHE="$HOME/.cache/CPM"
+fi
+
+if check vim; then
+        export VISUAL=vim
+        export EDITOR=vim
+fi
+
+if check nvim; then
+        export VISUAL=nvim
+        export EDITOR=nvim
+fi
+
+unset check
+unset prepend_path
