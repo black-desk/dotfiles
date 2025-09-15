@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [[ -f /etc/bashrc ]]; then
+	source /etc/bashrc
+fi
+
 source "$HOME/.environment"
 
 # Enable the subsequent settings only in interactive sessions
