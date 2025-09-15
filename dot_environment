@@ -92,3 +92,5 @@ fi
 
 unset check
 unset prepend_path
+
+export PINYIN_COMP_MODE="ShuangpinXiaohe"
