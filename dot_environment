@@ -37,6 +37,11 @@ prepend_path "/opt/local/sbin" # macports
 prepend_path "/opt/local/bin" # macports
 prepend_path "$HOME/.local/bin"
 
+if check ruby; then
+	export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+	prepend_path "$GEM_HOME/bin"
+fi
+
 if [ -z "$GOENV_ROOT" ] && [ -x "$HOME/.goenv/bin/goenv" ]; then
 	export GOENV_ROOT="$HOME/.goenv"
 	prepend_path "$GOENV_ROOT/bin"
