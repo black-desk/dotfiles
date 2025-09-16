@@ -33,12 +33,6 @@ type = "file"
 url = "https://cdn.jsdelivr.net/gh/AOSC-Dev/Buildbots/ssh_known_hosts"
 refreshPeriod = "24h"
 
-[".local/bin/pandocx"]
-type = "file"
-url = "https://raw.githubusercontent.com/black-desk/PandocX/refs/heads/master/pandocx"
-refreshPeriod = "24h"
-executable = true
-
 [".config/nvim"]
 type = "git-repo"
 url = "https://github.com/black-desk/neovim-config"
