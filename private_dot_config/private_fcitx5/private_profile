@@ -4,7 +4,7 @@ Name=默认
 # Layout
 Default Layout=us
 # Default Input Method
-DefaultIM=rime
+DefaultIM=shuangpin
 
 [Groups/0/Items/0]
 # Name
@@ -14,7 +14,7 @@ Layout=
 
 [Groups/0/Items/1]
 # Name
-Name=rime
+Name=shuangpin
 # Layout
 Layout=
 
