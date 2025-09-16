@@ -1,3 +1,8 @@
+[".oh-my-bash"]
+type = "git-repo"
+url = "https://github.com/ohmybash/oh-my-bash"
+refreshPeriod = "24h"
+
 [".local/share/oh-my-tmux"]
 type = "git-repo"
 url = "https://github.com/gpakosz/.tmux"
