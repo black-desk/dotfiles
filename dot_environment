@@ -55,7 +55,9 @@ if check go; then
 	prepend_path "$(go env GOPATH)/bin"
 fi
 
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+	. "$HOME/.cargo/env"
+fi
 
 if [ -z "$N_PREFIX" ] && [ -x "$HOME/.n/bin/n" ]; then
 	export N_PREFIX="$HOME/.n"
