@@ -69,8 +69,13 @@ if check less; then
 fi
 
 if check gpg; then
-	# shellcheck disable=SC2155
-	export GPG_TTY=$(tty)
+	GPG_TTY="$(tty)"
+	export GPG_TTY
+fi
+
+if check gpgconf; then
+	SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+	export SSH_AUTH_SOCK
 fi
 
 if check gdb; then
