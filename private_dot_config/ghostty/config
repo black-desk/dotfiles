@@ -3,7 +3,6 @@ font-family = Noto Sans Mono CJK SC
 
 font-size = 16
 
-theme = BlulocoDark
 window-theme = ghostty
 
 keybind = ctrl+b>c=new_tab
