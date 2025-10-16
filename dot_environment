@@ -28,6 +28,7 @@ function prepend_path() {
 if [[ -n $WSL_DISTRO_NAME ]]; then
 	OLD_PATH="$PATH"
 	NEW_PATH=""
+	OLD_IFS="$IFS"
 	IFS=':'
 	for p in $OLD_PATH; do
 		if [[ "$p" == /mnt/c* ]]; then
@@ -41,6 +42,7 @@ if [[ -n $WSL_DISTRO_NAME ]]; then
 
 		NEW_PATH="$NEW_PATH:$p"
 	done
+	IFS="$OLD_IFS"
 	PATH="$HOME/.local/lib/wsl/bin:$NEW_PATH"
 fi
 
