@@ -1,34 +1,10 @@
-[user]
-        email = {{ .email }}
-        name = {{ .name }}
-        signingkey = {{ .gunpg_pub }}
-
-[sendemail]
-        smtpServer = smtp.gmail.com
-        smtpServerPort = 465
-        smtpEncryption = ssl
-        smtpUser = {{ .gmail }}
-
-[credential]
-        helper = store
-
-[fetch]
-        writeCommitGraph = true
-
-[pull]
-        rebase = true
-
 [core]
 	quotePath = false
 	commitGraph = true
-        abbrev = 12
+	abbrev = 12
 
-[receive]
-	advertisePushOptions = true
-	procReceiveRefs = refs{{ .chezmoi.pathSeparator }}for
-
-[gc]
-	writeCommitGraph = true
+[credential]
+	helper = store
 
 [credential "https://github.com"]
 	helper = 
@@ -36,11 +12,38 @@
 
 [credential "https://gist.github.com"]
 	helper = 
-        helper = !/usr/bin/env gh auth git-credential
+	helper = !/usr/bin/env gh auth git-credential
 
-[includeIf "gitdir:{{ .deepin_email }}"]
-        path = ~/.config/git/deepin.gitconfig
+[extensions]
+	worktreeConfig = true
 
-[includeIf "gitdir:linux/"]
-        path = ~/.config/git/linux.gitconfig
+[fetch]
+	writeCommitGraph = true
+
+[gc]
+	writeCommitGraph = true
+
+[pretty]
+	fixes = "Fixes: %h (\"%s\")"
+	ref = "commit %h (\"%s\")"
+
+[pull]
+	rebase = true
+
+[receive]
+	advertisePushOptions = true
+	procReceiveRefs = refs/for
+
+[sendemail]
+	smtpServer = smtp.gmail.com
+	smtpServerPort = 465
+	smtpEncryption = ssl
+	smtpUser = {{ .gmail }}
+	tocmd = [ -x `pwd`/scripts/get_maintainer.pl ] && `pwd`/scripts/get_maintainer.pl --norolestats --nol
+	cccmd = [ -x `pwd`/scripts/get_maintainer.pl ] && `pwd`/scripts/get_maintainer.pl --norolestats --nom
+
+[user]
+	email = me@black-desk.cn
+	name = Chen Linxuan
+	signingkey = D818ACDD385CAE92D4BAC01A6269794D24791D21
 
