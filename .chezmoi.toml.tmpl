@@ -1,26 +1,12 @@
 {{ $name := promptString "name" -}}
 {{ $username := promptString "username" -}}
 {{ $github_id := promptString "github_id" -}}
-{{ $gunpg_pub := promptString "gunpg_pub" -}}
 
 {{ $email := promptString "email" -}}
-
-{{ $gmail := promptString "gmail" -}}
-{{ $gmail_app_password := promptString "gmail_app_passwrod" -}}
-
-{{ $deepin_email := promptString "deepin_email" -}}
-{{ $deepin_email_app_password := promptString "deepin_email_app_password" -}}
 
 [data]
 	name = {{ $name | quote }}
 	username = {{ $username | quote }}
 	github_id = {{ $github_id | quote }}
-	gunpg_pub = {{ $gunpg_pub | quote }}
 
 	email = {{ $email | quote }}
-
-	gmail = {{ $gmail | quote }}
-	gmail_app_password = {{ $gmail_app_password | quote }}
-
-	deepin_email = {{ $deepin_email | quote }}
-	deepin_email_app_password = {{ $deepin_email_app_password | quote }}
