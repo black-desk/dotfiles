@@ -125,9 +125,20 @@ aliases=(
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	git
 	bashmarks
 )
+
+if [ "$SSH_CONNECTION" ]; then
+	plugins+=(tmux-autoattach)
+fi
+
+THEME_SHOW_SCM=false
+if ! [ "$virtme_hostname" ]; then
+	plugins+=(
+		git
+	)
+	THEME_SHOW_SCM=true
+fi
 
 # Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
 # Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
