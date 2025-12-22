@@ -36,14 +36,6 @@
 	advertisePushOptions = true
 	procReceiveRefs = refs/for
 
-[sendemail]
-	smtpServer = smtp.gmail.com
-	smtpServerPort = 465
-	smtpEncryption = ssl
-	smtpUser = {{ .gmail }}
-	tocmd = [ -x `pwd`/scripts/get_maintainer.pl ] && `pwd`/scripts/get_maintainer.pl --norolestats --nol
-	cccmd = [ -x `pwd`/scripts/get_maintainer.pl ] && `pwd`/scripts/get_maintainer.pl --norolestats --nom
-
 [user]
 	email = me@black-desk.cn
 	name = Chen Linxuan
