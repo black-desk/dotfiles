@@ -65,3 +65,8 @@ generators:
       # Remove StartupNotify.
       '-e', '/StartupNotify=true/d',
     ]
+  - name: fix-wps
+    filter: ^wps-office-wps\.desktop$
+    command: [ 'sed',
+      '-e', 's/^Exec=\/usr\/bin\/wps %U/Exec=\/usr\/bin\/wps %F/',
+    ]
