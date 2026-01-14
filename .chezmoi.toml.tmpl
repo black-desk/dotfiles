@@ -1,12 +1,12 @@
-{{ $name := promptString "name" -}}
-{{ $username := promptString "username" -}}
-{{ $github_id := promptString "github_id" -}}
-
-{{ $email := promptString "email" -}}
+{{ $name := promptStringOnce . "name" "My name" }}
+{{ $username := promptStringOnce . "username" "My user name" }}
+{{ $github_id := promptStringOnce . "github_id" "My github ID" }}
+{{ $email := promptStringOnce . "email" "My personal email" }}
+{{ $deepseek_api := promptStringOnce . "deepseek_api" "My deekseek API" }}
 
 [data]
+	deepseek_api = {{ $deepseek_api | quote }}
+	email = {{ $email | quote }}
+	github_id = {{ $github_id | quote }}
 	name = {{ $name | quote }}
 	username = {{ $username | quote }}
-	github_id = {{ $github_id | quote }}
-
-	email = {{ $email | quote }}

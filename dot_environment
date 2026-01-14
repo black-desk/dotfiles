@@ -11,29 +11,30 @@ if locale -a | grep --quiet en_US; then
 	export LANGAUGE="$LANGUAGE${LANGUAGE+:}en_US"
 fi
 
-function check() {
-	command -v "$1" &>/dev/null
+check() {
+	command -v "$1" >/dev/null 2>&1
 }
 
-function prepend_path() {
+prepend_path() {
 	case ":${PATH}:" in
-	    *:"$1":*)
-		;;
-	    *)
+	*:"$1":*) ;;
+	*)
 		export PATH="$1:$PATH"
 		;;
 	esac
 }
 
-if [[ -n $WSL_DISTRO_NAME ]]; then
+if [ -n "$WSL_DISTRO_NAME" ]; then
 	OLD_PATH="$PATH"
 	NEW_PATH=""
 	OLD_IFS="$IFS"
 	IFS=':'
 	for p in $OLD_PATH; do
-		if [[ "$p" == /mnt/c* ]]; then
+		case "$p" in
+		/mnt/c*)
 			continue
-		fi
+			;;
+		esac
 
 		if [ -z "$NEW_PATH" ]; then
 			NEW_PATH="$p"
@@ -46,7 +47,6 @@ if [[ -n $WSL_DISTRO_NAME ]]; then
 	PATH="$HOME/.local/lib/wsl/bin:$NEW_PATH"
 fi
 
-
 prepend_path "/sbin"
 prepend_path "/bin"
 prepend_path "/usr/sbin"
@@ -56,16 +56,28 @@ prepend_path "/usr/local/bin"
 prepend_path "/opt/sbin"
 prepend_path "/opt/bin"
 prepend_path "/opt/local/sbin" # macports
-prepend_path "/opt/local/bin" # macports
+prepend_path "/opt/local/bin"  # macports
 prepend_path "$HOME/.local/bin"
 
+export WORKSPACE="$HOME/Documents/workspace"
+
+if [ -d "$WORKSPACE/repositories/vcpkg" ]; then
+	VCPKG_ROOT="$WORKSPACE/repositories/vcpkg"
+	export VCPKG_ROOT
+	prepend_path "$VCPKG_ROOT"
+fi
+
 if check ruby; then
-	export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+	GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+	export GEM_HOME
 	prepend_path "$GEM_HOME/bin"
 fi
 
 if [ -z "$GOENV_ROOT" ] && [ -x "$HOME/.goenv/bin/goenv" ]; then
-	export GOENV_ROOT="$HOME/.goenv"
+	GOENV_ROOT="$HOME/.goenv"
+	export GOENV_ROOT
+	GOENV_DISABLE_GOPATH=1
+	export GOENV_DISABLE_GOPATH
 	prepend_path "$GOENV_ROOT/bin"
 fi
 
@@ -74,6 +86,8 @@ if check goenv; then
 fi
 
 if check go; then
+	GOPATH=$HOME/Documents/go/
+	export GOPATH
 	prepend_path "$(go env GOPATH)/bin"
 fi
 
@@ -119,16 +133,28 @@ if check cmake; then
 fi
 
 if check vim; then
-        export VISUAL=vim
-        export EDITOR=vim
+	export VISUAL=vim
+	export EDITOR=vim
 fi
 
 if check nvim; then
-        export VISUAL=nvim
-        export EDITOR=nvim
+	export VISUAL=nvim
+	export EDITOR=nvim
 fi
 
 unset check
 unset prepend_path
 
 export PINYIN_COMP_MODE="ShuangpinXiaohe"
+export HISTSIZE=10000
+
+if [ -f "$HOME/.secrets" ]; then
+	source "$HOME/.secrets"
+fi
+
+export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+export API_TIMEOUT_MS=600000
+export ANTHROPIC_MODEL=deepseek-chat
+export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+
