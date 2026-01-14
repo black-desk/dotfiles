@@ -3,7 +3,12 @@ font-family = Noto Sans Mono CJK SC
 
 font-size = 16
 
+theme = Atom One Dark
 window-theme = ghostty
+
+macos-option-as-alt = true
+
+keybind = ctrl+b>ctrl+b=text:\x02
 
 keybind = ctrl+b>c=new_tab
 
@@ -31,5 +36,3 @@ gtk-tabs-location = bottom
 mouse-scroll-multiplier = 0.5
 
 linux-cgroup = always
-
-command = zsh
