@@ -1,8 +1,11 @@
 python
 import sys
-sys.path.insert(0, '/usr/share/kdevgdb/printers')
-from qt import register_qt_printers
-register_qt_printers (None)
+import os
+kdev_path = '/usr/share/kdevgdb/printers'
+if os.path.exists(kdev_path):
+    sys.path.insert(0, kdev_path)
+    from qt import register_qt_printers
+    register_qt_printers(None)
 end
 
 set print pretty on
