@@ -73,35 +73,10 @@ if check ruby; then
 	prepend_path "$GEM_HOME/bin"
 fi
 
-if [ -z "$GOENV_ROOT" ] && [ -x "$HOME/.goenv/bin/goenv" ]; then
-	GOENV_ROOT="$HOME/.goenv"
-	export GOENV_ROOT
-	GOENV_DISABLE_GOPATH=1
-	export GOENV_DISABLE_GOPATH
-	prepend_path "$GOENV_ROOT/bin"
-fi
-
-if check goenv; then
-	eval "$(goenv init -)"
-fi
-
 if check go; then
 	GOPATH=$HOME/Documents/go/
 	export GOPATH
 	prepend_path "$(go env GOPATH)/bin"
-fi
-
-if [ -f "$HOME/.cargo/env" ]; then
-	. "$HOME/.cargo/env"
-fi
-
-if [ -f "$HOME/.xmake/profile" ]; then
-	. "$HOME/.xmake/profile"
-fi
-
-if [ -z "$N_PREFIX" ] && [ -x "$HOME/.n/bin/n" ]; then
-	export N_PREFIX="$HOME/.n"
-	prepend_path "$N_PREFIX/bin"
 fi
 
 if check less; then
@@ -151,10 +126,4 @@ export HISTSIZE=10000
 if [ -f "$HOME/.secrets" ]; then
 	source "$HOME/.secrets"
 fi
-
-export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-export API_TIMEOUT_MS=600000
-export ANTHROPIC_MODEL=deepseek-chat
-export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
-export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 
