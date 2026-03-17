@@ -1,0 +1,33 @@
+[targets.local]
+type = 'maildir'
+path = '~/Documents/mail'
+
+[deliveries.lkml]
+feed = 'https://lore.kernel.org/lkml'
+target = 'local'
+subfolder = 'LKML'
+
+[deliveries.git]
+feed = 'https://lore.kernel.org/git'
+target = 'local'
+subfolder = 'git'
+
+[deliveries.man]
+feed = 'https://lore.kernel.org/linux-man'
+target = 'local'
+subfolder = 'man'
+
+[deliveries.fsdevel]
+feed = 'https://lore.kernel.org/linux-fsdevel'
+target = 'local'
+subfolder = 'fsdevel'
+
+[deliveries.io-uring]
+feed = 'https://lore.kernel.org/io-uring'
+target = 'local'
+subfolder = 'io-uring'
+
+[deliveries.util-linux]
+feed = 'https://lore.kernel.org/util-linux'
+target = 'local'
+subfolder = 'util-linux'
